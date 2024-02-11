@@ -15,7 +15,7 @@ cd WebProjectQuiz
 composer install
 ```
 
-3. Create and setup .env file
+3. .env dosyasını oluşturun ve kurun
 ```
 cp .env.example .env
 ```
