@@ -7,9 +7,8 @@
 git clone https://github.com/semaermin/BitirmeProjesiWeb
 ```
 
-2. Composer paketlerini yükleyin
+2. WebProjectQuiz dosyasına cd ile gidin ve Composer paketlerini yükleyin
 ```
-cd BitirmeProjesiWeb
 cd WebProjectQuiz
 ```
 ```
