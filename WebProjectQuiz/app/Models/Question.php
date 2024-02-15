@@ -23,4 +23,8 @@ class Question extends Model
     {
         return $this->hasMany(UserAnswer::class);
     }
+    public function matchingOptions()
+    {
+        return $this->hasMany(MatchingOption::class);
+    }
 }

@@ -9,20 +9,35 @@
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-xl dark:bg-gray-800 sm:rounded-lg">
                 <div class="list-group list-group-flush">
-                    @foreach($test->questions as $question)
+                    @foreach($test->questions as $index => $question)
                         <div class="list-group-item">
-                            <h5 class="mb-1">{{ $question->text }}</h5>
+                            <h5 class="mb-1">{{ $index + 1 }}.) {{ $question->text }}</h5>
                             <ul class="list-group list-group-flush">
-                                @foreach($question->answers as $answer)
-                                    <li class="list-group-item">
-                                        {{ $answer->text }} -
-                                        @if($answer->is_correct)
-                                            <span class="text-success">Doğru Cevap</span>
-                                        @else
-                                            <span class="text-danger">Yanlış Cevap</span>
-                                        @endif
-                                    </li>
-                                @endforeach
+                                @if($question->type == 1)
+                                    {{-- Çoktan Seçmeli Soru --}}
+                                    @foreach($question->answers as $answer)
+                                        <li class="list-group-item">
+                                            {{ $answer->text }} -
+                                            @if($answer->is_correct)
+                                                <span class="text-success">Doğru Cevap</span>
+                                            @else
+                                                <span class="text-danger">Yanlış Cevap</span>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                @elseif($question->type == 2)
+                                    {{-- Eşleştirme Sorusu --}}
+                                    @foreach($question->matchingOptions->groupBy('pair_order') ?? [] as $pairOrder => $matchingOptions)
+                                        <li class="list-group-item">
+                                            @foreach($matchingOptions as $index => $matchingOption)
+                                                {{ $matchingOption->option_text }}
+                                                @if(!$loop->last)
+                                                    - <!-- Son seçenek değilse, araya boşluk ekleyelim -->
+                                                @endif
+                                            @endforeach
+                                        </li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </div>
                     @endforeach

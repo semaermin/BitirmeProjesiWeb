@@ -10,6 +10,8 @@ use App\Models\Test;
 use App\Models\Question;
 use App\Models\Answer;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Media;
+use App\Models\MatchingOption;
 
 class QuizController extends Controller
 {
@@ -130,7 +132,7 @@ class QuizController extends Controller
     public function quizShow($slug)
     {
         // Slug'a göre ilgili testi bul
-        $test = Test::where('slug', $slug)->firstOrFail();
+        $test = Test::where('slug', $slug)->with('questions.matchingOptions')->firstOrFail();
 
         // Mevcut testin adını al
         $testName = $test->name;
@@ -146,6 +148,7 @@ class QuizController extends Controller
         $types = $request->input('question_type');
         $difficulties = $request->input('question_difficulty');
         $answers = $request->input('answers');
+        $matchingPairs= $request->input('matching_pairs');
         $correctAnswers = $request->input('correct_answer');
         $points = $request->input('question_points');
 
@@ -195,17 +198,39 @@ class QuizController extends Controller
             $question->points = $this->calculatePoints($points, $index, $question->difficulty);
             $question->save();
 
-            // Cevapları kaydet
-            foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
-                $answer = new Answer();
-                $answer->question_id = $question->id;
-                $answer->text = $answerText;
 
-                // Doğru cevabı belirle
-                $isCorrect = isset($correctAnswers[$index]) && $correctAnswers[$index] == $answerIndex;
-                $answer->is_correct = $isCorrect;
+            if ($question->type == 1) { // Çoktan seçmeli soru
+               // Cevapları kaydet
+                foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
+                    $answer = new Answer();
+                    $answer->question_id = $question->id;
+                    $answer->text = $answerText;
 
-                $answer->save();
+                    // Doğru cevabı belirle
+                    $isCorrect = isset($correctAnswers[$index]) && $correctAnswers[$index] == $answerIndex;
+                    $answer->is_correct = $isCorrect;
+
+                    $answer->save();
+                }
+            } elseif ($question->type == 2) { // Eşleştirme sorusu
+                foreach ($matchingPairs as $pairIndex => $pairs) {
+                    // Her bir $pairs öğesinin alt dizilere sahip olup olmadığını kontrol edin
+                    if (is_array($pairs)) {
+                        // Alt dizi varsa, iç içe geçmiş foreach döngüsüyle içeriğe erişin
+                        foreach ($pairs as $pairText) {
+                            // Döngü içinde gerekli işlemleri yapın
+                            $matchingOption = new MatchingOption();
+                            $matchingOption->question_id = $question->id;
+                            $matchingOption->option_text = $pairText;
+                            $matchingOption->pair_order = $pairIndex + 1;
+
+                            $matchingOption->save();
+                        }
+                    } else {
+                        // Alt dizi yoksa, hata mesajı gönderin veya hatayı başka şekilde yönetin
+                    }
+                }
+
             }
         }
 

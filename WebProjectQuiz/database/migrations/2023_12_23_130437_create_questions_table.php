@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type');
             $table->enum('difficulty', ['easy', 'medium', 'hard'])->default('medium');
             $table->unsignedInteger('points')->default(2);
+            $table->string('media_path')->nullable(); // Medya dosyasının yolu veya adı
             $table->timestamps();
         });
 
