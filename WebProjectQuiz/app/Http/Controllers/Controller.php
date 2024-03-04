@@ -21,6 +21,7 @@ class Controller extends BaseController
         $user = User::all()->first();
         return view('dashboard', compact('user'));
     }
+    
     public function register(Request $request)
     {
         $request->validate([

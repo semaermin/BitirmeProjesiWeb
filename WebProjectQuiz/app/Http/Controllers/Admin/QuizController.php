@@ -22,19 +22,26 @@ class QuizController extends Controller
     {
         // Aktif kullanıcıyı al
         $user = auth()->user();
-        // dd($user);
 
         // Kullanıcının yönetici olup olmadığını kontrol et
-        if ($user && $user->isAdmin()) {
+        if ($user && $user->is_admin) {
             // Yönetici ise, testleri listele
             $tests = $user->tests;
-            return view('quiz.quiz', compact('tests'))->with('message', 'Başarıyla yükledin')->with('alert-type', 'success');
-
-        } else {
+            return view('quiz.quiz', [
+                'tests' => $tests,
+                'message' => 'Başarıyla yükledin',
+                'alert-type' => 'success',
+            ]);
+        }
+         else {
             // Yönetici değilse, anasayfaya yönlendir ve hata mesajı göster
             // return abort(403, 'Unauthorized');
-            return redirect()->route('dashboard')->with('message', 'Bu sayfaya erişmek için yetkiniz yok.')->with('alert-type', 'error');
-            //toastr denedin olmadı
+            return redirect()->route('dashboard')
+            ->with([
+                'message' => 'Bu sayfaya erişmek için yetkiniz yok.',
+                'alert-type' => 'error',
+            ]);
+
         }
     }
 
@@ -44,86 +51,6 @@ class QuizController extends Controller
     public function create()
     {
         return view('quiz.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        /// Formdan gelen verileri al
-        $adminId = $request->input('admin_id');
-        $testName = $request->input('test_name');
-        $questions = $request->input('question_text');
-        $types = $request->input('question_type');
-        $difficulties = $request->input('question_difficulty');
-        $answers = $request->input('answers');
-        $correctAnswers = $request->input('correct_answer');
-        $points = $request->input('question_points');
-
-        // Yeni alanlar: başlangıç tarihi, bitiş tarihi ve süre
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $durationMinutes = $request->input('duration_minutes');
-
-        // Başlangıç tarihi, bitiş tarihinden önce ve en az güncel tarih kadar olmalı
-        $currentDate = now()->toDateString();
-        $validatedData = $request->validate([
-            'start_date' => 'required|date|after_or_equal:' . $currentDate,
-            'end_date' => 'required|date|after:start_date',
-            // Diğer gerekli doğrulama kuralları buraya eklenebilir
-        ]);
-
-        // Test oluştur
-        $test = new Test();
-        $test->name = $testName;
-        $test->admin_id = $adminId;
-        $test->start_date = $startDate;
-        $test->end_date = $endDate;
-        $test->duration_minutes = $durationMinutes;
-
-        // Slug oluşturma
-        $slug = Str::slug($testName); // Test adından slug oluşturma
-
-        // Aynı slug'a sahip başka bir test var mı kontrol et
-        if (Test::where('slug', $slug)->exists()) {
-            // Aynı slug'a sahip başka bir test varsa, eşsiz bir slug oluştur
-            $slug = $slug . '-' . uniqid();
-        }
-
-        $test->slug = $slug; // Oluşturulan slug'ı test modeline ekle
-
-        // Testi kaydet
-        $test->save();
-        // dd($questions, $answers, $correctAnswers);
-        // Soruları ve cevapları kaydet
-        foreach ($questions as $index => $questionText) {
-            // Soruyu kaydet
-            $question = new Question();
-            $question->test_id = $test->id;
-            $question->text = $questionText;
-            $question->type = $types[$index];
-            $question->difficulty = $difficulties[$index];
-            $question->points = $this->calculatePoints($points, $index, $question->difficulty);
-            $question->save();
-
-            // Cevapları kaydet
-            foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
-                $answer = new Answer();
-                $answer->question_id = $question->id;
-                $answer->text = $answerText;
-
-                // Doğru cevabı belirle
-                $isCorrect = isset($correctAnswers[$index]) && $correctAnswers[$index] == $answerIndex;
-                $answer->is_correct = $isCorrect;
-
-                $answer->save();
-            }
-        }
-
-
-        // Yönlendirme ve mesaj dön
-        return redirect()->route('quiz.quiz')->with('success', 'Test başarıyla oluşturuldu!');
     }
 
     /**
@@ -139,8 +66,9 @@ class QuizController extends Controller
 
         return view('quiz.show', compact('testName', 'test'));
     }
-    public function questionShow(Request $request)
+    public function questionStore(Request $request)
     {
+
         // Formdan gelen verileri al
         $adminId = $request->input('admin_id');
         $testName = $request->input('test_name');
@@ -151,7 +79,7 @@ class QuizController extends Controller
         $matchingPairs= $request->input('matching_pairs');
         $correctAnswers = $request->input('correct_answer');
         $points = $request->input('question_points');
-
+        $fileInput = $request->file('fileInput');
         // Yeni alanlar: başlangıç tarihi, bitiş tarihi ve süre
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
@@ -164,7 +92,7 @@ class QuizController extends Controller
             'end_date' => 'required|date|after:start_date',
             // Diğer gerekli doğrulama kuralları buraya eklenebilir
         ]);
-
+        // dd($request->all(),$fileInput);
         // Test oluştur
         $test = new Test();
         $test->name = $testName;
@@ -187,6 +115,11 @@ class QuizController extends Controller
         // Testi kaydet
         $test->save();
         // dd($questions, $answers, $correctAnswers);
+        $data =[
+            "user_id" => Auth::user()->id,
+            "title" => $test->name,
+        ];
+
         // Soruları ve cevapları kaydet
         foreach ($questions as $index => $questionText) {
             // Soruyu kaydet
@@ -196,12 +129,26 @@ class QuizController extends Controller
             $question->type = $types[$index];
             $question->difficulty = $difficulties[$index];
             $question->points = $this->calculatePoints($points, $index, $question->difficulty);
-            $question->save();
 
+            // Kullanıcı tarafından yüklenen fotoğraf dosyasını işleme
+            if ($fileInput !== null) {
+                $fileName = time() . '_' . $fileInput->getClientOriginalName();
+
+                // 'admin/questionFile' dizini altına dosyayı kaydet
+                $path = $fileInput->storeAs('admin/questionFile', $fileName);
+
+                // Dosyanın yolunu soru kaydına ekleyin
+                $question->media_path = $path;
+                // dd($question);
+            }
+
+            $question->save();
 
             if ($question->type == 1) { // Çoktan seçmeli soru
                // Cevapları kaydet
-                foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
+               foreach ($answers as $index => $answer) {
+                if (isset($answer['text']) && is_array($answer['text'])) {
+                    foreach ($answer['text'] as $answerIndex => $answerText) {
                     $answer = new Answer();
                     $answer->question_id = $question->id;
                     $answer->text = $answerText;
@@ -211,7 +158,7 @@ class QuizController extends Controller
                     $answer->is_correct = $isCorrect;
 
                     $answer->save();
-                }
+                }}}
             } elseif ($question->type == 2) { // Eşleştirme sorusu
                 foreach ($matchingPairs as $pairIndex => $pairs) {
                     // Her bir $pairs öğesinin alt dizilere sahip olup olmadığını kontrol edin
@@ -234,9 +181,11 @@ class QuizController extends Controller
             }
         }
 
-
         // Yönlendirme ve mesaj dön
-        return redirect()->route('quiz.quiz')->with('success', 'Test başarıyla oluşturuldu!');
+        return redirect()->route('quiz.quiz')->with([
+            'message' => 'TESTİNİZ KAYDEDİLDİ',
+            'alert-type' => 'success'
+        ]);
     }
 
 
@@ -277,7 +226,10 @@ class QuizController extends Controller
             ];
         }
         // Düzenleme formunu döndür ve mevcut test verilerini iletmek
-        return view('quiz.edit', compact('test', 'testName', 'startDate', 'endDate', 'durationMinutes', 'questions'));
+        return view('quiz.edit', compact('test', 'testName', 'startDate', 'endDate', 'durationMinutes', 'questions'))->with([
+            'message' => 'TESTİNİZ GÜNCELLENDİ',
+            'alert-type' => 'success'
+        ]);
     }
 
     /**
@@ -362,7 +314,10 @@ class QuizController extends Controller
         }
 
         // Yönlendirme ve mesaj dön
-        return redirect()->route('quiz.quiz')->with('success', 'Test başarıyla güncellendi!');
+        return redirect()->route('quiz.quiz')->with([
+            'message' => 'TESTİNİZ GÜNCELLENDİ',
+            'alert-type' => 'success'
+        ]);
     }
 
     /**

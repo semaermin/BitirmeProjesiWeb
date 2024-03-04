@@ -14,8 +14,8 @@ class TestSeeder extends Seeder
         // Test verileri
         $tests = [
             [
-                'name' => 'Matematik Testi',
-                'slug' => 'matematik-testi',
+                'name' => 'örnek Testi',
+                'slug' => 'ornek-testi',
                 'admin_id' => 1, // Örnek bir admin ID
                 'start_date' => now(),
                 'end_date' => now()->addDays(7),
@@ -34,10 +34,10 @@ class TestSeeder extends Seeder
                 'points' => 2,
                 'media_path' => null,
                 'answers' => [
-                    ['text' => '3', 'is_correct' => 0],
-                    ['text' => '4', 'is_correct' => 1],
-                    ['text' => '5', 'is_correct' => 0],
-                    ['text' => '6', 'is_correct' => 0],
+                    ['text' => 'cevap1', 'is_correct' => 0],
+                    ['text' => 'cevap2', 'is_correct' => 1],
+                    ['text' => 'cevap3', 'is_correct' => 0],
+                    ['text' => 'cevap4', 'is_correct' => 0],
                 ]
             ],
             [

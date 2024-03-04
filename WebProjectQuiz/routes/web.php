@@ -31,7 +31,7 @@ Route::middleware([
     Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.add'); // Test ekleme formunu gösterme
 
     //Olusturulan testten gelen verileri alip kaydetme islemini yapar.
-    Route::post('/quiz/create', [QuizController::class, 'questionShow'])->name('quiz.store'); // Test ekleme formundan gelen verileri işleme
+    Route::post('/quiz/create', [QuizController::class, 'questionStore'])->name('quiz.store'); // Test ekleme formundan gelen verileri işleme
     Route::get('/quiz/{slug}', [QuizController::class, 'quizShow'])->name('quiz.show');
 
     Route::get('/quiz/{slug}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
@@ -41,13 +41,17 @@ Route::middleware([
 });
 
 
-// Kayıt formunu göstermek için
-Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
-// Kayıt formunun gönderildiği route
-Route::post('/user/register', [AuthController::class, 'store']);
+// Tüm kullanıcıları listele
+Route::get('/users', [AuthController::class, 'index']);
 
-//Giris formunu göstermek için
-Route::get ('/user/login', [AuthController::class, 'showLoginForm'])->name('user.login');
-Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
+// Belirli bir kullanıcıyı göster
+Route::get('/users/{id}', [AuthController::class, 'show']);
 
-Route::get('/error', [AuthController::class, 'dash'])->name('error');
+// Yeni bir kullanıcı oluştur
+Route::post('/users', [AuthController::class, 'store']);
+
+// Bir kullanıcıyı güncelle
+Route::put('/users/{id}', [AuthController::class, 'update']);
+
+// Bir kullanıcıyı sil
+Route::delete('/users/{id}', [AuthController::class, 'destroy']);

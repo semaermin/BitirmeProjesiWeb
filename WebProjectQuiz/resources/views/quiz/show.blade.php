@@ -12,6 +12,13 @@
                     @foreach($test->questions as $index => $question)
                         <div class="list-group-item">
                             <h5 class="mb-1">{{ $index + 1 }}.) {{ $question->text }}</h5>
+                            <br>
+                            @if ($question->media_path)
+                                <img src="{{ asset('storage/' . $question->media_path) }}" alt="Soru Resmi">
+                            @else
+                                <p>Soru için fotoğraf yok</p>
+                            @endif
+
                             <ul class="list-group list-group-flush">
                                 @if($question->type == 1)
                                     {{-- Çoktan Seçmeli Soru --}}

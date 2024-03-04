@@ -9,133 +9,95 @@ use App\Models\Team;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 
 
 
 class AuthController extends Controller
 {
-    public function dash() {
-        $loginForm1 = Session::get('login_form_1');
-        return view('error',compact('loginForm1'));
-    }
-    public function showLoginForm()
+    public function index()
     {
-        return view('userAuth.login'); // login.blade.php isimli view dosyasını döndürür
-    }
-    public function showRegistrationForm()
-    {
-        return view('userAuth.register');
+        $users = User::all();
+        return response()->json(['users' => $users], 200);
     }
 
-    // Giriş işlemini gerçekleştiren metod
-    public function login(Request $request)
+    public function show($id)
     {
-        // Formdan gelen verileri doğrula
-        $credentials = $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+        $user = User::findOrFail($id);
+        return response()->json(['user' => $user], 200);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users|max:255',
+            'password' => 'required|string|min:6',
         ]);
 
-        // Kullanıcıyı giriş yapmaya çalış
-        if (Auth::attempt($credentials)) {
-            // Başarılı giriş
-            $request->session()->regenerate();
-
-            return redirect()->intended('/error');
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Giriş başarısız oldu
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
-    }
-
-    public function register(Request $request)
-    {
-        // Formdan gelen verileri doğrula
-        $input = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        $user = new User([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        // Yeni kullanıcı oluştur
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->is_admin = 0;
+        $user->is_admin = 0; // is_admin değeri 0 (false) olarak ayarlanır
         $user->save();
 
-        return redirect('/user/login')->with('success', 'Kayıt başarıyla tamamlandı!');
+        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
     }
 
-    // Çıkış işlemini gerçekleştiren metod
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users,email,' . $user->id,
+            'password' => 'sometimes|required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => isset($request->password) ? Hash::make($request->password) : $user->password,
+        ]);
+
+        return response()->json(['message' => 'User updated successfully', 'user' => $user], 200);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully'], 200);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Giriş başarılı olduğunda yapılacak işlemler
+            return response()->json(['message' => 'Login successful'], 200);
+        }
+
+        // Giriş başarısız olduğunda yapılacak işlemler
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('userAuth.password.request');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
 }

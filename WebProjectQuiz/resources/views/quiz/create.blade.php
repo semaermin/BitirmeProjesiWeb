@@ -10,7 +10,7 @@
             <div class="overflow-hidden shadow-xl bg-dark dark:bg-gray-800 sm:rounded-lg">
                 <!-- Test Oluşturma Formu -->
                 <div class="p-3 text-white card bg-dark">
-                    <form method="POST" action="{{ route('quiz.add') }}" id="formId">
+                    <form method="POST" action="{{ route('quiz.add') }}" id="formId" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="admin_id" value="{{ auth()->user()->id }}">
 
@@ -143,10 +143,7 @@
                             <i class="fa-solid fa-image"></i>
                             <input type="file" id="fileInput" name="fileInput" style="display: none;" accept="image/*" onchange="addImage(this)">
                         </label>
-                        <label class="btn btn-outline-secondary">
-                            <i class="fa-solid fa-video"></i>
-                            <input type="file" id="videoInput" name="videoInput" style="display: none;" accept="video/*" onchange="addVideo(this)">
-                        </label>
+
                         <input type="text" id="question_text" name="question_text[]" class="form-control" placeholder="Soru">
                     </div>
                 </div>
@@ -183,10 +180,7 @@
                             <i class="fa-solid fa-image"></i>
                             <input type="file" id="fileInput" name="fileInput" style="display: none;" accept="image/*" onchange="addImage(this)">
                         </label>
-                        <label class="btn btn-outline-secondary">
-                            <i class="fa-solid fa-video"></i>
-                            <input type="file" id="videoInput" name="videoInput" style="display: none;" accept="video/*" onchange="addVideo(this)">
-                        </label>
+
                         <input type="text" id="question_text" name="question_text[]" class="form-control" placeholder="Soru">
                     </div>
                 </div>
