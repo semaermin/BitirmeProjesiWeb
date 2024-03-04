@@ -14,7 +14,7 @@
                             <h5 class="mb-1">{{ $index + 1 }}.) {{ $question->text }}</h5>
                             <br>
                             @if ($question->media_path)
-                                <img src="{{ asset('storage/' . $question->media_path) }}" alt="Soru Resmi">
+                                <img src="{{ asset('storage/' . $question->media_path) }}" alt="Soru Resmi" width="200">
                             @else
                                 <p>Soru için fotoğraf yok</p>
                             @endif
