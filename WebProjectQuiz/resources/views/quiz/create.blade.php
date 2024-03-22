@@ -141,9 +141,12 @@
                     <div class="mb-3 input-group">
                         <label class="btn btn-outline-secondary">
                             <i class="fa-solid fa-image"></i>
-                            <input type="file" id="fileInput" name="fileInput" style="display: none;" accept="image/*" onchange="addImage(this)">
+                            <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
                         </label>
-
+                        <label class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-video"></i>
+                            <input type="file" id="videoInput" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
+                        </label>
                         <input type="text" id="question_text" name="question_text[]" class="form-control" placeholder="Soru">
                     </div>
                 </div>
@@ -178,9 +181,12 @@
                     <div class="mb-3 input-group">
                         <label class="btn btn-outline-secondary">
                             <i class="fa-solid fa-image"></i>
-                            <input type="file" id="fileInput" name="fileInput" style="display: none;" accept="image/*" onchange="addImage(this)">
+                            <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
                         </label>
-
+                        <label class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-video"></i>
+                            <input type="file" id="videoInput" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
+                        </label>
                         <input type="text" id="question_text" name="question_text[]" class="form-control" placeholder="Soru">
                     </div>
                 </div>
@@ -223,7 +229,7 @@
                 <div class="input-group">
                     <label class="btn btn-outline-secondary">
                         <i class="fa-solid fa-image"></i>
-                        <input type="file" id="fileInput" name="fileInput" style="display: none;" accept="image/*" onchange="addImage(this)">
+                        <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
                     </label>
                     <input type="text" name="answers[${questionIndex - 1}][text][]" class="form-control" placeholder="Cevap" required>
                     <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">

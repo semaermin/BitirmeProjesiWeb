@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+
 use App\Models\User;
 use App\Models\Test;
 use App\Models\Question;
@@ -25,8 +27,8 @@ class QuizController extends Controller
 
         // Kullanıcının yönetici olup olmadığını kontrol et
         if ($user && $user->is_admin) {
-            // Yönetici ise, testleri listele
-            $tests = $user->tests;
+            // Yönetici ise, testleri listele son 10 tane
+            $tests = $user->tests()->latest()->take(10)->get();
             return view('quiz.quiz', [
                 'tests' => $tests,
                 'message' => 'Başarıyla yükledin',
@@ -79,7 +81,8 @@ class QuizController extends Controller
         $matchingPairs= $request->input('matching_pairs');
         $correctAnswers = $request->input('correct_answer');
         $points = $request->input('question_points');
-        $fileInput = $request->file('fileInput');
+        $imageInputs = $request->file('imageInput');
+        $videoInputs = $request->file('videoInput');
         // Yeni alanlar: başlangıç tarihi, bitiş tarihi ve süre
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
@@ -92,7 +95,7 @@ class QuizController extends Controller
             'end_date' => 'required|date|after:start_date',
             // Diğer gerekli doğrulama kuralları buraya eklenebilir
         ]);
-        // dd($request->all(),$fileInput);
+
         // Test oluştur
         $test = new Test();
         $test->name = $testName;
@@ -110,19 +113,14 @@ class QuizController extends Controller
             $slug = $slug . '-' . uniqid();
         }
 
-        $test->slug = $slug; // Oluşturulan slug'ı test modeline ekle
+        $test->slug = $slug;
 
-        // Testi kaydet
+        // Test save
         $test->save();
-        // dd($questions, $answers, $correctAnswers);
-        $data =[
-            "user_id" => Auth::user()->id,
-            "title" => $test->name,
-        ];
 
-        // Soruları ve cevapları kaydet
+        // question and answers save
         foreach ($questions as $index => $questionText) {
-            // Soruyu kaydet
+            // question save
             $question = new Question();
             $question->test_id = $test->id;
             $question->text = $questionText;
@@ -130,22 +128,28 @@ class QuizController extends Controller
             $question->difficulty = $difficulties[$index];
             $question->points = $this->calculatePoints($points, $index, $question->difficulty);
 
-            // Kullanıcı tarafından yüklenen fotoğraf dosyasını işleme
-            if ($fileInput !== null) {
-                $fileName = time() . '_' . $fileInput->getClientOriginalName();
-
-                // 'admin/questionFile' dizini altına dosyayı kaydet
-                $path = $fileInput->storeAs('admin/questionFile', $fileName);
-
-                // Dosyanın yolunu soru kaydına ekleyin
+            // dd($imageInputs, $videoInputs);
+            // Formdan gelen medya dosyalarını kontrol et
+            if (isset($imageInputs[$index])) {
+                // Resim dosyası varsa
+                $imageInput = $imageInputs[$index];
+                $fileName = time() . '_' . $imageInput->getClientOriginalName();
+                $path = $imageInput->storeAs('public/admin/questionFile', $fileName);
                 $question->media_path = $path;
-                // dd($question);
+            }
+            elseif (isset($videoInputs[$index])) {
+                // Video dosyası varsa
+                $videoInput = $videoInputs[$index];
+                $fileName = time() . '_' . $videoInput->getClientOriginalName();
+                $path = $videoInput->storeAs('public/admin/questionFile', $fileName);
+                $question->media_path = $path;
             }
 
+            // question save in database
             $question->save();
 
             if ($question->type == 1) { // Çoktan seçmeli soru
-               // Cevapları kaydet
+               // answers save
                foreach ($answers as $index => $answer) {
                 if (isset($answer['text']) && is_array($answer['text'])) {
                     foreach ($answer['text'] as $answerIndex => $answerText) {
