@@ -4,7 +4,6 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -15,11 +14,7 @@ function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-left">
-        <img
-          className="login-left-image"
-          src="/src/assets/images/login-image.png"
-          alt="login-image"
-        />
+        <div className="login-left-image" />
         <img
           className="sermify-logo"
           src="/src/assets/images/svg/logo-white.svg"
@@ -28,9 +23,16 @@ function LoginPage() {
       </div>
       <div className="login-right">
         <div className="login">
-          <h4>Giriş Yap</h4>
+          <div className='login-right-head'>
+            <h4>Giriş Yap</h4>
+            <img
+              className="sermify-logo-mobile"
+              src="/src/assets/images/svg/logo-red.svg"
+              alt="logo-red"
+            />
+          </div>
           <label className="login-label" htmlFor="mail">
-            Eposta Adresi
+            E-posta Adresi
           </label>
           <input
             className="login-input"
@@ -78,11 +80,14 @@ function LoginPage() {
               </label>
               <span className="horizontal-line"></span>
             </div>
-                <Link to="/register">            <input
-              className="create-account-button"
-              type="button"
-              value="Hesap Oluştur"
-            /></Link>
+            <Link to="/register">
+              {' '}
+              <input
+                className="create-account-button"
+                type="button"
+                value="Hesap Oluştur"
+              />
+            </Link>
           </div>
         </div>
         <div className="register"></div>
