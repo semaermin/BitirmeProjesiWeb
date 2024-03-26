@@ -20,11 +20,7 @@ function RegisterPage() {
   return (
     <div className="register-container">
       <div className="register-left">
-        <img
-          className="register-left-image"
-          src="/src/assets/images/login-image.png"
-          alt="register-image"
-        />
+        <div className="register-left-image" />
         <img
           className="sermify-logo"
           src="/src/assets/images/svg/logo-white.svg"
@@ -34,21 +30,21 @@ function RegisterPage() {
       <div className="register-right">
         <div className="register">
           <h4>Hesap Oluştur</h4>
-          <label className="register-label" htmlFor="name-surname">
-            Eposta Adresi
+          <label className="register-label" htmlFor="email">
+            E-posta Adresi
           </label>
           <input
             className="register-input"
-            id="name-surname"
+            id="email"
             type="text"
             placeholder="John Doe"
           />
-          <label className="register-label" htmlFor="mail">
-            Eposta Adresi
+          <label className="register-label" htmlFor="email-2">
+            E-posta Adresi
           </label>
           <input
             className="register-input"
-            id="mail"
+            id="email-2"
             type="mail"
             placeholder="johndoe@example.com"
           />
