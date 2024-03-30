@@ -58,8 +58,8 @@ class AuthController extends Controller
     }
     public function index()
     {
-        $users = User::all();
-        return response()->json(['users' => $users], 200);
+        $users = User::all()->toArray(); // Kullanıcıları diziye dönüştür
+        return response()->json($users, 200);
     }
 
     public function show($id)

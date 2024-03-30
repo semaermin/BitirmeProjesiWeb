@@ -6,13 +6,13 @@ function HomePage() {
 
   useEffect(() => {
     // Kullanıcıları getiren API'ye istek yap
-    axios.get('http://127.0.0.1:8000/api/users')
-      .then(response => {
-        console.log(response.data); 
+    axios
+      .get('http://127.0.0.1:8000/api/users')
+      .then((response) => {
         // API'den gelen kullanıcıları state'e kaydet
         setUsers(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Kullanıcıları getirirken bir hata oluştu:', error);
       });
   }, []); // Boş bağımlılık dizisi, sadece bir kere yükleme yapılmasını sağlar
@@ -20,9 +20,10 @@ function HomePage() {
   return (
     <div>
       <h1>Kullanıcılar</h1>
+      {console.log('users', users)}
       <ul>
         {users.length > 0 ? (
-          users.map(user => (
+          users.map((user) => (
             <li key={user.id}>
               {user.name} - {user.email}
             </li>
