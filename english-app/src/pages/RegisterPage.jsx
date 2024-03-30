@@ -30,12 +30,12 @@ function RegisterPage() {
       <div className="register-right">
         <div className="register">
           <h4>Hesap Oluştur</h4>
-          <label className="register-label" htmlFor="email">
-            E-posta Adresi
+          <label className="register-label" htmlFor="name-surname">
+            Ad Soyad
           </label>
           <input
             className="register-input"
-            id="email"
+            id="name-surname"
             type="text"
             placeholder="John Doe"
           />

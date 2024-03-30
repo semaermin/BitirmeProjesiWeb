@@ -6,7 +6,7 @@ function HomePage() {
   useEffect(() => {
     fetch('http://127.0.0.1:8000/users')
       .then((response) => response.json())
-      .then((data) => console.log(data)) // "users" anahtarına erişim sağlayıp state'i güncelliyoruz.
+      .then((data) => console.log(data))
       .catch((error) =>
         console.error("API'dan veri çekilirken hata oluştu:", error)
       );
