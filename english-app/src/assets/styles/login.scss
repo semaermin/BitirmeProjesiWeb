@@ -2,12 +2,12 @@
 @import 'variables';
 
 @mixin google-button {
-  height: clamp(2.5rem, 5vw, 2.938rem);
+  height: var(--fs-46);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
-  border: #202020 2px solid;
+  border: var(--secondary-color) 2px solid;
   padding: 12px 8px;
   border-radius: 4px;
   font-size: var(--fs-16);
@@ -32,15 +32,17 @@
 @mixin login-button {
   width: 100%;
   font-size: var(--fs-16);
-  background-color: #e84545;
+  background-color: var(--primary-color);
   color: #ffffff;
-  border: #e84545;
+  border-color: var(--primary-color);
   border-radius: 4px;
   padding: 12px 0;
-  height: var(--fs-47);
+  height: var(--fs-46);
   cursor: pointer;
   &:hover {
     box-shadow: 0 5px 11px #0000002e, 0 4px 15px #00000026;
+    background-color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
   }
 }
 
@@ -48,10 +50,10 @@
   overflow-y: hidden;
   display: flex;
   height: 100vh;
-  color: #202020;
+  color: var(--secondary-color);
   .login-left {
     width: 66.66666667%;
-    background-color: #e84545;
+    background-color: var(--primary-color);
     position: relative;
     .login-left-image {
       position: absolute;
@@ -93,7 +95,7 @@
           align-items: center;
           width: 20px;
           position: absolute;
-          top: 14px;
+          top: 15px;
           right: 14px;
           z-index: 100;
           cursor: pointer;
@@ -113,8 +115,8 @@
       padding: 12px 14px;
       margin-bottom: 20px;
       border-radius: 4px;
-      border-color: #808080;
-      height: clamp(2.5rem, 5vw, 2.938rem);
+      border-color: var(--tertiary-color);
+      height: var(--fs-46);
       font-size: var(--fs-14);
       &::placeholder {
         font-size: var(--fs-14);
@@ -125,7 +127,7 @@
         align: center;
         decoration: underline;
       } // **nested css using
-      color: #e84545;
+      color: var(--primary-color);
       background: none;
       border: none;
       cursor: pointer;
