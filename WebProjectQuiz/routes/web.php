@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\UserAuth\AuthController;
@@ -55,3 +56,6 @@ Route::put('/users/{id}', [AuthController::class, 'update']);
 
 // Bir kullanıcıyı sil
 Route::delete('/users/{id}', [AuthController::class, 'destroy']);
+
+Route::get('auth', [AuthController::class, 'redirectToAuth']);
+Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);

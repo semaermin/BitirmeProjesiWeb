@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\UserAuth\AuthController;
 
 /*
@@ -42,5 +42,8 @@ Route::delete('/users/{id}', [AuthController::class, 'destroy']);
 // Kullanıcı girişi
 Route::post('/login', [AuthController::class, 'login']);
 
-// Kullancı çıkışı
+// Kullanıcı girişi - Google ile giriş
+Route::post('/login/google', [AuthController::class, 'loginWithGoogle']);
+
+// Kullanıcı çıkışı
 Route::post('/logout', [AuthController::class, 'logout']);
