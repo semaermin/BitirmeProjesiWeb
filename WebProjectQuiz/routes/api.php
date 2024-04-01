@@ -47,3 +47,9 @@ Route::post('/login/google', [AuthController::class, 'loginWithGoogle']);
 
 // Kullanıcı çıkışı
 Route::post('/logout', [AuthController::class, 'logout']);
+
+
+// Route::group(['middleware' => 'cors'], function () {
+//     Route::get('auth', [AuthController::class, 'redirectToAuth']);
+//     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+// });

@@ -10,9 +10,9 @@ function GoogleCallback() {
   const location = useLocation();
 
   // On page load, we take "search" parameters
-  // and proxy them to /api/auth/callback on our Laravel API
+  // and proxy them to /auth/callback on our Laravel API
   useEffect(() => {
-    fetch(`http://localhost:80/api/auth/callback${location.search}`, {
+    fetch(`http://localhost:8000/auth/callback${location.search}`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
@@ -30,7 +30,7 @@ function GoogleCallback() {
   // Helper method to fetch User data for authenticated user
   // Watch out for "Authorization" header that is added to this call
   function fetchUserData() {
-    fetch(`http://localhost:80/api/user`, {
+    fetch(`http://localhost:8000/api/user`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
