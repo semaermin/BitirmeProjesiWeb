@@ -23,7 +23,7 @@ function LoginPage() {
       </div>
       <div className="login-right">
         <div className="login">
-          <div className='login-right-head'>
+          <div className="login-right-head">
             <h4>Giriş Yap</h4>
             <img
               className="sermify-logo-mobile"

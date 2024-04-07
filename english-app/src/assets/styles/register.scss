@@ -88,11 +88,17 @@
       padding: 12px 14px;
       margin-bottom: 20px;
       border-radius: 4px;
-      border-color: var(--tertiary-color);
+      border: 2px solid var(--tertiary-color);
       height: var(--fs-46);
       font-size: var(--fs-14);
+      color: var(--secondary-color);
       &::placeholder {
         font-size: var(--fs-14);
+      }
+      &:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        color: var(--secondary-color);
       }
     }
     .remember-password {
