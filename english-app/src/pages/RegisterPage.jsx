@@ -1,13 +1,15 @@
 import '../assets/styles/login.scss';
 import '../assets/styles/register.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -15,6 +17,13 @@ function RegisterPage() {
 
   const togglePassword2 = () => {
     setShowPassword2(!showPassword2);
+  };
+  const handlePasswordMatch = () => {
+    if (password1 === password2) {
+      setPasswordsMatch(true);
+    } else {
+      setPasswordsMatch(false);
+    }
   };
 
   return (
@@ -57,20 +66,13 @@ function RegisterPage() {
               id="password"
               type={showPassword ? 'text' : 'password'}
               placeholder="Parolanız"
+              onChange={(e) => setPassword1(e.target.value)}
             />
             <span className="show-password-eye">
               {showPassword ? (
-                <FontAwesomeIcon
-                  onClick={togglePassword}
-                  icon={faEye}
-                  className="icon"
-                />
+                <Eye onClick={togglePassword} />
               ) : (
-                <FontAwesomeIcon
-                  onClick={togglePassword}
-                  icon={faEyeSlash}
-                  className="icon"
-                />
+                <EyeSlash onClick={togglePassword} />
               )}
             </span>
           </div>
@@ -80,25 +82,22 @@ function RegisterPage() {
           <div className="register-password-wrapper">
             <input
               className="register-input"
-              id="password"
+              id="password2"
               type={showPassword2 ? 'text' : 'password'}
               placeholder="Parolanız"
+              onChange={(e) => setPassword2(e.target.value)}
+              onBlur={handlePasswordMatch}
             />
             <span className="show-password-eye">
               {showPassword2 ? (
-                <FontAwesomeIcon
-                  onClick={togglePassword2}
-                  icon={faEye}
-                  className="icon"
-                />
+                <Eye onClick={togglePassword2} />
               ) : (
-                <FontAwesomeIcon
-                  onClick={togglePassword2}
-                  icon={faEyeSlash}
-                  className="icon"
-                />
+                <EyeSlash onClick={togglePassword2} />
               )}
             </span>
+            {!passwordsMatch && (
+              <p className="error-message">Şifreler eşleşmiyor.</p>
+            )}
           </div>
           <input
             className="register-button"

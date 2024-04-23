@@ -1,13 +1,19 @@
 :root {
-  // Colors
+  // Main Colors
   --primary-color: #e84545;
   --primary-color-hover: #b93333;
+  // --primary-color-light-hover: #b93333;
   --secondary-color: #202020;
   --secondary-color-hover: #000000;
+  // --secondary-color-light-hover: #000000;
   --tertiary-color: #808080;
   --tertiary-color-hover: #505050;
-  // --fifth-color: #;
-  // --fifth-color-hover: #;
+  // --tertiary-color-light-hover: #505050;
+
+
+  // Colors
+  --light-grey: #eeeeee;
+  --text-white: #ffffff;
 
   // Text Colors
 
@@ -15,6 +21,9 @@
   --text-color-light-hover: #2c3e50;
   --text-color-dark: #2c3e50;
   --text-color-dark-hover: #2c3e50;
+
+  // Background Colors
+  --bg-white-color: #f2f2f2;
 
   // Status Colors
 
@@ -27,6 +36,7 @@
   --info-color: #3498db;
   --info-color-hover: #3498db;
 
+  // widths
   --fs-14: clamp(0.775rem, 1.6vw, 0.875rem);
   --fs-16: clamp(0.9rem, 1.6vw, 1rem);
   --fs-46: clamp(2.5rem, 5vw, 2.875rem);

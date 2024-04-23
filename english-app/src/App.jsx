@@ -6,7 +6,6 @@ import { CustomRouter } from './router/CustomRouter';
 import './App.css';
 
 function App() {
-  
   return (
     <>
       <Router>
