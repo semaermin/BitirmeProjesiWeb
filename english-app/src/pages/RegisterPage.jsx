@@ -1,7 +1,6 @@
 import '../assets/styles/login.scss';
 import '../assets/styles/register.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -71,17 +70,9 @@ function RegisterPage() {
             />
             <span className="show-password-eye">
               {showPassword ? (
-                <FontAwesomeIcon
-                  onClick={togglePassword}
-                  icon={faEye}
-                  className="icon"
-                />
+                <Eye onClick={togglePassword} />
               ) : (
-                <FontAwesomeIcon
-                  onClick={togglePassword}
-                  icon={faEyeSlash}
-                  className="icon"
-                />
+                <EyeSlash onClick={togglePassword} />
               )}
             </span>
           </div>
@@ -99,17 +90,9 @@ function RegisterPage() {
             />
             <span className="show-password-eye">
               {showPassword2 ? (
-                <FontAwesomeIcon
-                  onClick={togglePassword2}
-                  icon={faEye}
-                  className="icon"
-                />
+                <Eye onClick={togglePassword2} />
               ) : (
-                <FontAwesomeIcon
-                  onClick={togglePassword2}
-                  icon={faEyeSlash}
-                  className="icon"
-                />
+                <EyeSlash onClick={togglePassword2} />
               )}
             </span>
             {!passwordsMatch && (

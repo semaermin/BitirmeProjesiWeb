@@ -50,10 +50,15 @@
           align-items: center;
           width: 20px;
           position: absolute;
-          top: 15px;
-          right: 14px;
+          right: 14px !important;
+          top: 35%;
+          transform: translateY(-50%);
           z-index: 100;
           cursor: pointer;
+          svg {
+            height: 18px;
+            width: 18px;
+          }
         }
       }
       .have-account-box {
@@ -96,7 +101,7 @@
         font-size: var(--fs-14);
       }
       &:focus {
-        border-color: var(--primary-color);
+        border: 2.3px solid var(--primary-color);
         outline: none;
         color: var(--secondary-color);
       }
@@ -114,6 +119,9 @@
     }
     .register-button {
       @include login-button;
+      &:hover {
+        @include primary-button-hover;
+      }
     }
     .text-or {
       text-align: center;
