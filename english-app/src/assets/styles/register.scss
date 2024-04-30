@@ -43,23 +43,7 @@
         margin-bottom: 30px;
       }
       .register-password-wrapper {
-        position: relative;
-        .show-password-eye {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 20px;
-          position: absolute;
-          right: 14px !important;
-          top: 35%;
-          transform: translateY(-50%);
-          z-index: 100;
-          cursor: pointer;
-          svg {
-            height: 18px;
-            width: 18px;
-          }
-        }
+        @include show-password-eye;
       }
       .have-account-box {
         font-size: var(--fs-14);
@@ -81,6 +65,9 @@
           width: min-content;
           height: min-content;
         }
+      }
+      .sermify-logo-mobile {
+        display: none;
       }
     }
     .register-label {
@@ -166,5 +153,35 @@
   }
   .register-right {
     width: 100% !important;
+    .sermify-logo-mobile {
+      display: block !important;
+      width: 120px;
+    }
+    .register {
+      .register-right-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h4 {
+          margin: unset;
+        }
+        img {
+          padding-top: 5px;
+        }
+        margin: 10px 0 30px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .register-right {
+    .register {
+      .register-right-head {
+        h4 {
+          display: none;
+        }
+      }
+    }
   }
 }

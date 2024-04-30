@@ -12,17 +12,51 @@ function LoginPage() {
     setShowPassword(!showPassword);
   };
 
+  // Form submit işlevi
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    console.log('E-posta:', email, 'Şifre:', password);
+
+    const formDataObject = {};
+    formData.forEach((value, key) => {
+      formDataObject[key] = value;
+    });
+
+    fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formDataObject),
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error('Hata:', error);
+      });
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit(event);
+    }
+  };
+
   return (
     <div className={theme}>
       <div className="login-container">
         <div className="login-left">
           <div className="login-left-image" />
-          {/* <button onClick={toggleTheme}>Tema Değiştir</button> */}
-
           <img
             className="sermify-logo"
             src="/src/assets/images/svg/logo-white.svg"
-            alt="logo-white"
+            alt="sermify-white-logo"
           />
         </div>
         <div className="login-right">
@@ -32,37 +66,50 @@ function LoginPage() {
               <img
                 className="sermify-logo-mobile"
                 src="/src/assets/images/svg/logo-red.svg"
-                alt="logo-red"
+                alt="sermify-red-logo-mobile"
               />
             </div>
-            <label className="login-label" htmlFor="mail">
-              E-posta Adresi
-            </label>
-            <input
-              className="login-input"
-              id="mail"
-              type="mail"
-              placeholder="johndoe@example.com"
-            />
-            <label className="login-label" htmlFor="password">
-              Parola
-            </label>
-            <div className="login-password-wrapper">
+            <form onSubmit={handleSubmit}>
+              <label className="login-label" htmlFor="email">
+                E-posta Adresi
+              </label>
               <input
                 className="login-input"
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Parolanız"
+                id="email"
+                type="email"
+                name="email"
+                placeholder="johndoe@example.com"
+                required
+                tabIndex="1"
               />
-              <span className="show-password-eye">
-                {showPassword ? (
-                  <Eye onClick={togglePassword} />
-                ) : (
-                  <EyeSlash onClick={togglePassword} />
-                )}
-              </span>
-            </div>
-            <input className="login-button" type="button" value="Giriş Yap" />
+              <label className="login-label" htmlFor="password">
+                Parola
+              </label>
+              <div className="login-password-wrapper">
+                <input
+                  className="login-input"
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  placeholder="Parolanız"
+                  required
+                  tabIndex="2"
+                />
+                <button
+                  className="show-password-eye"
+                  onClick={togglePassword}
+                  tabIndex="-1"
+                >
+                  {showPassword ? <Eye /> : <EyeSlash />}
+                </button>
+              </div>
+              <input
+                className="login-button"
+                type="submit"
+                value="Giriş Yap"
+                tabIndex="3"
+              />
+            </form>
             <input
               className="remember-password"
               type="button"
@@ -71,13 +118,10 @@ function LoginPage() {
             <div className="create-account">
               <div>
                 <span className="horizontal-line"></span>
-                <label className="create-account" htmlFor="">
-                  Hesabınız yok mu?
-                </label>
+                <label className="create-account">Hesabınız yok mu?</label>
                 <span className="horizontal-line"></span>
               </div>
               <Link to="/register">
-                {' '}
                 <input
                   className="create-account-button"
                   type="button"

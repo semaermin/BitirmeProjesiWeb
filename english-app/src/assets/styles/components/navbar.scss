@@ -1,3 +1,9 @@
+html {
+  overflow-x: hidden !important;
+}
+
+// Common style adjustments for light and dark themes -->
+
 .light,
 .dark {
   navbar {
@@ -6,6 +12,7 @@
     align-items: center;
     flex-direction: row;
     background-color: var(--bg-white-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
     height: 72px;
     border: 2px solid var(--light-grey);
     border-top: none;
@@ -21,14 +28,17 @@
       justify-content: center;
       align-items: center;
       color: var(--primary-color);
+      margin-right: 20px;
       cursor: pointer;
+      .theme-switcher{
+        margin-right: 10px;
+      }
       .user-fullname {
         font-weight: bold;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         max-width: 70%;
-
       }
       img {
         width: 36px;
@@ -39,6 +49,13 @@
     .navbar-toggle {
       display: none;
     }
+    .mobile-menu-items {
+      display: none;
+    }
+  }
+  .menu-open {
+    border-radius: 0;
+    border-color: var(--bg-white-color);
   }
   .sermify-logo-img {
     width: clamp(7.5rem, 10vw, 10rem);
@@ -71,22 +88,80 @@
     }
   }
 
+  // Adjustments for mobile and tablet views -->
+
   @media screen and (max-width: 1024px) {
+    navbar {
+      transition: none;
+      .mobile-menu-items {
+        width: calc(100.2vw + 0.2px) !important;
+        height: calc(100vh);
+        display: flex;
+        justify-content: space-around;
+        flex: 1;
+        position: absolute;
+        width: auto;
+        color: black;
+        top: 71px;
+        background-color: var(--primary-color);
+        z-index: 1000;
+        left: -1px;
+        ul {
+          flex: 1;
+          justify-content: flex-start;
+          margin-top: 20px;
+          margin-left: 10%;
+          height: max-content;
+          li {
+            display: flex;
+            align-items: center;
+            color: var(--text-white);
+            margin-bottom: 48px;
+            svg {
+              width: 20px;
+              height: 20px;
+            }
+            span {
+              margin-left: 12px;
+            }
+            .theme-switcher{
+              img{
+                width: 24px;
+                height: 24px;
+              }
+            }
+          }
+        }
+      }
+      .sermify-logo {
+        display: flex;
+        justify-content: flex-start;
+        flex: 1;
+        margin-left: 10%;
+      }
+    }
+
+    .menu-open {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      transition: none;
+    }
     .main-links,
     .user-profile {
       display: none !important;
     }
-    .sermify-logo {
-      flex: 1;
-    }
     .navbar-toggle {
       display: flex !important;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: center;
       flex: 1;
+      margin-right: 10%;
+    }
+    .navbar-mobile-links {
+      display: flex !important;
+      flex-direction: row;
     }
   }
-
   .backdrop {
     position: fixed;
     top: 0;
@@ -99,7 +174,6 @@
     transition: var(--animation-speed) all;
     cursor: pointer;
   }
-
   .menu {
     position: fixed;
     top: 0;
@@ -124,7 +198,6 @@
   .menu ul li a:hover {
     background-color: lime;
   }
-
   .container {
     height: 100%;
     background: #eee;
@@ -150,9 +223,18 @@
   }
 }
 
+// Dark theme specific style adjustments -->
+
 .dark {
   navbar {
     background-color: black;
     border-color: var(--light-grey);
+    .mobile-menu-items {
+      ul {
+        li {
+          color: var(--secondary-color);
+        }
+      }
+    }
   }
 }

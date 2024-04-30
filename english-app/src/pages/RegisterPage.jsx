@@ -38,7 +38,15 @@ function RegisterPage() {
       </div>
       <div className="register-right">
         <div className="register">
-          <h4>Hesap Oluştur</h4>
+          <div className="register-right-head">
+            <h4>Hesap Oluştur</h4>
+            <img
+              className="sermify-logo-mobile"
+              src="/src/assets/images/svg/logo-red.svg"
+              alt="logo-red"
+            />
+          </div>
+          {/* <h4>Hesap Oluştur</h4> */}
           <label className="register-label" htmlFor="name-surname">
             Ad Soyad
           </label>
@@ -68,13 +76,13 @@ function RegisterPage() {
               placeholder="Parolanız"
               onChange={(e) => setPassword1(e.target.value)}
             />
-            <span className="show-password-eye">
+            <button className="show-password-eye">
               {showPassword ? (
                 <Eye onClick={togglePassword} />
               ) : (
                 <EyeSlash onClick={togglePassword} />
               )}
-            </span>
+            </button>
           </div>
           <label className="register-label" htmlFor="password2">
             Parola (Tekrar)
@@ -88,17 +96,17 @@ function RegisterPage() {
               onChange={(e) => setPassword2(e.target.value)}
               onBlur={handlePasswordMatch}
             />
-            <span className="show-password-eye">
+            <button className="show-password-eye">
               {showPassword2 ? (
                 <Eye onClick={togglePassword2} />
               ) : (
                 <EyeSlash onClick={togglePassword2} />
               )}
-            </span>
+            </button>
+          </div>
             {!passwordsMatch && (
               <p className="error-message">Şifreler eşleşmiyor.</p>
             )}
-          </div>
           <input
             className="register-button"
             type="button"
