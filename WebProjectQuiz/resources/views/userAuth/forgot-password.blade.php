@@ -5,7 +5,7 @@
         </x-slot>
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+            {{ __('Parolanızı mı unuttunuz? Sorun değil. Bize e-posta adresinizi bildirmeniz yeterli; size yeni bir şifre seçmenizi sağlayacak bir şifre sıfırlama bağlantısı e-postayla göndereceğiz.') }}
         </div>
 
         @if (session('status'))
@@ -26,7 +26,7 @@
 
             <div class="flex items-center justify-end mt-4">
                 <x-button>
-                    {{ __('Email Password Reset Link') }}
+                    {{ __('Email Parola Sıfırlama Bağlantısı') }}
                 </x-button>
             </div>
         </form>

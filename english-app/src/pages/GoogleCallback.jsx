@@ -24,6 +24,7 @@ function GoogleCallback() {
       .then((data) => {
         setLoading(false);
         setData(data);
+        console.log(data);
       });
   }, []);
 
@@ -42,6 +43,7 @@ function GoogleCallback() {
       })
       .then((data) => {
         setUser(data);
+        console.log(data);
       });
   }
 

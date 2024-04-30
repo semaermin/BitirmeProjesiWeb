@@ -5,12 +5,12 @@
         </x-slot>
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+            {{ __('Devam etmeden önce, size az önce e-postayla gönderdiğimiz bağlantıya tıklayarak e-posta adresinizi doğrulayabilir misiniz? E-postayı almadıysanız, size memnuniyetle başka bir e-posta göndeririz.') }}
         </div>
 
         @if (session('status') == 'verification-link-sent')
             <div class="mb-4 text-sm font-medium text-green-600 dark:text-green-400">
-                {{ __('A new verification link has been sent to the email address you provided in your profile settings.') }}
+                {{ __('Profil ayarlarınızda belirttiğiniz e-posta adresine yeni bir doğrulama bağlantısı gönderildi.') }}
             </div>
         @endif
 
@@ -20,7 +20,7 @@
 
                 <div>
                     <x-button type="submit">
-                        {{ __('Resend Verification Email') }}
+                        {{ __('Doğrulama Email tekrar gönder') }}
                     </x-button>
                 </div>
             </form>
@@ -30,13 +30,13 @@
                     href="{{ route('user.profile.show') }}"
                     class="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                 >
-                    {{ __('Edit Profile') }}</a>
+                    {{ __('Profili Güncelle') }}</a>
 
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
 
                     <button type="submit" class="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 ms-2">
-                        {{ __('Log Out') }}
+                        {{ __('Çıkış') }}
                     </button>
                 </form>
             </div>
