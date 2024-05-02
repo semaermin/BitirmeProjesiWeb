@@ -1,15 +1,43 @@
 import '../assets/styles/login.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function LoginPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Sayfa yüklendiğinde, oturum durumunu kontrol et
+    checkUserLoggedIn();
+  }, []);
+
+  function checkUserLoggedIn() {
+    // Token'i localStorage'dan al
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      // Eğer token varsa, kullanıcı zaten giriş yapmış demektir
+      // Önceki sayfayı localStorage'dan al
+      const previousPage = localStorage.getItem('previousPage');
+      if (previousPage) {
+        // Önceki sayfaya yönlendir
+        navigate(previousPage);
+      } else {
+        // Önceki sayfa bilgisi yoksa, varsayılan olarak anasayfaya yönlendir
+        navigate('/home');
+      }
+    }
+  }
+
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { theme } = useTheme();
+  // Token durumunu saklamak için state
+  const [token, setToken] = useState('');
 
   const togglePassword = (event) => {
     if (event.key !== 'Enter') {
@@ -22,29 +50,38 @@ function LoginPage() {
     event.preventDefault();
 
     try {
-      const responseToken = await axios.get('http://127.0.0.1:8000/csrf-token');
-      const csrfToken = responseToken.data.token;
-      console.log(csrfToken);
       const response = await axios.post('http://127.0.0.1:8000/user/login', {
         email: email,
-        password: password
-      }, {
-        headers: {
-          'X-CSRF-TOKEN': csrfToken
-        }
+        password: password,
       });
 
       console.log(response.data); // Giriş başarılıysa cevabı konsola yazdır
-      // Giriş başarılıysa, kullanıcıyı ana sayfaya yönlendir
-      // Örnek olarak: window.location.href = '/home';
+
       if (response.status === 200) {
-        window.location.href = '/home'; // Ana sayfa URL'sini değiştirerek yönlendirme yapabilirsiniz
+        // Tokeni sakla
+        localStorage.setItem('token', response.data.token);
+
+        // Ana sayfaya yönlendir
+        navigate('/home');
       }
     } catch (error) {
       console.error('Giriş hatası:', error); // Hata oluşursa konsola yazdır
     }
-
   };
+
+  // API istekleri için interceptor ayarı
+  axios.interceptors.request.use(
+    (config) => {
+      // Token varsa, Authorization başlığına ekle
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

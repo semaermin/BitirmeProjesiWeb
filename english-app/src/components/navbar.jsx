@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../assets/styles/components/navbar.scss';
 import {
   House,
@@ -24,6 +25,7 @@ import {
   Sun,
   MoonFill,
 } from 'react-bootstrap-icons';
+import axios from 'axios';
 
 export default function Navbar(props) {
   const { toggleTheme, theme } = useTheme();
@@ -31,6 +33,7 @@ export default function Navbar(props) {
   const [userProfile, setUserProfile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeSwitcher, setThemeSwitcher] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,6 +53,12 @@ export default function Navbar(props) {
     if (menuOpen) {
       setMenuOpen(false);
     }
+
+    if (item === 'logout') {
+      handleLogout();
+    } else {
+      // Diğer menü öğeleri için gerekli işlemleri yapabilirsiniz
+    }
   };
 
   const userProfileClick = (item) => {
@@ -63,6 +72,17 @@ export default function Navbar(props) {
   const themeSwitch = () => {
     setThemeSwitcher(!themeSwitcher);
     toggleTheme();
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Tokeni localStorage'dan temizle
+      localStorage.removeItem('token');
+      // Çıkış başarılıysa, kullanıcıyı giriş sayfasına yönlendir
+      navigate('/login');
+    } catch (error) {
+      console.error('Çıkış hatası:', error); // Hata oluşursa konsola yazdır
+    }
   };
 
   return (
@@ -175,13 +195,10 @@ export default function Navbar(props) {
               }
               alt="sun-icon"
             />
-          </div>{' '}
+          </div>
           <div className="user-fullname">Muzaffer Enes Yıldırım</div>
           <img
             onClick={() => userProfileClick('user-profile')}
-            style={{
-              border: userProfile === 'user-profile' ? '2px solid red' : 'none',
-            }}
             src="/src/assets/images/user-avatar.png"
             alt="user-photo"
           />

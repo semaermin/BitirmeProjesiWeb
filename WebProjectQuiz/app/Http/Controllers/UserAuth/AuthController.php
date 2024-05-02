@@ -14,6 +14,7 @@ use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\JsonResponse;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -23,9 +24,9 @@ class AuthController extends Controller
     {
         return response()->json([
             'url' => Socialite::driver('google')
-                         ->stateless()
-                         ->redirect()
-                         ->getTargetUrl(),
+                ->stateless()
+                ->redirect()
+                ->getTargetUrl(),
         ]);
     }
     // Google Authentication
@@ -184,14 +185,21 @@ class AuthController extends Controller
             // Oturum oluştur
             $request->session()->regenerate();
 
-            // Giriş başarılı olduğunda yapılacak işlemler
-            return response()->json(['message' => 'Login successful'], 200);
+            // Oturum belirteci oluştur
+            $token = Str::random(60); // Rastgele bir oturum belirteci oluştur
+
+            // Oluşturulan oturum belirtecini veritabanına kaydetmek isterseniz:
+            // Auth::user()->update(['api_token' => hash('sha256', $token)]);
+
+            // Kullanıcıya oturum belirtecini yanıt olarak gönder
+            return response()->json(['token' => $token, 'message' => 'Login successful'], 200);
         }
 
         // Giriş başarısız olduğunda yapılacak işlemler
         return response()->json(['message' => 'Unauthorized'], 401);
     }
-    
+
+
     public function checkUserLoggedIn(Request $request)
     {
         if ($request->user()) {
@@ -232,14 +240,14 @@ class AuthController extends Controller
     //     // Kullanıcıya başarılı kayıt mesajını göster
     //     return redirect('/user/login')->with('success', 'Kaydınız başarıyla tamamlandı! Artık giriş yapabilirsiniz.');
     // }
-    public function dash() {
+    public function dash()
+    {
         $loginForm1 = Session::get('login_form_1');
-        return view('error',compact('loginForm1'));
+        return view('error', compact('loginForm1'));
     }
     public function showLoginForm()
     {
         return view('userAuth.login'); // login.blade.php isimli view dosyasını döndürür
 
     }
-
 }

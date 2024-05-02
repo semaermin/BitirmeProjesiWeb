@@ -3,6 +3,7 @@ import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
