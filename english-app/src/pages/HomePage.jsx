@@ -5,25 +5,21 @@ import axios from 'axios';
 
 function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate(); // useNavigate kullanımı
 
-  // Kullanıcı oturumunu kontrol etmek için useEffect kullanma
   useEffect(() => {
-    // Oturum kontrolü yapılacak yer
+    // Sayfa yüklendiğinde oturum durumunu kontrol et
     checkUserLoggedIn();
-  }, []); // useEffect'i bağımsız hale getir
+  }, []);
 
-  // Kullanıcı oturumu kontrol fonksiyonu (örneğin: token kontrolü)
   function checkUserLoggedIn() {
-    axios.get('http://127.0.0.1:8000/api/userLoggedIn')
-      .then(response => {
-        const isLoggedIn = response.data.isLoggedIn;
-        console.log("Kullanıcı oturumu:", isLoggedIn);
-        // Oturum durumuna göre işlem yap
-      })
-      .catch(error => {
-        console.error("Oturum durumu sorgulanırken hata oluştu:", error);
-      });
+    // Token'i localStorage'da sakla
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Eğer token varsa, kullanıcı oturumu açık demektir
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
   }
 
   return (

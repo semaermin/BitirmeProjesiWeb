@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\UserAuth\AuthController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,6 @@ Route::group(['middleware' => 'cors'], function () {
 Route::get('/csrf-token', [CsrfTokenController::class, 'getToken']);
 
 
-Route::middleware('auth:sanctum')->get('/userLoggedIn', function (Request $request) {
-    return response()->json(['isLoggedIn' => $request->user() !== null]);
+Route::get('/userLoggedIn', function () {
+    return response()->json(['isLoggedIn' => Auth::check()]);
 });

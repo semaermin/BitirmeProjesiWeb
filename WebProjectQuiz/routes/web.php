@@ -27,7 +27,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [Controller::class, 'index'])->name('dashboard');
 
-    Route::get('/quiz',[QuizController::class,'index'])->name('quiz.quiz');
+    Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.quiz');
     //Test oluşturma formu
     Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.add'); // Test ekleme formunu gösterme
 
@@ -37,8 +37,6 @@ Route::middleware([
 
     Route::get('/quiz/{slug}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
     Route::put('/quiz/{slug}', [QuizController::class, 'update'])->name('quiz.update');
-
-
 });
 
 
@@ -62,6 +60,7 @@ Route::middleware([
 Route::group(['middleware' => 'cors'], function () {
     Route::get('auth', [AuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+    Route::get('user/logout', [AuthController::class, 'logout']);
     Route::post('/user/login', [AuthController::class, 'login']);
     Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
     Route::post('/user/register', [AuthController::class, 'store']);
@@ -79,7 +78,6 @@ Route::get('/error', [AuthController::class, 'dash'])->name('error');
 Route::group(['middleware' => ['web']], function () {
     // Oturum yönetimi gerektiren rotalar buraya gelecek
     Route::post('/user/login', [AuthController::class, 'userLogin'])->name('user.login');
-
 });
 
 Route::get('/csrf-token', function () {
