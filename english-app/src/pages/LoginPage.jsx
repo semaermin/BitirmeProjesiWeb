@@ -75,7 +75,7 @@ function LoginPage() {
                 alt="sermify-red-logo-mobile"
               />
             </div>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleSubmit}>
               <label className="login-label" htmlFor="email">
                 E-posta Adresi
               </label>
@@ -116,7 +116,7 @@ function LoginPage() {
                 type="submit"
                 value="Giriş Yap"
                 tabIndex="3"
-                onClick={handleLogin}
+                onClick={handleSubmit}
               />
             </form>
             <Link to="/forgot-password">
