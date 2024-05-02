@@ -3,43 +3,45 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import axios from 'axios';
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const { toggleTheme, theme } = useTheme();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
 
   // Form submit işlevi
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
-    const email = formData.get('email');
-    const password = formData.get('password');
-
-    console.log('E-posta:', email, 'Şifre:', password);
-
-    const formDataObject = {};
-    formData.forEach((value, key) => {
-      formDataObject[key] = value;
-    });
-
-    fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formDataObject),
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error('Hata:', error);
+    try {
+      const responseToken = await axios.get('http://127.0.0.1:8000/csrf-token');
+      const csrfToken = responseToken.data.token;
+      console.log(csrfToken);
+      const response = await axios.post('http://127.0.0.1:8000/user/login', {
+        email: email,
+        password: password
+      }, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
+        }
       });
+  
+      console.log(response.data); // Giriş başarılıysa cevabı konsola yazdır
+      // Giriş başarılıysa, kullanıcıyı ana sayfaya yönlendir
+      // Örnek olarak: window.location.href = '/home';
+      if (response.status === 200) {
+        window.location.href = '/home'; // Ana sayfa URL'sini değiştirerek yönlendirme yapabilirsiniz
+      }
+    } catch (error) {
+      console.error('Giriş hatası:', error); // Hata oluşursa konsola yazdır
+    }
+
   };
 
   const handleKeyDown = (event) => {
@@ -81,6 +83,7 @@ function LoginPage() {
                 placeholder="johndoe@example.com"
                 required
                 tabIndex="1"
+                onChange={(e) => setEmail(e.target.value)}
               />
               <label className="login-label" htmlFor="password">
                 Parola
@@ -94,6 +97,7 @@ function LoginPage() {
                   placeholder="Parolanız"
                   required
                   tabIndex="2"
+                  onChange={(e) => setPassword(e.target.value)} 
                 />
                 <button
                   className="show-password-eye"

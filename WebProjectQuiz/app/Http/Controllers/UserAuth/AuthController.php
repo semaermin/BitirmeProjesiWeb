@@ -29,6 +29,39 @@ class AuthController extends Controller
         ]);
     }
     // Google Authentication
+    // public function handleAuthCallback(): JsonResponse
+    // {
+    //     try {
+    //         /** @var SocialiteUser $socialiteUser */
+    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
+    //     } catch (ClientException $e) {
+    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
+    //         return response()->json(['error' => 'Invalid credentials provided.'], 422);
+    //     }
+
+    //     /** @var User $user */
+    //     $user = User::query()
+    //         ->firstOrCreate(
+    //             [
+    //                 'email' => $socialiteUser->getEmail(),
+    //                 'password' => "0",
+    //                 'is_admin'=> false, // is_admin değerini false olarak ayarla
+    //             ],
+    //             [
+    //                 'email_verified_at' => now(),
+    //                 'name' => $socialiteUser->getName(),
+    //                 'google_id' => $socialiteUser->getId(),
+    //             ]
+    //         );
+
+    //     Auth::login($user);
+
+    //     return response()->json([
+    //         'user' => $user,
+    //         'access_token' => $user->createToken('google-token')->plainTextToken,
+    //         'token_type' => 'Bearer',
+    //     ], 200);
+    // }
     public function handleAuthCallback(): JsonResponse
     {
         try {
@@ -39,16 +72,18 @@ class AuthController extends Controller
             return response()->json(['error' => 'Invalid credentials provided.'], 422);
         }
 
-        /** @var User $user */
+        // Kullanıcıyı oluştururken is_admin değerini manuel olarak 0 olarak ayarla
         $user = User::query()
             ->firstOrCreate(
                 [
                     'email' => $socialiteUser->getEmail(),
                 ],
                 [
+                    'password' => "0",
                     'email_verified_at' => now(),
                     'name' => $socialiteUser->getName(),
                     'google_id' => $socialiteUser->getId(),
+                    'is_admin' => false,
                 ]
             );
 
@@ -60,6 +95,7 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ], 200);
     }
+
     //KULLANICILAR LİSTESİ
     public function index()
     {
