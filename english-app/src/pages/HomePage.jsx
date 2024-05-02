@@ -1,19 +1,30 @@
-// import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
+import axios from 'axios';
 
 function HomePage() {
-  // const [users] = useState([]);
-  const { home } = useParams();
-  console.log(home);
-  // useEffect(() => {
-  //   fetch('http://127.0.0.1:8000/users')
-  //     .then((response) => response.json())
-  //     .then((data) => console.log(data))
-  //     .catch((error) =>
-  //       console.error("API'dan veri çekilirken hata oluştu:", error)
-  //     );
-  // }, []);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate(); // useNavigate kullanımı
+
+  // Kullanıcı oturumunu kontrol etmek için useEffect kullanma
+  useEffect(() => {
+    // Oturum kontrolü yapılacak yer
+    checkUserLoggedIn();
+  }, []); // useEffect'i bağımsız hale getir
+
+  // Kullanıcı oturumu kontrol fonksiyonu (örneğin: token kontrolü)
+  function checkUserLoggedIn() {
+    axios.get('http://127.0.0.1:8000/api/userLoggedIn')
+      .then(response => {
+        const isLoggedIn = response.data.isLoggedIn;
+        console.log("Kullanıcı oturumu:", isLoggedIn);
+        // Oturum durumuna göre işlem yap
+      })
+      .catch(error => {
+        console.error("Oturum durumu sorgulanırken hata oluştu:", error);
+      });
+  }
 
   return (
     <div>

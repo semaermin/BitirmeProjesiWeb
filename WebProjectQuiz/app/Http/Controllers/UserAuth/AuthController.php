@@ -191,6 +191,16 @@ class AuthController extends Controller
         // Giriş başarısız olduğunda yapılacak işlemler
         return response()->json(['message' => 'Unauthorized'], 401);
     }
+    
+    public function checkUserLoggedIn(Request $request)
+    {
+        if ($request->user()) {
+            return response()->json(['isLoggedIn' => true], 200);
+        } else {
+            return response()->json(['isLoggedIn' => false], 200);
+        }
+    }
+
 
     public function logout(Request $request)
     {

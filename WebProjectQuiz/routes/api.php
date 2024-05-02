@@ -63,4 +63,9 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('/user/register', [AuthController::class, 'store']);
 });
 
-// Route::get('/csrf-token', [CsrfTokenController::class, 'getToken']);
+Route::get('/csrf-token', [CsrfTokenController::class, 'getToken']);
+
+
+Route::middleware('auth:sanctum')->get('/userLoggedIn', function (Request $request) {
+    return response()->json(['isLoggedIn' => $request->user() !== null]);
+});
