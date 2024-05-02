@@ -3,48 +3,45 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
+import axios from 'axios';
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const { toggleTheme, theme } = useTheme();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { theme } = useTheme();
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
+  const togglePassword = (event) => {
+    if (event.key !== 'Enter') {
+      setShowPassword(!showPassword);
+    }
   };
 
-  // Form submit işlevi
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-    const formData = new FormData(event.target);
-    const email = formData.get('email');
-    const password = formData.get('password');
+    try {
+      const responseToken = await axios.get('http://127.0.0.1:8000/csrf-token');
+      const csrfToken = responseToken.data.token;
+      console.log(csrfToken);
+      const response = await axios.post(
+        'http://localhost:8000/user/login',
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+          },
+        }
+      );
 
-    console.log('E-posta:', email, 'Şifre:', password);
-
-    const formDataObject = {};
-    formData.forEach((value, key) => {
-      formDataObject[key] = value;
-    });
-
-    fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formDataObject),
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error('Hata:', error);
-      });
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      handleSubmit(event);
+      console.log(response.data); // Giriş başarılıysa cevabı konsola yazdır
+      // Giriş başarılıysa, kullanıcıyı ana sayfaya yönlendir
+      // Örnek olarak: window.location.href = '/home';
+    } catch (error) {
+      console.error('Giriş hatası:', error); // Hata oluşursa konsola yazdır
     }
   };
 
@@ -53,11 +50,13 @@ function LoginPage() {
       <div className="login-container">
         <div className="login-left">
           <div className="login-left-image" />
-          <img
-            className="sermify-logo"
-            src="/src/assets/images/svg/logo-white.svg"
-            alt="sermify-white-logo"
-          />
+          <Link to="/login">
+            <img
+              className="sermify-logo"
+              src="/src/assets/images/svg/logo-white.svg"
+              alt="sermify-white-logo"
+            />
+          </Link>
         </div>
         <div className="login-right">
           <div className="login">
@@ -69,7 +68,7 @@ function LoginPage() {
                 alt="sermify-red-logo-mobile"
               />
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
               <label className="login-label" htmlFor="email">
                 E-posta Adresi
               </label>
@@ -81,6 +80,7 @@ function LoginPage() {
                 placeholder="johndoe@example.com"
                 required
                 tabIndex="1"
+                onChange={(e) => setEmail(e.target.value)}
               />
               <label className="login-label" htmlFor="password">
                 Parola
@@ -94,6 +94,7 @@ function LoginPage() {
                   placeholder="Parolanız"
                   required
                   tabIndex="2"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   className="show-password-eye"
@@ -108,13 +109,16 @@ function LoginPage() {
                 type="submit"
                 value="Giriş Yap"
                 tabIndex="3"
+                onClick={handleLogin}
               />
             </form>
-            <input
-              className="remember-password"
-              type="button"
-              value="Şifrenizi mi unuttunuz?"
-            />
+            <Link to="/forgot-password">
+              <input
+                className="remember-password"
+                type="button"
+                value="Şifrenizi mi unuttunuz?"
+              />
+            </Link>
             <div className="create-account">
               <div>
                 <span className="horizontal-line"></span>
