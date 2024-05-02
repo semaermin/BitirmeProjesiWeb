@@ -7,12 +7,14 @@ import axios from 'axios';
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const { toggleTheme, theme } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { theme } = useTheme();
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
+  const togglePassword = (event) => {
+    if (event.key !== 'Enter') {
+      setShowPassword(!showPassword);
+    }
   };
 
   // Form submit işlevi
@@ -31,7 +33,7 @@ function LoginPage() {
           'X-CSRF-TOKEN': csrfToken
         }
       });
-  
+
       console.log(response.data); // Giriş başarılıysa cevabı konsola yazdır
       // Giriş başarılıysa, kullanıcıyı ana sayfaya yönlendir
       // Örnek olarak: window.location.href = '/home';
@@ -55,11 +57,13 @@ function LoginPage() {
       <div className="login-container">
         <div className="login-left">
           <div className="login-left-image" />
-          <img
-            className="sermify-logo"
-            src="/src/assets/images/svg/logo-white.svg"
-            alt="sermify-white-logo"
-          />
+          <Link to="/login">
+            <img
+              className="sermify-logo"
+              src="/src/assets/images/svg/logo-white.svg"
+              alt="sermify-white-logo"
+            />
+          </Link>
         </div>
         <div className="login-right">
           <div className="login">
@@ -71,7 +75,7 @@ function LoginPage() {
                 alt="sermify-red-logo-mobile"
               />
             </div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
               <label className="login-label" htmlFor="email">
                 E-posta Adresi
               </label>
@@ -97,7 +101,7 @@ function LoginPage() {
                   placeholder="Parolanız"
                   required
                   tabIndex="2"
-                  onChange={(e) => setPassword(e.target.value)} 
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
                   className="show-password-eye"
@@ -112,13 +116,16 @@ function LoginPage() {
                 type="submit"
                 value="Giriş Yap"
                 tabIndex="3"
+                onClick={handleLogin}
               />
             </form>
-            <input
-              className="remember-password"
-              type="button"
-              value="Şifrenizi mi unuttunuz?"
-            />
+            <Link to="/forgot-password">
+              <input
+                className="remember-password"
+                type="button"
+                value="Şifrenizi mi unuttunuz?"
+              />
+            </Link>
             <div className="create-account">
               <div>
                 <span className="horizontal-line"></span>
