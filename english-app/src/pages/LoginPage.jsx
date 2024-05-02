@@ -17,31 +17,38 @@ function LoginPage() {
     }
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  // Form submit işlevi
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     try {
       const responseToken = await axios.get('http://127.0.0.1:8000/csrf-token');
       const csrfToken = responseToken.data.token;
       console.log(csrfToken);
-      const response = await axios.post(
-        'http://localhost:8000/user/login',
-        {
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-          },
+      const response = await axios.post('http://127.0.0.1:8000/user/login', {
+        email: email,
+        password: password
+      }, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken
         }
-      );
+      });
 
       console.log(response.data); // Giriş başarılıysa cevabı konsola yazdır
       // Giriş başarılıysa, kullanıcıyı ana sayfaya yönlendir
       // Örnek olarak: window.location.href = '/home';
+      if (response.status === 200) {
+        window.location.href = '/home'; // Ana sayfa URL'sini değiştirerek yönlendirme yapabilirsiniz
+      }
     } catch (error) {
       console.error('Giriş hatası:', error); // Hata oluşursa konsola yazdır
+    }
+
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit(event);
     }
   };
 

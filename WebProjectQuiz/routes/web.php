@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\UserAuth\AuthController;
@@ -41,17 +42,46 @@ Route::middleware([
 });
 
 
-// Tüm kullanıcıları listele
-Route::get('/users', [AuthController::class, 'index']);
+// // Tüm kullanıcıları listele
+// Route::get('/users', [AuthController::class, 'index']);
 
-// Belirli bir kullanıcıyı göster
-Route::get('/users/{id}', [AuthController::class, 'show']);
+// // Belirli bir kullanıcıyı göster
+// Route::get('/users/{id}', [AuthController::class, 'show']);
 
-// Yeni bir kullanıcı oluştur
-Route::post('/users', [AuthController::class, 'store']);
+// // Yeni bir kullanıcı oluştur
+// Route::post('/users', [AuthController::class, 'store']);
 
-// Bir kullanıcıyı güncelle
-Route::put('/users/{id}', [AuthController::class, 'update']);
+// // Bir kullanıcıyı güncelle
+// Route::put('/users/{id}', [AuthController::class, 'update']);
 
-// Bir kullanıcıyı sil
-Route::delete('/users/{id}', [AuthController::class, 'destroy']);
+// // Bir kullanıcıyı sil
+// Route::delete('/users/{id}', [AuthController::class, 'destroy']);
+
+
+// CORS HATASI ALMAMAK İÇİN MİDDLEWARE YAZDIK KULLANIYORUZ.
+Route::group(['middleware' => 'cors'], function () {
+    Route::get('auth', [AuthController::class, 'redirectToAuth']);
+    Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+    Route::post('/user/login', [AuthController::class, 'login']);
+    Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
+    Route::post('/user/register', [AuthController::class, 'store']);
+});
+
+// // Kayıt formunu göstermek için
+Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
+// Kayıt formunun gönderildiği route
+Route::post('/user/register', [AuthController::class, 'store']);
+
+// Giriş formunu göstermek için
+Route::get('/user/login', [AuthController::class, 'showLoginForm'])->name('user.login');
+Route::get('/error', [AuthController::class, 'dash'])->name('error');
+
+Route::group(['middleware' => ['web']], function () {
+    // Oturum yönetimi gerektiren rotalar buraya gelecek
+    Route::post('/user/login', [AuthController::class, 'userLogin'])->name('user.login');
+
+});
+
+Route::get('/csrf-token', function () {
+    return response()->json(['token' => csrf_token()]);
+});

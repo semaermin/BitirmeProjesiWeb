@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\CsrfTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\UserAuth\AuthController;
 
 /*
@@ -39,8 +40,27 @@ Route::put('/users/{id}', [AuthController::class, 'update']);
 // Bir kullanıcıyı sil
 Route::delete('/users/{id}', [AuthController::class, 'destroy']);
 
-// Kullanıcı girişi
-Route::post('/login', [AuthController::class, 'login']);
+// // Kullanıcı girişi
+// Route::post('user/login', [AuthController::class, 'login']);
 
-// Kullancı çıkışı
+// Kullanıcı girişi - Google ile giriş
+Route::post('/login/google', [AuthController::class, 'loginWithGoogle']);
+
+// Kullanıcı çıkışı
 Route::post('/logout', [AuthController::class, 'logout']);
+
+
+// Route::group(['middleware' => 'cors'], function () {
+//     Route::get('auth', [AuthController::class, 'redirectToAuth']);
+//     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+// });
+
+Route::group(['middleware' => 'cors'], function () {
+    Route::get('auth', [AuthController::class, 'redirectToAuth']);
+    Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+    // Route::post('/user/login', [AuthController::class, 'login']);
+    Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
+    Route::post('/user/register', [AuthController::class, 'store']);
+});
+
+// Route::get('/csrf-token', [CsrfTokenController::class, 'getToken']);

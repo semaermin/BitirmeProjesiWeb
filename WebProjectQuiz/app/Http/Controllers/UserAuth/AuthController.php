@@ -10,24 +10,105 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-
-
+use GuzzleHttp\Exception\ClientException;
+use Illuminate\Http\JsonResponse;
+use Laravel\Socialite\Contracts\User as SocialiteUser;
+use Laravel\Socialite\Facades\Socialite;
 
 
 class AuthController extends Controller
 {
+    // Google Authentication
+    public function redirectToAuth(): JsonResponse
+    {
+        return response()->json([
+            'url' => Socialite::driver('google')
+                         ->stateless()
+                         ->redirect()
+                         ->getTargetUrl(),
+        ]);
+    }
+    // Google Authentication
+    // public function handleAuthCallback(): JsonResponse
+    // {
+    //     try {
+    //         /** @var SocialiteUser $socialiteUser */
+    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
+    //     } catch (ClientException $e) {
+    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
+    //         return response()->json(['error' => 'Invalid credentials provided.'], 422);
+    //     }
+
+    //     /** @var User $user */
+    //     $user = User::query()
+    //         ->firstOrCreate(
+    //             [
+    //                 'email' => $socialiteUser->getEmail(),
+    //                 'password' => "0",
+    //                 'is_admin'=> false, // is_admin değerini false olarak ayarla
+    //             ],
+    //             [
+    //                 'email_verified_at' => now(),
+    //                 'name' => $socialiteUser->getName(),
+    //                 'google_id' => $socialiteUser->getId(),
+    //             ]
+    //         );
+
+    //     Auth::login($user);
+
+    //     return response()->json([
+    //         'user' => $user,
+    //         'access_token' => $user->createToken('google-token')->plainTextToken,
+    //         'token_type' => 'Bearer',
+    //     ], 200);
+    // }
+    public function handleAuthCallback(): JsonResponse
+    {
+        try {
+            /** @var SocialiteUser $socialiteUser */
+            $socialiteUser = Socialite::driver('google')->stateless()->user();
+        } catch (ClientException $e) {
+            $socialiteUser = Socialite::driver('google')->stateless()->user();
+            return response()->json(['error' => 'Invalid credentials provided.'], 422);
+        }
+
+        // Kullanıcıyı oluştururken is_admin değerini manuel olarak 0 olarak ayarla
+        $user = User::query()
+            ->firstOrCreate(
+                [
+                    'email' => $socialiteUser->getEmail(),
+                ],
+                [
+                    'password' => "0",
+                    'email_verified_at' => now(),
+                    'name' => $socialiteUser->getName(),
+                    'google_id' => $socialiteUser->getId(),
+                    'is_admin' => false,
+                ]
+            );
+
+        Auth::login($user);
+
+        return response()->json([
+            'user' => $user,
+            'access_token' => $user->createToken('google-token')->plainTextToken,
+            'token_type' => 'Bearer',
+        ], 200);
+    }
+
+    //KULLANICILAR LİSTESİ
     public function index()
     {
-        $users = User::all();
-        return response()->json(['users' => $users], 200);
+        $users = User::all()->toArray(); // Kullanıcıları diziye dönüştür
+        return response()->json($users, 200);
     }
 
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return response()->json(['user' => $user], 200);
+        return response()->json($user, 200);
     }
-
+    //Kullanıcı kaydını is_admin değeri 0 olarak kaydediyoruz.
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -82,11 +163,27 @@ class AuthController extends Controller
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
 
-    public function login(Request $request)
+    // public function userLogin(Request $request)
+    // {
+    //     $credentials = $request->only('email', 'password');
+
+    //     if (Auth::attempt($credentials)) {
+    //         // Giriş başarılı olduğunda yapılacak işlemler
+    //         return response()->json(['message' => 'Login successful'], 200);
+    //     }
+
+    //     // Giriş başarısız olduğunda yapılacak işlemler
+    //     return response()->json(['message' => 'Unauthorized'], 401);
+    // }
+
+    public function userLogin(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            // Oturum oluştur
+            $request->session()->regenerate();
+
             // Giriş başarılı olduğunda yapılacak işlemler
             return response()->json(['message' => 'Login successful'], 200);
         }
@@ -100,4 +197,39 @@ class AuthController extends Controller
         Auth::logout();
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
+
+    public function showRegistrationForm()
+    {
+        return view('userAuth.register');
+    }
+
+    // public function register(Request $request)
+    // {
+    //     // Kullanıcı giriş bilgilerini doğrula
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:8|confirmed',
+    //     ]);
+
+    //     // Kullanıcıyı kaydet
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //     ]);
+
+    //     // Kullanıcıya başarılı kayıt mesajını göster
+    //     return redirect('/user/login')->with('success', 'Kaydınız başarıyla tamamlandı! Artık giriş yapabilirsiniz.');
+    // }
+    public function dash() {
+        $loginForm1 = Session::get('login_form_1');
+        return view('error',compact('loginForm1'));
+    }
+    public function showLoginForm()
+    {
+        return view('userAuth.login'); // login.blade.php isimli view dosyasını döndürür
+
+    }
+
 }
