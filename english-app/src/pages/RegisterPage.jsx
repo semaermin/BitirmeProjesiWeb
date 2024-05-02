@@ -1,4 +1,3 @@
-import '../assets/styles/login.scss';
 import '../assets/styles/register.scss';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useState } from 'react';
@@ -30,11 +29,13 @@ function RegisterPage() {
     <div className="register-container">
       <div className="register-left">
         <div className="register-left-image" />
-        <img
-          className="sermify-logo"
-          src="/src/assets/images/svg/logo-white.svg"
-          alt="logo-white"
-        />
+        <Link to="/login">
+          <img
+            className="sermify-logo"
+            src="/src/assets/images/svg/logo-white.svg"
+            alt="logo-white"
+          />
+        </Link>
       </div>
       <div className="register-right">
         <div className="register">
@@ -104,9 +105,9 @@ function RegisterPage() {
               )}
             </button>
           </div>
-            {!passwordsMatch && (
-              <p className="error-message">Şifreler eşleşmiyor.</p>
-            )}
+          {!passwordsMatch && (
+            <p className="error-message">Şifreler eşleşmiyor.</p>
+          )}
           <input
             className="register-button"
             type="button"
@@ -114,7 +115,7 @@ function RegisterPage() {
           />
           <span className="have-account-box">
             Hesabınız var mı?
-            <Link to="/">
+            <Link to="/login">
               <input
                 className="have-account"
                 type="button"

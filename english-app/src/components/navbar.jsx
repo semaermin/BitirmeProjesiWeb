@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { Link } from 'react-router-dom';
 import '../assets/styles/components/navbar.scss';
 import {
   House,
@@ -20,11 +21,12 @@ import {
   Gear,
   PersonFill,
   Person,
+  Sun,
+  MoonFill,
 } from 'react-bootstrap-icons';
 
 export default function Navbar(props) {
   const { toggleTheme, theme } = useTheme();
-
   const [selectedItem, setSelectedItem] = useState(props?.item);
   const [userProfile, setUserProfile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -95,7 +97,7 @@ export default function Navbar(props) {
                 }}
                 title="Ana Sayfa"
               >
-                Ana Sayfa
+                <Link to="/home">Ana Sayfa</Link>
               </span>
             </li>
             <li
@@ -114,51 +116,51 @@ export default function Navbar(props) {
                 }}
                 title="Video"
               >
-                Video
+                <Link to="/video">Video</Link>
               </span>
             </li>
             <li
-              onClick={() => handleItemClick('exercise')}
+              onClick={() => handleItemClick('exercises')}
               style={{
                 color:
-                  selectedItem === 'exercise'
+                  selectedItem === 'exercises'
                     ? 'var(--primary-color)'
                     : 'var(--tertiary-color)',
               }}
             >
-              {selectedItem === 'exercise' ? (
+              {selectedItem === 'exercises' ? (
                 <RocketTakeoffFill />
               ) : (
                 <RocketTakeoff />
               )}
               <span
                 style={{
-                  fontWeight: selectedItem === 'exercise' ? 'bold' : 'normal',
+                  fontWeight: selectedItem === 'exercises' ? 'bold' : 'normal',
                 }}
                 title="Alıştırmalar"
               >
-                Alıştırmalar
+                <Link to="/exercises">Alıştırmalar</Link>
               </span>
             </li>
             <li
-              onClick={() => handleItemClick('leader-board')}
+              onClick={() => handleItemClick('leaderboard')}
               style={{
                 color:
-                  selectedItem === 'leader-board'
+                  selectedItem === 'leaderboard'
                     ? 'var(--primary-color)'
                     : 'var(--tertiary-color)',
-                fontWeight: selectedItem === 'leader-board' ? 'bold' : 'normal',
+                fontWeight: selectedItem === 'leaderboard' ? 'bold' : 'normal',
               }}
             >
-              {selectedItem === 'leader-board' ? <TrophyFill /> : <Trophy />}
+              {selectedItem === 'leaderboard' ? <TrophyFill /> : <Trophy />}
               <span
                 style={{
                   fontWeight:
-                    selectedItem === 'leader-board' ? 'bold' : 'normal',
+                    selectedItem === 'leaderboard' ? 'bold' : 'normal',
                 }}
                 title="Puan Tablosu"
               >
-                Puan Tablosu
+                <Link to="/leaderboard">Puan Tablosu</Link>
               </span>
             </li>
           </ul>
@@ -198,6 +200,17 @@ export default function Navbar(props) {
         {menuOpen && (
           <div className="mobile-menu-items">
             <ul>
+              <li onClick={() => handleItemClick('home')}>
+                {selectedItem === 'home' ? <HouseFill /> : <House />}
+                <span
+                  style={{
+                    fontWeight: selectedItem === 'home' ? 'bold' : 'normal',
+                  }}
+                  title="Ana Sayfa"
+                >
+                  <Link to="/home">Ana Sayfa</Link>
+                </span>
+              </li>
               <li onClick={() => handleItemClick('video')}>
                 {selectedItem === 'video' ? (
                   <CameraReelsFill />
@@ -210,34 +223,35 @@ export default function Navbar(props) {
                   }}
                   title="Video"
                 >
-                  Video
+                  <Link to="/video">Video</Link>
                 </span>
               </li>
-              <li onClick={() => handleItemClick('exercise')}>
-                {selectedItem === 'exercise' ? (
+              <li onClick={() => handleItemClick('exercises')}>
+                {selectedItem === 'exercises' ? (
                   <RocketTakeoffFill />
                 ) : (
                   <RocketTakeoff />
                 )}
                 <span
                   style={{
-                    fontWeight: selectedItem === 'exercise' ? 'bold' : 'normal',
+                    fontWeight:
+                      selectedItem === 'exercises' ? 'bold' : 'normal',
                   }}
                   title="Alıştırmalar"
                 >
-                  Alıştırmalar
+                  <Link to="/exercises">Alıştırmalar</Link>
                 </span>
               </li>
-              <li onClick={() => handleItemClick('leader-board')}>
-                {selectedItem === 'leader-board' ? <TrophyFill /> : <Trophy />}
+              <li onClick={() => handleItemClick('leaderboard')}>
+                {selectedItem === 'leaderboard' ? <TrophyFill /> : <Trophy />}
                 <span
                   style={{
                     fontWeight:
-                      selectedItem === 'leader-board' ? 'bold' : 'normal',
+                      selectedItem === 'leaderboard' ? 'bold' : 'normal',
                   }}
                   title="Puan Tablosu"
                 >
-                  Puan Tablosu
+                  <Link to="/leaderboard">Puan Tablosu</Link>
                 </span>
               </li>
               <li onClick={() => handleItemClick('profile')}>
@@ -248,7 +262,7 @@ export default function Navbar(props) {
                   }}
                   title="Profilim"
                 >
-                  Profilim
+                  <Link to="/profile">Profilim</Link>
                 </span>
               </li>
               <li onClick={() => handleItemClick('settings')}>
@@ -294,19 +308,13 @@ export default function Navbar(props) {
               </li>
               <li>
                 <div className="theme-switcher" onClick={themeSwitch}>
-                  <img
-                    src={
-                      themeSwitcher
-                        ? '/src/assets/images/svg/crescent.svg'
-                        : '/src/assets/images/svg/sun.svg'
-                    }
-                    alt="sun-icon"
-                  />
-                  {themeSwitcher ? (
-                    <span>Koyu Tema</span>
+                  {themeSwitcher ? <MoonFill /> : <Sun />}
+                  <span>Tema</span>
+                  {/* {themeSwitcher ? (
+                    <span style={{ color: 'black' }}>Koyu Tema</span>
                   ) : (
-                    <span>Açık Tema</span>
-                  )}
+                    <span style={{ color: 'white' }}>Açık Tema</span>
+                  )} */}
                 </div>
               </li>
             </ul>

@@ -30,7 +30,7 @@ html {
       color: var(--primary-color);
       margin-right: 20px;
       cursor: pointer;
-      .theme-switcher{
+      .theme-switcher {
         margin-right: 10px;
       }
       .user-fullname {
@@ -84,6 +84,16 @@ html {
             visibility: hidden;
           }
         }
+        &:hover {
+          svg {
+            font-weight: bold !important;
+            color: var(--primary-color);
+          }
+          span {
+            font-weight: bold !important;
+            color: var(--primary-color);
+          }
+        }
       }
     }
   }
@@ -116,7 +126,9 @@ html {
             display: flex;
             align-items: center;
             color: var(--text-white);
-            margin-bottom: 48px;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            transition: color 0.2s ease;
             svg {
               width: 20px;
               height: 20px;
@@ -124,12 +136,31 @@ html {
             span {
               margin-left: 12px;
             }
-            .theme-switcher{
-              img{
-                width: 24px;
-                height: 24px;
+            .theme-switcher {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 10px;
+              border-radius: 8px;
+              cursor: pointer;
+              svg {
+                border: 1px solid white;
+                border-radius: 100%;
+                padding: 6.67px;
+                width: 32px;
+                height: 32px;
+              }
+              &:hover {
+                background-color: var(--primary-color-hover);
               }
             }
+            &:hover:not(:last-child) {
+              background-color: var(--primary-color-hover);
+            }
+          }
+          li:not(:last-child) {
+            padding: 10px;
+            cursor: pointer;
           }
         }
       }
@@ -140,7 +171,6 @@ html {
         margin-left: 10%;
       }
     }
-
     .menu-open {
       background-color: var(--primary-color);
       border-color: var(--primary-color);
@@ -198,29 +228,6 @@ html {
   .menu ul li a:hover {
     background-color: lime;
   }
-  .container {
-    height: 100%;
-    background: #eee;
-    transition: var(--animation-speed) transform;
-  }
-  .container .header {
-    height: 60px;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    background: #fff;
-    padding: 0 20px;
-  }
-  .container .actions {
-    margin-left: auto;
-  }
-  .container .logo {
-    color: #222;
-    margin-left: 20px;
-    font-weight: bold;
-    font-size: 30px;
-    text-transform: uppercase;
-  }
 }
 
 // Dark theme specific style adjustments -->
@@ -233,6 +240,12 @@ html {
       ul {
         li {
           color: var(--secondary-color);
+          .theme-switcher {
+            svg {
+              border-color: black;
+              background-color: unset;
+            }
+          }
         }
       }
     }
