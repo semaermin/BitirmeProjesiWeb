@@ -2,6 +2,7 @@ import '../assets/styles/register.scss';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,40 +33,65 @@ function RegisterPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  
+    // Şifre alanı ise password1 veya password2 state'ine atama yap
+    if (name === 'password') {
+      setPassword1(value);
+      setUserData((prevState) => ({
+        ...prevState,
+        password: value,
+      }));
+    } else if (name === 'password2') {
+      setPassword2(value);
+    } else {
+      // Diğer inputlar için userData state'ini güncelle
+      setUserData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+  
+    // Tüm input değerlerini konsola yazdır
+    console.log({ ...userData, [name]: value });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (userData.password !== password2) {
-      setPasswordsMatch(false);
+  
+    // Şifrelerin eşleşip eşleşmediğini kontrol et
+    handlePasswordMatch();
+  
+    // Şifreler eşleşmiyorsa kayıt işlemini gerçekleştirme
+    if (!passwordsMatch) {
       return;
     }
-
+  
     try {
-      const csrfToken = document.head.querySelector(
-        'meta[name="csrf-token"]'
-      ).content;
-      // POST isteği gönder
+      // userData'daki password alanını kullanarak güncelle
+      const updatedUserData = { ...userData, password: password1 };
+  
       const response = await axios.post(
         'http://127.0.0.1:8000/user/register',
-        userData,
-        {
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-          },
-        }
+        updatedUserData
       );
-      console.log(response.data); // Sunucudan gelen yanıtı konsola yazdır
-      // Başarılı kayıt işleminden sonra yapılacak işlemleri buraya ekleyebilirsiniz
-      history.push('/login'); // Başarılı kayıt işleminden sonra kullanıcıyı giriş sayfasına yönlendir
+      console.log(response.data);
+      if (response.status === 200) {
+        window.location.href = '/login';
+      }
     } catch (error) {
-      console.error('Registration failed:', error); // Hata durumunda konsola yazdır
+      if (error.response) {
+        // Sunucudan gelen hata yanıtını kontrol edin
+        console.error('Sunucu hatası:', error.response.data);
+      } else if (error.request) {
+        // İstek yapılamadığında
+        console.error('İstek yapılamadı:', error.request);
+      } else {
+        // Diğer hata durumları
+        console.error('Hata oluştu:', error.message);
+      }
     }
-  };
+  };  
+  
 
   return (
     <div className="register-container">
@@ -103,7 +129,7 @@ function RegisterPage() {
               required
               onChange={handleChange}
             />
-            <label className="register-label" htmlFor="email-2">
+            <label className="register-label" htmlFor="email">
               E-posta Adresi
             </label>
             <input
@@ -148,7 +174,7 @@ function RegisterPage() {
                 name="password2"
                 value={password2}
                 type={showPassword2 ? 'text' : 'password'}
-                placeholder="Parolanızı tekrar giriniz"
+                placeholder="Parolanızı tekrar girin"
                 onChange={(e) => setPassword2(e.target.value)}
                 onBlur={handlePasswordMatch}
                 required
