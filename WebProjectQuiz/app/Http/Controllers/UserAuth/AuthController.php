@@ -168,19 +168,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
 
-    // public function userLogin(Request $request)
-    // {
-    //     $credentials = $request->only('email', 'password');
-
-    //     if (Auth::attempt($credentials)) {
-    //         // Giriş başarılı olduğunda yapılacak işlemler
-    //         return response()->json(['message' => 'Login successful'], 200);
-    //     }
-
-    //     // Giriş başarısız olduğunda yapılacak işlemler
-    //     return response()->json(['message' => 'Unauthorized'], 401);
-    // }
-
     public function userLogin(Request $request)
     {
         $credentials = $request->only('email', 'password');
