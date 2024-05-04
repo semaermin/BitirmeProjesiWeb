@@ -6,7 +6,7 @@ html {
 
 .light,
 .dark {
-  navbar {
+  nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,9 +30,6 @@ html {
       color: var(--primary-color);
       margin-right: 20px;
       cursor: pointer;
-      .theme-switcher {
-        margin-right: 10px;
-      }
       .user-fullname {
         font-weight: bold;
         text-overflow: ellipsis;
@@ -44,6 +41,55 @@ html {
         width: 36px;
         border-radius: 100%;
         margin-left: 12px;
+      }
+      .user-avatar {
+        position: relative;
+      }
+      .dropdown-content {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 170px;
+        background-color: var(--bg-white-color);
+        border: 2px solid var(--primary-color);
+        border-radius: 16px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 99;
+        ul {
+          padding: 20px;
+          li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--tertiary-color);
+            text-align: left;
+            margin-bottom: 20px;
+            .theme-switcher {
+              width: 24px;
+              height: 24px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-right: unset !important;
+              padding: 5px;
+              background-color: var(--primary-color);
+              border-radius: 100%;
+              svg {
+                color: white;
+              }
+            }
+            &:last-child {
+              margin-bottom: 0 !important;
+            }
+            &[data-selected='true'] {
+              font-weight: bold;
+              color: var(--primary-color);
+            }
+            span {
+              font-weight: bold !important;
+            }
+          }
+        }
       }
     }
     .navbar-toggle {
@@ -101,7 +147,7 @@ html {
   // Adjustments for mobile and tablet views -->
 
   @media screen and (max-width: 1024px) {
-    navbar {
+    nav {
       transition: none;
       .mobile-menu-items {
         width: calc(100.2vw + 0.2px) !important;
@@ -156,6 +202,10 @@ html {
             }
             &:hover:not(:last-child) {
               background-color: var(--primary-color-hover);
+            }
+            &:focus-visible {
+              border: none !important;
+              outline: none !important;
             }
           }
           li:not(:last-child) {
@@ -233,9 +283,12 @@ html {
 // Dark theme specific style adjustments -->
 
 .dark {
-  navbar {
-    background-color: black;
+  nav {
+    background-color: var(--secondary-color-hover);
     border-color: var(--light-grey);
+    .dropdown-content {
+      background-color: var(--secondary-color-hover) !important;
+    }
     .mobile-menu-items {
       ul {
         li {
