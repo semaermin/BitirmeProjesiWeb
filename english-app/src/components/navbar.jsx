@@ -31,6 +31,7 @@ export default function Navbar(props) {
   const [selectedItem, setSelectedItem] = useState(props?.item);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeSwitcher, setThemeSwitcher] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -79,9 +80,13 @@ export default function Navbar(props) {
     }
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <div className={theme}>
-      <navbar className={`${menuOpen ? 'menu-open' : ''}`}>
+      <nav className={`${menuOpen ? 'menu-open' : ''}`}>
         <div className="sermify-logo">
           <img
             className="sermify-logo-img"
@@ -180,22 +185,100 @@ export default function Navbar(props) {
           </ul>
         </div>
         <div className="user-profile">
-          <div className="theme-switcher" onClick={themeSwitch}>
-            <img
-              src={
-                themeSwitcher
-                  ? '/src/assets/images/svg/crescent.svg'
-                  : '/src/assets/images/svg/sun.svg'
-              }
-              alt="sun-icon"
-            />
-          </div>
           <div className="user-fullname">Muzaffer Enes Yıldırım</div>
-          <img
-            onClick={() => userProfileClick('user-profile')}
-            src="/src/assets/images/user-avatar.png"
-            alt="user-photo"
-          />
+          <div className="user-avatar" onClick={toggleDropdown}>
+            <img src="/src/assets/images/user-avatar.png" alt="user-photo" />
+            {dropdownOpen && (
+              <div className="dropdown-content">
+                <ul>
+                  <li
+                    onClick={() => handleItemClick('profile')}
+                    data-selected={
+                      selectedItem === 'profile' ? 'true' : 'false'
+                    }
+                  >
+                    {selectedItem === 'profile' ? (
+                      <PersonFill />
+                    ) : (
+                      <PersonFill />
+                    )}
+                    <span
+                      style={{
+                        fontWeight:
+                          selectedItem === 'profile' ? 'bold' : 'normal',
+                      }}
+                      title="Profilim"
+                    >
+                      <Link to="/profile">Profilim</Link>
+                    </span>
+                  </li>
+                  {/* <li
+                    onClick={() => handleItemClick('settings')}
+                    data-selected={
+                      selectedItem === 'settings' ? 'true' : 'false'
+                    }
+                  >
+                    {selectedItem === 'settings' ? <GearFill /> : <GearFill />}
+                    <span
+                      style={{
+                        fontWeight:
+                          selectedItem === 'settings' ? 'bold' : 'normal',
+                      }}
+                      title="Ayarlar"
+                    >
+                      Ayarlar
+                    </span>
+                  </li> */}
+                  <li
+                    onClick={() => handleItemClick('help')}
+                    data-selected={selectedItem === 'help' ? 'true' : 'false'}
+                  >
+                    {selectedItem === 'help' ? (
+                      <QuestionCircleFill />
+                    ) : (
+                      <QuestionCircleFill />
+                    )}
+                    <span
+                      style={{
+                        fontWeight: selectedItem === 'help' ? 'bold' : 'normal',
+                      }}
+                      title="Yardım"
+                    >
+                      Yardım
+                    </span>
+                  </li>
+                  <li
+                    onClick={() => handleItemClick('logout')}
+                    data-selected={selectedItem === 'logout' ? 'true' : 'false'}
+                  >
+                    {selectedItem === 'logout' ? (
+                      <ArrowLeftCircleFill />
+                    ) : (
+                      <ArrowLeftCircleFill />
+                    )}
+                    <span
+                      style={{
+                        fontWeight:
+                          selectedItem === 'logout' ? 'bold' : 'normal',
+                      }}
+                      title="Çıkış Yap"
+                    >
+                      Çıkış Yap
+                    </span>
+                  </li>
+                  <li
+                    data-selected={
+                      selectedItem === 'profile' ? 'true' : 'false'
+                    }
+                  >
+                    <div className="theme-switcher" onClick={themeSwitch}>
+                      {themeSwitcher ? <MoonFill /> : <Sun />}
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
         <div className="navbar-toggle" onClick={toggleMenu}>
           {menuOpen ? (
@@ -276,7 +359,7 @@ export default function Navbar(props) {
                   <Link to="/profile">Profilim</Link>
                 </span>
               </li>
-              <li onClick={() => handleItemClick('settings')}>
+              {/* <li onClick={() => handleItemClick('settings')}>
                 {selectedItem === 'settings' ? <GearFill /> : <Gear />}
                 <span
                   style={{
@@ -286,7 +369,7 @@ export default function Navbar(props) {
                 >
                   Ayarlar
                 </span>
-              </li>
+              </li> */}
               <li onClick={() => handleItemClick('help')}>
                 {selectedItem === 'help' ? (
                   <QuestionCircleFill />
@@ -321,17 +404,12 @@ export default function Navbar(props) {
                 <div className="theme-switcher" onClick={themeSwitch}>
                   {themeSwitcher ? <MoonFill /> : <Sun />}
                   <span>Tema</span>
-                  {/* {themeSwitcher ? (
-                    <span style={{ color: 'black' }}>Koyu Tema</span>
-                  ) : (
-                    <span style={{ color: 'white' }}>Açık Tema</span>
-                  )} */}
                 </div>
               </li>
             </ul>
           </div>
         )}
-      </navbar>
+      </nav>
     </div>
   );
 }
