@@ -25,12 +25,10 @@ import {
   Sun,
   MoonFill,
 } from 'react-bootstrap-icons';
-import axios from 'axios';
 
 export default function Navbar(props) {
   const { toggleTheme, theme } = useTheme();
   const [selectedItem, setSelectedItem] = useState(props?.item);
-  const [userProfile, setUserProfile] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeSwitcher, setThemeSwitcher] = useState(false);
   const navigate = useNavigate();
@@ -59,10 +57,6 @@ export default function Navbar(props) {
     } else {
       // Diğer menü öğeleri için gerekli işlemleri yapabilirsiniz
     }
-  };
-
-  const userProfileClick = (item) => {
-    setUserProfile(item);
   };
 
   const toggleMenu = () => {

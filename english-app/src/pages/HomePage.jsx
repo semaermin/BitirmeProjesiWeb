@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
-import axios from 'axios';
 
 function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
