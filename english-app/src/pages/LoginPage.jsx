@@ -141,6 +141,7 @@ function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
+                  type="button"
                   className="show-password-eye"
                   onClick={togglePassword}
                   tabIndex="-1"

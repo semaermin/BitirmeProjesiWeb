@@ -11,7 +11,6 @@ function ForgotPasswordPage() {
         <div className="password-left">
           <div className="password-left-image" />
           <Link to="/login">
-            {' '}
             <img
               className="sermify-logo"
               src="/src/assets/images/svg/logo-white.svg"

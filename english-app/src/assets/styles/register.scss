@@ -71,29 +71,33 @@
         display: none;
       }
     }
-    .register-label {
-      font-size: var(--fs-14);
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .register-input {
-      width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 20px;
-      border-radius: 4px;
-      border: 2px solid var(--tertiary-color);
-      height: var(--fs-46);
-      font-size: var(--fs-14);
-      color: var(--secondary-color);
-      &::placeholder {
+    form {
+      .register-label {
         font-size: var(--fs-14);
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
       }
-      &:focus {
-        border: 2.3px solid var(--primary-color);
-        outline: none;
+      .register-input {
+        width: 100%;
+        padding: 12px 14px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        border: 2px solid var(--tertiary-color);
+        height: var(--fs-46);
+        font-size: var(--fs-14);
         color: var(--secondary-color);
+        &::placeholder {
+          font-size: var(--fs-14);
+        }
+        &:focus {
+          border: 2.3px solid var(--primary-color);
+          outline: none;
+          color: var(--secondary-color);
+        }
       }
     }
+
     .remember-password {
       text-align: center;
       color: var(--primary-color);
