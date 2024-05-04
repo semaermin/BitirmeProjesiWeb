@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -17,6 +19,9 @@ function HomePage() {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
+      
+      // Oturum açık değilse, kullanıcıyı login sayfasına yönlendir
+      navigate('/login');
     }
   }
 
