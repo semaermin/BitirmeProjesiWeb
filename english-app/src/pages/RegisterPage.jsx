@@ -1,10 +1,35 @@
 import '../assets/styles/register.scss';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function RegisterPage() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Sayfa yüklendiğinde, oturum durumunu kontrol et
+    checkUserLoggedIn();
+  }, []);
+
+  function checkUserLoggedIn() {
+    // Token'i localStorage'dan al
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      // Eğer token varsa, kullanıcı zaten giriş yapmış demektir
+      // Önceki sayfayı localStorage'dan al
+      const previousPage = localStorage.getItem('previousPage');
+      if (previousPage) {
+        // Önceki sayfaya yönlendir
+        navigate(previousPage);
+      } else {
+        // Önceki sayfa bilgisi yoksa, varsayılan olarak login yönlendir
+        navigate('/login');
+      }
+    }
+  }
+
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [password1, setPassword1] = useState('');
@@ -23,6 +48,7 @@ function RegisterPage() {
   const togglePassword2 = () => {
     setShowPassword2(!showPassword2);
   };
+
   const handlePasswordMatch = () => {
     if (password1 === password2) {
       setPasswordsMatch(true);
@@ -33,28 +59,21 @@ function RegisterPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
+    // Diğer inputlar için userData state'ini güncelle
+    setUserData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
     // Şifre alanı ise password1 veya password2 state'ine atama yap
     if (name === 'password') {
       setPassword1(value);
-      setUserData((prevState) => ({
-        ...prevState,
-        password: value,
-      }));
     } else if (name === 'password2') {
       setPassword2(value);
-    } else {
-      // Diğer inputlar için userData state'ini güncelle
-      setUserData((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
     }
-  
-    // Tüm input değerlerini konsola yazdır
-    console.log({ ...userData, [name]: value });
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -62,9 +81,9 @@ function RegisterPage() {
     handlePasswordMatch();
   
     // Şifreler eşleşmiyorsa kayıt işlemini gerçekleştirme
-    if (!passwordsMatch) {
-      return;
-    }
+    // if (!passwordsMatch) {
+    //   return;
+    // }
   
     try {
       // userData'daki password alanını kullanarak güncelle
@@ -75,8 +94,18 @@ function RegisterPage() {
         updatedUserData
       );
       console.log(response.data);
-      if (response.status === 200) {
-        window.location.href = '/login';
+      if (response.status === 201) {
+        // Kullanıcı kaydı başarılı olduysa sunucudan gelen token'ı al
+        const token = response.data.token;
+  
+        // Token'ı localStorage'a kaydet
+        localStorage.setItem('token', token);
+  
+        // Konsola token'ı yaz
+        console.log('Token:', token);
+  
+        // Giriş sayfasına yönlendir
+        navigate('/login');
       }
     } catch (error) {
       if (error.response) {
@@ -90,7 +119,7 @@ function RegisterPage() {
         console.error('Hata oluştu:', error.message);
       }
     }
-  };  
+  };
   
 
   return (
