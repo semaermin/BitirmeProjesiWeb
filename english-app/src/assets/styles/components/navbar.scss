@@ -38,12 +38,18 @@ html {
         max-width: 70%;
       }
       img {
-        width: 36px;
+        width: 38px;
         border-radius: 100%;
         margin-left: 12px;
+        padding: 2px;
       }
       .user-avatar {
         position: relative;
+        img {
+          &:hover {
+            outline: 2px solid var(--primary-color);
+          }
+        }
       }
       .dropdown-content {
         position: absolute;
