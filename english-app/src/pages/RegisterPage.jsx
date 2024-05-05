@@ -6,6 +6,16 @@ import axios from 'axios';
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
 
   useEffect(() => {
     // Sayfa yüklendiğinde, oturum durumunu kontrol et
@@ -20,33 +30,20 @@ function RegisterPage() {
       // Eğer token varsa, kullanıcı zaten giriş yapmış demektir
       // Önceki sayfayı localStorage'dan al
       const previousPage = localStorage.getItem('previousPage');
-      if (previousPage) {
-        // Önceki sayfaya yönlendir
-        navigate(previousPage);
-      } else {
-        // Önceki sayfa bilgisi yoksa, varsayılan olarak login yönlendir
-        navigate('/login');
-      }
+      console.log('önceki sayfa', previousPage);
     }
   }
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
+  const togglePassword = (event) => {
+    if (event.key !== 'Enter') {
+      setShowPassword(!showPassword);
+    }
   };
 
-  const togglePassword2 = () => {
-    setShowPassword2(!showPassword2);
+  const togglePassword2 = (event) => {
+    if (event.key !== 'Enter') {
+      setShowPassword2(!showPassword2);
+    }
   };
 
   const handlePasswordMatch = () => {
@@ -65,30 +62,19 @@ function RegisterPage() {
       ...prevState,
       [name]: value,
     }));
-
-    // Şifre alanı ise password1 veya password2 state'ine atama yap
-    if (name === 'password') {
-      setPassword1(value);
-    } else if (name === 'password2') {
-      setPassword2(value);
-    }
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    // Şifrelerin eşleşip eşleşmediğini kontrol et
     handlePasswordMatch();
-  
-    // Şifreler eşleşmiyorsa kayıt işlemini gerçekleştirme
-    // if (!passwordsMatch) {
-    //   return;
-    // }
-  
+    e.preventDefault();
+
+    if (!passwordsMatch) {
+      return; // Şifreler eşleşmiyorsa kayıt işlemini gerçekleştirme
+    }
+
     try {
       // userData'daki password alanını kullanarak güncelle
       const updatedUserData = { ...userData, password: password1 };
-  
       const response = await axios.post(
         'http://127.0.0.1:8000/user/register',
         updatedUserData
@@ -97,30 +83,32 @@ function RegisterPage() {
       if (response.status === 201) {
         // Kullanıcı kaydı başarılı olduysa sunucudan gelen token'ı al
         const token = response.data.token;
-  
         // Token'ı localStorage'a kaydet
         localStorage.setItem('token', token);
-  
-        // Konsola token'ı yaz
         console.log('Token:', token);
-  
-        // Giriş sayfasına yönlendir
         navigate('/login');
       }
     } catch (error) {
       if (error.response) {
-        // Sunucudan gelen hata yanıtını kontrol edin
+        console.log(error);
+        if (
+          error.response.status === 422 &&
+          error.response.data.errors.email[0] ===
+            'The email has already been taken.'
+        ) {
+          alert(
+            'Bu email adresi zaten kullanımda! Lütfen farklı bir email adresi almayı deneyiniz.'
+          );
+        }
         console.error('Sunucu hatası:', error.response.data);
       } else if (error.request) {
         // İstek yapılamadığında
         console.error('İstek yapılamadı:', error.request);
       } else {
-        // Diğer hata durumları
         console.error('Hata oluştu:', error.message);
       }
     }
   };
-  
 
   return (
     <div className="register-container">
@@ -189,6 +177,7 @@ function RegisterPage() {
                 className="show-password-eye"
                 onClick={togglePassword}
                 type="button"
+                tabIndex="-1"
               >
                 {showPassword ? <Eye /> : <EyeSlash />}
               </button>
@@ -211,6 +200,7 @@ function RegisterPage() {
               <button
                 className="show-password-eye"
                 onClick={togglePassword2}
+                type="button"
                 tabIndex="-1"
               >
                 {showPassword2 ? <Eye /> : <EyeSlash />}

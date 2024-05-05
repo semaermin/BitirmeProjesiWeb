@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +18,6 @@ import {
   ArrowLeftCircle,
   QuestionCircleFill,
   QuestionCircle,
-  GearFill,
-  Gear,
   PersonFill,
   Person,
   Sun,
@@ -33,6 +31,8 @@ export default function Navbar(props) {
   const [themeSwitcher, setThemeSwitcher] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  const navRef = useRef(null);
+  const lastItemRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,12 +71,10 @@ export default function Navbar(props) {
 
   const handleLogout = async () => {
     try {
-      // Tokeni localStorage'dan temizle
       localStorage.removeItem('token');
-      // Çıkış başarılıysa, kullanıcıyı giriş sayfasına yönlendir
       navigate('/login');
     } catch (error) {
-      console.error('Çıkış hatası:', error); // Hata oluşursa konsola yazdır
+      console.error('Logout error:', error);
     }
   };
 
@@ -84,8 +82,21 @@ export default function Navbar(props) {
     setDropdownOpen(!dropdownOpen);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className={theme}>
+    <div className={theme} ref={navRef}>
       <nav className={`${menuOpen ? 'menu-open' : ''}`}>
         <div className="sermify-logo">
           <img
@@ -267,6 +278,8 @@ export default function Navbar(props) {
                     </span>
                   </li>
                   <li
+                    id="dropdown-theme-switcher"
+                    ref={lastItemRef}
                     data-selected={
                       selectedItem === 'profile' ? 'true' : 'false'
                     }
