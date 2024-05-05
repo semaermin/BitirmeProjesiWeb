@@ -30,6 +30,13 @@ function RegisterPage() {
       // Eğer token varsa, kullanıcı zaten giriş yapmış demektir
       // Önceki sayfayı localStorage'dan al
       const previousPage = localStorage.getItem('previousPage');
+      if (previousPage) {
+        // Önceki sayfaya yönlendir
+        navigate(previousPage);
+      } else {
+        // Önceki sayfa bilgisi yoksa, varsayılan olarak login yönlendir
+        navigate('/login');
+      }
       console.log('önceki sayfa', previousPage);
     }
   }
