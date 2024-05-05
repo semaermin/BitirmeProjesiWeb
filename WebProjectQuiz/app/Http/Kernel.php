@@ -69,6 +69,6 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         // ...
-        'cors' => \App\Http\Middleware\CorsMiddleware::class,
+        // 'cors' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 }

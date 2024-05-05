@@ -5,6 +5,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\UserAuth\AuthController;
+use App\Http\Controllers\UserAuth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,14 +58,14 @@ Route::middleware([
 
 
 // CORS HATASI ALMAMAK İÇİN MİDDLEWARE YAZDIK KULLANIYORUZ.
-Route::group(['middleware' => 'cors'], function () {
+// Route::group(['middleware' => 'cors'], function () {
     Route::get('auth', [AuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
     Route::get('user/logout', [AuthController::class, 'logout']);
     Route::post('/user/login', [AuthController::class, 'login']);
     Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
     Route::post('/user/register', [AuthController::class, 'store']);
-});
+// });
 
 // // Kayıt formunu göstermek için
 Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
@@ -83,3 +84,7 @@ Route::group(['middleware' => ['web']], function () {
 Route::get('/csrf-token', function () {
     return response()->json(['token' => csrf_token()]);
 });
+
+Route::post('user/reset-password', [ResetPasswordController::class, 'reset']);
+Route::post('user/reset-password-process', [ResetPasswordController::class, 'resetPassword']);
+

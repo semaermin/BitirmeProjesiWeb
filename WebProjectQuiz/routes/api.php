@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\UserAuth\AuthController;
+use App\Http\Controllers\UserAuth\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -70,3 +71,4 @@ Route::get('/csrf-token', [CsrfTokenController::class, 'getToken']);
 Route::get('/userLoggedIn', function () {
     return response()->json(['isLoggedIn' => Auth::check()]);
 });
+// Route::post('/reset-password', 'ResetPasswordController@reset');

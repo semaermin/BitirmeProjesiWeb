@@ -139,7 +139,7 @@
                 </div>
             </div>
         </div>
-        {{-- @viteReactRefresh
-        @vite('resources/js/app.js') --}}
+        @viteReactRefresh
+        @vite('resources/js/app.jsx')
     </body>
 </html>

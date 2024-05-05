@@ -1,9 +1,26 @@
-import '../assets/styles/forgotpassword.scss';
+import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function ForgotPasswordPage() {
   const { theme } = useTheme();
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/user/reset-password', { email });
+      setMessage(response.data.message);
+      setError('');
+    } catch (error) {
+      setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+      setMessage('');
+    }
+  };
+  
 
   return (
     <div className={theme}>
@@ -28,6 +45,18 @@ function ForgotPasswordPage() {
                 alt="sermify-red-logo-mobile"
               />
             </div>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                placeholder="E-posta adresiniz"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button type="submit">Şifreyi Sıfırla</button>
+            </form>
+            {message && <p>{message}</p>}
+            {error && <p>{error}</p>}
           </div>
         </div>
       </div>
