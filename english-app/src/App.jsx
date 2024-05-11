@@ -1,6 +1,7 @@
 // React Imports
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { CustomRouter } from './router/CustomRouter';
+import AuthGuard from './services/AuthGuard';
 
 // Styles
 import './App.css';
@@ -11,7 +12,7 @@ function App() {
       <Router>
         <Routes>
           {CustomRouter.map((item, index) => {
-            return <Route key={index} {...item} />;
+            return <Route path={item.path} key={index} element={<AuthGuard>{item.element}</AuthGuard>} />;
           })}
         </Routes>
       </Router>

@@ -25,7 +25,7 @@ import {
 } from 'react-bootstrap-icons';
 
 export default function Navbar(props) {
-  const { toggleTheme, theme } = useTheme();
+  const { toggleTheme, theme, user } = useTheme();
   const [selectedItem, setSelectedItem] = useState(props?.item);
   const [menuOpen, setMenuOpen] = useState(false);
   const [themeSwitcher, setThemeSwitcher] = useState(false);
@@ -54,6 +54,7 @@ export default function Navbar(props) {
     }
 
     if (item === 'logout') {
+      localStorage.removeItem('user');
       handleLogout();
     } else {
       // Diğer menü öğeleri için gerekli işlemleri yapabilirsiniz
@@ -103,8 +104,8 @@ export default function Navbar(props) {
             className="sermify-logo-img"
             src={
               menuOpen
-                ? '/src/assets/images/svg/logo-white.svg'
-                : '/src/assets/images/svg/logo-red.svg'
+                ? '/src/assets/images/svg/logo-white-smile-text.svg'
+                : '/src/assets/images/svg/logo-red-smile-text.svg'
             }
             alt={menuOpen ? 'sermify-red-logo' : 'sermify-white-logo'}
           />
@@ -196,9 +197,16 @@ export default function Navbar(props) {
           </ul>
         </div>
         <div className="user-profile">
-          <div className="user-fullname">Muzaffer Enes Yıldırım</div>
+          <div className="user-fullname">{user?.name}</div>
           <div className="user-avatar" onClick={toggleDropdown}>
-            <img src="/src/assets/images/user-avatar.png" alt="user-photo" />
+            <img
+              src={
+                user.profile_photo_path
+                  ? user.profile_photo_path
+                  : user.profile_photo_url
+              }
+              alt="user-photo"
+            />
             {dropdownOpen && (
               <div className="dropdown-content">
                 <ul>
@@ -255,7 +263,7 @@ export default function Navbar(props) {
                       }}
                       title="Yardım"
                     >
-                      Yardım
+                      <Link to="/help">Yardım</Link>
                     </span>
                   </li>
                   <li
@@ -307,6 +315,21 @@ export default function Navbar(props) {
         {menuOpen && (
           <div className="mobile-menu-items">
             <ul>
+              <li>
+                <div className="mobile-user-profile">
+                  <div className="mobile-user-avatar" onClick={toggleDropdown}>
+                    <img
+                      src={
+                        user.profile_photo_path
+                          ? user.profile_photo_path
+                          : user.profile_photo_url
+                      }
+                      alt="user-photo"
+                    />
+                  </div>
+                  <div className="mobile-user-fullname">{user?.name}</div>
+                </div>
+              </li>
               <li onClick={() => handleItemClick('home')}>
                 {selectedItem === 'home' ? <HouseFill /> : <House />}
                 <span
@@ -395,7 +418,7 @@ export default function Navbar(props) {
                   }}
                   title="Yardım"
                 >
-                  Yardım
+                  <Link to="/help">Yardım</Link>
                 </span>
               </li>
               <li onClick={() => handleItemClick('logout')}>

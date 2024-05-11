@@ -6,6 +6,10 @@ p {
   box-sizing: border-box;
 }
 
+#root {
+  height: 100%;
+}
+
 * {
   font-family: 'Inter', sans-serif;
   font-optical-sizing: auto;

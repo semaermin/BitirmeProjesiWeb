@@ -1,3 +1,4 @@
+import '../assets/styles/forgot-password.scss';
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
@@ -12,7 +13,10 @@ function ForgotPasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:8000/user/reset-password', { email });
+      const response = await axios.post(
+        'http://127.0.0.1:8000/user/reset-password',
+        { email }
+      );
       setMessage(response.data.message);
       setError('');
     } catch (error) {
@@ -20,7 +24,6 @@ function ForgotPasswordPage() {
       setMessage('');
     }
   };
-  
 
   return (
     <div className={theme}>
@@ -30,7 +33,7 @@ function ForgotPasswordPage() {
           <Link to="/login">
             <img
               className="sermify-logo"
-              src="/src/assets/images/svg/logo-white.svg"
+              src="/src/assets/images/svg/logo-white-smile-text.svg"
               alt="sermify-white-logo"
             />
           </Link>
@@ -41,22 +44,26 @@ function ForgotPasswordPage() {
               <h4>Şifremi Unuttum</h4>
               <img
                 className="sermify-logo-mobile"
-                src="/src/assets/images/svg/logo-red.svg"
+                src="/src/assets/images/svg/logo-red-smile-text.svg"
                 alt="sermify-red-logo-mobile"
               />
+              <form onSubmit={handleSubmit}>
+                <label className="password-label" htmlFor="email">
+                  E-posta Adresi
+                </label>
+                <input
+                  className="login-input"
+                  type="email"
+                  value={email}
+                  placeholder="johndoe@example.com"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <button type="submit">Şifreyi Sıfırla</button>
+              </form>
+              {message && <p>{message}</p>}
+              {error && <p>{error}</p>}
             </div>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="email"
-                placeholder="E-posta adresiniz"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit">Şifreyi Sıfırla</button>
-            </form>
-            {message && <p>{message}</p>}
-            {error && <p>{error}</p>}
           </div>
         </div>
       </div>

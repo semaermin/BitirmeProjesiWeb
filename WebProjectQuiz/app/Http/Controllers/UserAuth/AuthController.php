@@ -15,6 +15,8 @@ use Illuminate\Http\JsonResponse;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
+use Throwable;
 
 
 class AuthController extends Controller
@@ -66,11 +68,10 @@ class AuthController extends Controller
     public function handleAuthCallback(): JsonResponse
     {
         try {
-            /** @var SocialiteUser $socialiteUser */
+            /** @var \Laravel\Socialite\Two\User $socialiteUser */
             $socialiteUser = Socialite::driver('google')->stateless()->user();
-        } catch (ClientException $e) {
-            $socialiteUser = Socialite::driver('google')->stateless()->user();
-            return response()->json(['error' => 'Invalid credentials provided.'], 422);
+        } catch (Throwable $e) {
+            return response()->json(['error' => 'Google OAuth işlemi sırasında bir hata oluştu.'], 500);
         }
 
         // Kullanıcıyı oluştururken is_admin değerini manuel olarak 0 olarak ayarla
@@ -80,7 +81,7 @@ class AuthController extends Controller
                     'email' => $socialiteUser->getEmail(),
                 ],
                 [
-                    'password' => "0",
+                    'password' => bcrypt(str_random(10)), // Rastgele bir şifre oluşturabilirsiniz.
                     'email_verified_at' => now(),
                     'name' => $socialiteUser->getName(),
                     'google_id' => $socialiteUser->getId(),
@@ -118,12 +119,12 @@ class AuthController extends Controller
             'email' => 'required|string|email|unique:users|max:255',
             'password' => 'required|string|min:6',
         ]);
-    
+
         // Doğrulama başarısız olursa, uygun hata mesajlarını ve kodunu dön
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-    
+
         // Doğrulama başarılıysa, yeni kullanıcıyı veritabanına kaydet
         $user = new User([
             'name' => $request->name,
@@ -132,11 +133,11 @@ class AuthController extends Controller
         ]);
         $user->is_admin = 0; // is_admin değeri 0 (false) olarak ayarlanır
         $user->save();
-    
+
         // Başarıyla oluşturulan kullanıcıya ilişkin bilgileri ve başarılı mesajı dön
         return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
     }
-    
+
 
     public function update(Request $request, $id)
     {
@@ -173,23 +174,18 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            // Oturum oluştur
-            $request->session()->regenerate();
+            // Kullanıcı doğrulandı, JWT token oluştur
+            $user = Auth::user();
+            // dd($user);
+            $token = $user->createToken('MyApp')->plainTextToken;
 
-            // Oturum belirteci oluştur
-            $token = Str::random(60); // Rastgele bir oturum belirteci oluştur
-
-            // Oluşturulan oturum belirtecini veritabanına kaydetmek isterseniz:
-            // Auth::user()->update(['api_token' => hash('sha256', $token)]);
-
-            // Kullanıcıya oturum belirtecini yanıt olarak gönder
-            return response()->json(['token' => $token, 'message' => 'Login successful'], 200);
+            // Token'i kullanıcıya yanıt olarak gönder
+            return response()->json(['token' => $token, 'user' => $user, 'message' => 'Login successful'], 200);
         }
 
         // Giriş başarısız olduğunda yapılacak işlemler
         return response()->json(['message' => 'Unauthorized'], 401);
     }
-
 
     public function checkUserLoggedIn(Request $request)
     {
@@ -231,14 +227,18 @@ class AuthController extends Controller
     //     // Kullanıcıya başarılı kayıt mesajını göster
     //     return redirect('/user/login')->with('success', 'Kaydınız başarıyla tamamlandı! Artık giriş yapabilirsiniz.');
     // }
-    public function dash()
-    {
-        $loginForm1 = Session::get('login_form_1');
-        return view('error', compact('loginForm1'));
-    }
+    // public function dash()
+    // {
+    //     $loginForm1 = Session::get('login_form_1');
+    //     return view('error', compact('loginForm1'));
+    // }
     public function showLoginForm()
     {
         return view('userAuth.login'); // login.blade.php isimli view dosyasını döndürür
 
+    }
+    public function getUserData(Request $request)
+    {
+        return response()->json($request->user());
     }
 }
