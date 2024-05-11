@@ -52,7 +52,7 @@
   color: #ffffff;
   border: 2px solid var(--primary-color);
   border-radius: 4px;
-  padding: 12px 0;
+  // padding: 12px 0;
   height: var(--fs-46);
   cursor: pointer;
   &:hover {
@@ -85,7 +85,8 @@
       padding: 4px;
     }
   }
-  #password {
+  #password,
+  #password2 {
     padding-right: 36px;
   }
 }
@@ -148,11 +149,11 @@
       }
       .login-input {
         width: 100%;
+        height: var(--fs-46);
         padding: 12px 14px;
         margin-bottom: 20px;
         border-radius: 4px;
         border: 2px solid var(--tertiary-color);
-        height: var(--fs-46);
         font-size: var(--fs-14);
         color: var(--secondary-color);
         &::placeholder {
@@ -219,9 +220,10 @@
         align-items: center;
       }
       .create-account-button {
+        height: var(--fs-46);
         background-color: #ffffff;
         width: 100%;
-        padding: 12px 0;
+        // padding: 12px 0;
         border-radius: 4px;
         margin-top: 24px;
         font-size: var(--fs-16);

@@ -4,40 +4,40 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { login, setAxiosInterceptors } from '../services/LoginService';
 
 function LoginPage() {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Sayfa yüklendiğinde, oturum durumunu kontrol et
-    checkUserLoggedIn();
-  }, []);
-
-  function checkUserLoggedIn() {
-    // Token'i localStorage'dan al
-    const token = localStorage.getItem('token');
-    console.log(token);
-    if (token) {
-      // Eğer token varsa, kullanıcı zaten giriş yapmış demektir
-      // Önceki sayfayı localStorage'dan al
-      const previousPage = localStorage.getItem('previousPage');
-      if (previousPage) {
-        // Önceki sayfaya yönlendir
-        navigate(previousPage);
-      } else {
-        // Önceki sayfa bilgisi yoksa, varsayılan olarak anasayfaya yönlendir
-        navigate('/home');
-      }
-    }
-  }
-
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { theme } = useTheme();
-  // Token durumunu saklamak için state
-  const [token, setToken] = useState('');
+  const { setUser } = useTheme();
+
+  useEffect(() => {
+    checkUserLoggedIn();
+  }, []);
+
+  const handleSubmit = async () => {
+    event.preventDefault();
+
+    try {
+      const userInfo = await login(email, password);
+      localStorage.setItem('token', userInfo?.token);
+      setAxiosInterceptors(userInfo?.token);
+      setUser(userInfo?.user);
+      localStorage.setItem('user', JSON.stringify(userInfo?.user));
+      navigate('/home');
+    } catch (error) {
+      console.error('Giriş hatası:', error);
+    }
+  };
+
+  function checkUserLoggedIn() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/home');
+    }
+  }
 
   const togglePassword = (event) => {
     if (event.key !== 'Enter') {
@@ -45,44 +45,7 @@ function LoginPage() {
     }
   };
 
-  // Form submit işlevi
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const response = await axios.post('http://127.0.0.1:8000/user/login', {
-        email: email,
-        password: password,
-      });
-
-      console.log(response.data); // Giriş başarılıysa cevabı konsola yazdır
-
-      if (response.status === 200) {
-        // Tokeni sakla
-        localStorage.setItem('token', response.data.token);
-
-        // Ana sayfaya yönlendir
-        navigate('/home');
-      }
-    } catch (error) {
-      console.error('Giriş hatası:', error); // Hata oluşursa konsola yazdır
-    }
-  };
-
-  // API istekleri için interceptor ayarı
-  axios.interceptors.request.use(
-    (config) => {
-      // Token varsa, Authorization başlığına ekle
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
-
+  // eslint-disable-next-line no-unused-vars
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       handleSubmit(event);
@@ -90,14 +53,14 @@ function LoginPage() {
   };
 
   return (
-    <div className={theme}>
+    <div>
       <div className="login-container">
         <div className="login-left">
           <div className="login-left-image" />
           <Link to="/login">
             <img
               className="sermify-logo"
-              src="/src/assets/images/svg/logo-white.svg"
+              src="/src/assets/images/svg/logo-white-smile-text.svg"
               alt="sermify-white-logo"
             />
           </Link>
@@ -108,7 +71,7 @@ function LoginPage() {
               <h4>Giriş Yap</h4>
               <img
                 className="sermify-logo-mobile"
-                src="/src/assets/images/svg/logo-red.svg"
+                src="/src/assets/images/svg/logo-red-smile-text.svg"
                 alt="sermify-red-logo-mobile"
               />
             </div>

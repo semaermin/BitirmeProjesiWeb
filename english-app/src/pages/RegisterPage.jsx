@@ -1,7 +1,8 @@
 import '../assets/styles/register.scss';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 import axios from 'axios';
 
 function RegisterPage() {
@@ -16,30 +17,23 @@ function RegisterPage() {
     email: '',
     password: '',
   });
+  const { setUser } = useTheme();
 
-  useEffect(() => {
-    // Sayfa yüklendiğinde, oturum durumunu kontrol et
-    checkUserLoggedIn();
-  }, []);
-
-  function checkUserLoggedIn() {
-    // Token'i localStorage'dan al
-    const token = localStorage.getItem('token');
-    console.log(token);
-    if (token) {
-      // Eğer token varsa, kullanıcı zaten giriş yapmış demektir
-      // Önceki sayfayı localStorage'dan al
-      const previousPage = localStorage.getItem('previousPage');
-      if (previousPage) {
-        // Önceki sayfaya yönlendir
-        navigate(previousPage);
-      } else {
-        // Önceki sayfa bilgisi yoksa, varsayılan olarak login yönlendir
-        navigate('/login');
-      }
-      console.log('önceki sayfa', previousPage);
-    }
-  }
+  const isPasswordValid = (password) => {
+    return (
+      (password.length >= 8 &&
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password) &&
+        /\d/.test(password) &&
+        /[!@#$%^&*(),.?":{}|<>]/.test(password)) ||
+      (password.length >= 8 &&
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password) &&
+        /\d/.test(password) &&
+        /[!@#$%^&*(),.?":{}|<>]/.test(password) &&
+        /[ÇĞIİÖŞÜçğıöşü]/.test(password))
+    );
+  };
 
   const togglePassword = (event) => {
     if (event.key !== 'Enter') {
@@ -77,6 +71,11 @@ function RegisterPage() {
 
     if (!passwordsMatch) {
       return; // Şifreler eşleşmiyorsa kayıt işlemini gerçekleştirme
+    } else if (!isPasswordValid(password1)) {
+      alert(
+        'Şifreniz en az 8 karakter uzunluğunda olmalı ve en az bir büyük harf, bir küçük harf, bir rakam ve bir sembol içermelidir.'
+      );
+      return;
     }
 
     try {
@@ -90,9 +89,12 @@ function RegisterPage() {
       if (response.status === 201) {
         // Kullanıcı kaydı başarılı olduysa sunucudan gelen token'ı al
         const token = response.data.token;
+        const userInfo = response.data;
+
+        setUser(userInfo?.user);
+        localStorage.setItem('user', JSON.stringify(userInfo?.user));
         // Token'ı localStorage'a kaydet
         localStorage.setItem('token', token);
-        console.log('Token:', token);
         navigate('/login');
       }
     } catch (error) {
@@ -124,7 +126,7 @@ function RegisterPage() {
         <Link to="/login">
           <img
             className="sermify-logo"
-            src="/src/assets/images/svg/logo-white.svg"
+            src="/src/assets/images/svg/logo-white-smile-text.svg"
             alt="logo-white"
           />
         </Link>
@@ -135,7 +137,7 @@ function RegisterPage() {
             <h4>Hesap Oluştur</h4>
             <img
               className="sermify-logo-mobile"
-              src="/src/assets/images/svg/logo-red.svg"
+              src="/src/assets/images/svg/logo-red-smile-text.svg"
               alt="logo-red"
             />
           </div>

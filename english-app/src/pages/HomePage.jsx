@@ -19,7 +19,7 @@ function HomePage() {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
-      
+
       // Oturum açık değilse, kullanıcıyı login sayfasına yönlendir
       navigate('/login');
     }

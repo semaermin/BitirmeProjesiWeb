@@ -8,6 +8,8 @@ import VideoPage from '../pages/VideoPage.jsx';
 import ExercisesPage from '../pages/ExercisesPage.jsx';
 import LeaderboardPage from './../pages/LeaderboardPage.jsx';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage.jsx';
+import NotFoundPage from '../pages/NotFoundPage.jsx';
+import HelpPage from '../pages/HelpPage.jsx';
 
 export const CustomRouter = [
   { path: '/login', element: <LoginPage /> },
@@ -20,4 +22,6 @@ export const CustomRouter = [
   { path: '/exercises', element: <ExercisesPage /> },
   { path: '/leaderboard', element: <LeaderboardPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
+  { path: '/help', element: <HelpPage /> },
+  { path: '*', element: <NotFoundPage /> },
 ];
