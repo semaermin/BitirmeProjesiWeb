@@ -60,7 +60,7 @@ function ExercisesPage() {
               {test.questions && test.questions.length > 0 ? (
                 test.questions.map((question, index) => (
                   <div className="list-group-item" key={index}>
-                    <h5 className="mb-1">{index + 1}.) {question.text}</h5>
+                    <h5 className="mb-1">{index + 1}.) {question.text} - Soru Süresi {question.duration}</h5>
                     <br />
                     {question.media_path ? (
                       <img src={question.media_path} alt="Soru Resmi" width="200" />
@@ -80,6 +80,7 @@ function ExercisesPage() {
                         </li>
                       ))}
                     </ul>
+                    <br />
                   </div>
                 ))
               ) : (
