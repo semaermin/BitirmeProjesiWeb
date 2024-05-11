@@ -24,4 +24,5 @@ export const CustomRouter = [
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/help', element: <HelpPage /> },
   { path: '*', element: <NotFoundPage /> },
+  { path: '/exercises/:slug', element: <ExercisesPage /> },
 ];

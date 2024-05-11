@@ -65,9 +65,10 @@ class QuizController extends Controller
 
         // Mevcut testin adını al
         $testName = $test->name;
-
+        dd($test , $testName);
         return view('quiz.show', compact('testName', 'test'));
     }
+
     public function questionStore(Request $request)
     {
 
@@ -239,90 +240,90 @@ class QuizController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        // Formdan gelen verileri al
-        $testId = $request->input('test_id');
+    // public function update(Request $request, string $id)
+    // {
+    //     // Formdan gelen verileri al
+    //     $testId = $request->input('test_id');
 
-        $adminId = $request->input('admin_id');
-        $testName = $request->input('test_name');
-        $questions = $request->input('question_text');
-        $types = $request->input('question_type');
-        $difficulties = $request->input('question_difficulty');
-        $answers = $request->input('answers');
-        $correctAnswers = $request->input('correct_answer');
-        $points = $request->input('question_points');
+    //     $adminId = $request->input('admin_id');
+    //     $testName = $request->input('test_name');
+    //     $questions = $request->input('question_text');
+    //     $types = $request->input('question_type');
+    //     $difficulties = $request->input('question_difficulty');
+    //     $answers = $request->input('answers');
+    //     $correctAnswers = $request->input('correct_answer');
+    //     $points = $request->input('question_points');
 
-        // Yeni alanlar: başlangıç tarihi, bitiş tarihi ve süre
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $durationMinutes = $request->input('duration_minutes');
+    //     // Yeni alanlar: başlangıç tarihi, bitiş tarihi ve süre
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+    //     $durationMinutes = $request->input('duration_minutes');
 
-        // Mevcut testi bul
-        $test = Test::findOrFail($testId);
+    //     // Mevcut testi bul
+    //     $test = Test::findOrFail($testId);
 
-        // Test verilerini güncelle
-        $test->admin_id = $adminId;
-        $test->name = $testName;
-        $test->start_date = $startDate;
-        $test->end_date = $endDate;
-        $test->duration_minutes = $durationMinutes;
-        $test->save();
+    //     // Test verilerini güncelle
+    //     $test->admin_id = $adminId;
+    //     $test->name = $testName;
+    //     $test->start_date = $startDate;
+    //     $test->end_date = $endDate;
+    //     $test->duration_minutes = $durationMinutes;
+    //     $test->save();
 
-        // Mevcut soruları ve cevapları al
-        $existingQuestions = $test->questions;
+    //     // Mevcut soruları ve cevapları al
+    //     $existingQuestions = $test->questions;
 
-        // Soruları güncelle veya ekle
-        foreach ($questions as $index => $questionText) {
-            // Sorunun index numarasını kontrol et
-            if (isset($existingQuestions[$index])) {
-                // Index varsa, mevcut soruyu güncelle
-                $question = $existingQuestions[$index];
-                $question->text = $questionText;
-                $question->type = $types[$index];
-                $question->difficulty = $difficulties[$index];
-                $question->points = $this->calculatePoints($points, $index, $difficulties[$index]);
-                $question->save();
+    //     // Soruları güncelle veya ekle
+    //     foreach ($questions as $index => $questionText) {
+    //         // Sorunun index numarasını kontrol et
+    //         if (isset($existingQuestions[$index])) {
+    //             // Index varsa, mevcut soruyu güncelle
+    //             $question = $existingQuestions[$index];
+    //             $question->text = $questionText;
+    //             $question->type = $types[$index];
+    //             $question->difficulty = $difficulties[$index];
+    //             $question->points = $this->calculatePoints($points, $index, $difficulties[$index]);
+    //             $question->save();
 
-                // Cevapları güncelle
-                foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
-                    $answer = $question->answers[$answerIndex];
-                    $answer->text = $answerText;
+    //             // Cevapları güncelle
+    //             foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
+    //                 $answer = $question->answers[$answerIndex];
+    //                 $answer->text = $answerText;
 
-                    // Doğru cevabı güncelle
-                    $isCorrect = isset($correctAnswers[$index]) && $correctAnswers[$index] == $answerIndex;
-                    $answer->is_correct = $isCorrect;
-                    // dd($request);
-                    // dd($question,$answers,$answer,$correctAnswers,$answerIndex,$isCorrect);
-                    $answer->save();
-                }
-            } else {
-                // Index yoksa, yeni bir soru oluştur
-                $question = new Question();
-                $question->test_id = $testId;
-                $question->text = $questionText;
-                $question->type = $types[$index];
-                $question->difficulty = $difficulties[$index];
-                $question->points = $this->calculatePoints($points, $index, $difficulties[$index]);
-                $question->save();
+    //                 // Doğru cevabı güncelle
+    //                 $isCorrect = isset($correctAnswers[$index]) && $correctAnswers[$index] == $answerIndex;
+    //                 $answer->is_correct = $isCorrect;
+    //                 // dd($request);
+    //                 // dd($question,$answers,$answer,$correctAnswers,$answerIndex,$isCorrect);
+    //                 $answer->save();
+    //             }
+    //         } else {
+    //             // Index yoksa, yeni bir soru oluştur
+    //             $question = new Question();
+    //             $question->test_id = $testId;
+    //             $question->text = $questionText;
+    //             $question->type = $types[$index];
+    //             $question->difficulty = $difficulties[$index];
+    //             $question->points = $this->calculatePoints($points, $index, $difficulties[$index]);
+    //             $question->save();
 
-                // Yeni cevapları ekle
-                foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
-                    $answer = new Answer();
-                    $answer->question_id = $question->id;
-                    $answer->text = $answerText;
-                    $answer->is_correct = ($correctAnswers[$index] == $answerIndex); // Doğru cevabı güncelle
-                    $answer->save();
-                }
-            }
-        }
+    //             // Yeni cevapları ekle
+    //             foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
+    //                 $answer = new Answer();
+    //                 $answer->question_id = $question->id;
+    //                 $answer->text = $answerText;
+    //                 $answer->is_correct = ($correctAnswers[$index] == $answerIndex); // Doğru cevabı güncelle
+    //                 $answer->save();
+    //             }
+    //         }
+    //     }
 
-        // Yönlendirme ve mesaj dön
-        return redirect()->route('quiz.quiz')->with([
-            'message' => 'TESTİNİZ GÜNCELLENDİ',
-            'alert-type' => 'success'
-        ]);
-    }
+    //     // Yönlendirme ve mesaj dön
+    //     return redirect()->route('quiz.quiz')->with([
+    //         'message' => 'TESTİNİZ GÜNCELLENDİ',
+    //         'alert-type' => 'success'
+    //     ]);
+    // }
 
     /**
      * Remove the specified resource from storage.

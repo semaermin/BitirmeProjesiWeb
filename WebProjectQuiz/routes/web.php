@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\UserAuth\AuthController;
 use App\Http\Controllers\UserAuth\ResetPasswordController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\VideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [Controller::class, 'index'])->name('dashboard');
 
+    //testleri listele
     Route::get('/quiz', [QuizController::class, 'index'])->name('quiz.quiz');
     //Test oluşturma formu
     Route::get('/quiz/create', [QuizController::class, 'create'])->name('quiz.add'); // Test ekleme formunu gösterme
@@ -37,12 +40,12 @@ Route::middleware([
     Route::get('/quiz/{slug}', [QuizController::class, 'quizShow'])->name('quiz.show');
 
     Route::get('/quiz/{slug}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
-    Route::put('/quiz/{slug}', [QuizController::class, 'update'])->name('quiz.update');
+    // Route::put('/quiz/{slug}', [QuizController::class, 'update'])->name('quiz.update');
 });
 
 
-// // Tüm kullanıcıları listele
-// Route::get('/users', [AuthController::class, 'index']);
+// Tüm kullanıcıları listele
+Route::get('/users', [AuthController::class, 'index']);
 
 // // Belirli bir kullanıcıyı göster
 // Route::get('/users/{id}', [AuthController::class, 'show']);
@@ -62,7 +65,7 @@ Route::middleware([
     Route::get('auth', [AuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
     Route::get('user/logout', [AuthController::class, 'logout']);
-    Route::post('/user/login', [AuthController::class, 'login']);
+    // Route::post('/user/login', [AuthController::class, 'login']);
     Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
     Route::post('/user/register', [AuthController::class, 'store']);
 // });
@@ -87,4 +90,13 @@ Route::get('/csrf-token', function () {
 
 Route::post('user/reset-password', [ResetPasswordController::class, 'reset']);
 Route::post('user/reset-password-process', [ResetPasswordController::class, 'resetPassword']);
+
+//Testleri listeliyorum
+Route::get('/test-list', [HomeController::class, 'testList']);
+//Testlerin verileri
+Route::get('/test-list/{slug}', [HomeController::class, 'testData']);
+
+//videolu soruları gönder
+Route::get('/video-list', [VideoController::class, 'videoList']);
+// Route::get('/video', [VideoController::class, 'getVideoQuestions']);
 
