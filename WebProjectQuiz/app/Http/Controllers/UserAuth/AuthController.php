@@ -31,7 +31,7 @@ class AuthController extends Controller
                 ->getTargetUrl(),
         ]);
     }
-    // Google Authentication
+// Google Authentication
     // public function handleAuthCallback(): JsonResponse
     // {
     //     try {
@@ -73,6 +73,10 @@ class AuthController extends Controller
         } catch (Throwable $e) {
             return response()->json(['error' => 'Google OAuth işlemi sırasında bir hata oluştu.'], 500);
         }
+        // catch (ClientException $e) {
+        //     // İlk hatayı zaten yakaladık, burada bir daha yakalamaya gerek yok
+        //     return response()->json(['error' => 'Invalid credentials provided.'], 422);
+        // }
 
         // Kullanıcıyı oluştururken is_admin değerini manuel olarak 0 olarak ayarla
         $user = User::query()
@@ -101,8 +105,8 @@ class AuthController extends Controller
     //KULLANICILAR LİSTESİ
     public function index()
     {
-        $users = User::all()->toArray(); // Kullanıcıları diziye dönüştür
-        return response()->json($users, 200);
+        $users = User::all(['name', 'level'])->toArray(); // Sadece name ve level alanlarını al
+        return response()->json(['users' => $users], 200);
     }
 
     public function show($id)
@@ -117,7 +121,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users|max:255',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:8',
         ]);
 
         // Doğrulama başarısız olursa, uygun hata mesajlarını ve kodunu dön
@@ -195,7 +199,6 @@ class AuthController extends Controller
             return response()->json(['isLoggedIn' => false], 200);
         }
     }
-
 
     public function logout(Request $request)
     {

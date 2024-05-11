@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('test_id')->constrained('tests');
+            // $table->boolval('is_video');
             $table->text('text');
             $table->string('type');
-            $table->enum('difficulty', ['easy', 'medium', 'hard'])->default('medium');
+            $table->enum('difficulty', ['easy', 'medium', 'hard'])->default('medium');//a1-a2-b1-b2 olarak değiştirilebilir
             $table->unsignedInteger('points')->default(2);
             $table->string('media_path')->nullable(); // Medya dosyasının yolu veya adı
             $table->timestamps();
