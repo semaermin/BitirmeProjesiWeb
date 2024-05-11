@@ -105,7 +105,7 @@ class AuthController extends Controller
     //KULLANICILAR LİSTESİ
     public function index()
     {
-        $users = User::all(['name', 'level'])->toArray(); // Sadece name ve level alanlarını al
+        $users = User::all(['name', 'level', 'point'])->toArray(); // Sadece name ve level alanlarını al
         return response()->json(['users' => $users], 200);
     }
 

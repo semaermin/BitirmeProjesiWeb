@@ -35,7 +35,7 @@ function LeaderboardPage() {
       <ul>
         {users.map((user, index) => (
           <li key={user.id}>
-            {index + 1}. {user.name} - Level {user.level}
+            {index + 1}. {user.name} - Level {user.level} - Puan {user.point}
           </li>
         ))}
       </ul>

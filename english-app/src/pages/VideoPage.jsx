@@ -25,7 +25,7 @@ function VideoPage() {
         {videoQuestions && videoQuestions.length > 0 ? (
           videoQuestions.map((question) => (
             <div key={question.id}>
-              <h3>{question.text}</h3>
+              <h3>{question.text} - Soru Süresi {question.duration}</h3>
               {question.media_path && <video controls src={question.media_path}></video>}
               <ul>
                 {question.answers && question.answers.map((answer, index) => (
