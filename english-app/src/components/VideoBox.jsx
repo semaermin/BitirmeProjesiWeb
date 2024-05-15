@@ -1,4 +1,3 @@
-import React from 'react';
 import '../assets/styles/components/video-box.scss';
 
 export default function VideoBox() {
@@ -8,8 +7,7 @@ export default function VideoBox() {
         <div className="video">Video</div>
         <div className="video-texts-container">
           <p className="video-text">
-
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Expedita
+            Lorem ipsum dolor sit am et consectetur, adipisicing elit. Expedita
             magnam reiciendis minima voluptates dolore sint nemo at illum fugiat
             ipsam nesciunt necessitatibus dicta modi deleniti.
           </p>
