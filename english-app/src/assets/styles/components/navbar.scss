@@ -162,6 +162,9 @@ html {
   @media screen and (max-width: 1024px) {
     nav {
       transition: none;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      box-shadow: unset;
       .mobile-menu-items {
         width: calc(100.2vw + 0.2px) !important;
         height: calc(100vh);
@@ -184,7 +187,7 @@ html {
           li {
             display: flex;
             align-items: center;
-            color: var(--text-white);
+            color: var(--white);
             margin-bottom: 24px;
             border-radius: 8px;
             transition: color 0.2s ease;
@@ -229,7 +232,7 @@ html {
               .mobile-user-fullname {
                 margin-left: 10px;
                 font-weight: bold;
-                color: var(--text-white);
+                color: var(--white);
                 transition: color 0.2s ease;
               }
               img {
@@ -320,6 +323,12 @@ html {
   .menu ul li a:hover {
     background-color: lime;
   }
+}
+
+#root.dark {
+  background-color: var(--secondary-color);
+  transition: background-color 0.25s;
+  color: white;
 }
 
 // Dark theme specific style adjustments -->

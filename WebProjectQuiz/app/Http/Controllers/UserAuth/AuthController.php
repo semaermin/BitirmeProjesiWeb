@@ -31,7 +31,7 @@ class AuthController extends Controller
                 ->getTargetUrl(),
         ]);
     }
-// Google Authentication
+    // Google Authentication
     // public function handleAuthCallback(): JsonResponse
     // {
     //     try {
@@ -105,9 +105,16 @@ class AuthController extends Controller
     //KULLANICILAR LİSTESİ
     public function index()
     {
-        $users = User::all(['name', 'level', 'point'])->toArray(); // Sadece name ve level alanlarını al
+        $users = User::orderBy('level', 'desc')
+            ->orderBy('point', 'desc')
+            ->take(50)
+            ->get(['id', 'name', 'level', 'point'])
+            ->toArray();
+
         return response()->json(['users' => $users], 200);
     }
+
+
 
     public function show($id)
     {

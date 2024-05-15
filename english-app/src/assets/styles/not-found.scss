@@ -36,7 +36,7 @@ body {
         font-size: var(--fs-14);
         &:hover {
           background-color: var(--primary-color);
-          color: var(--text-white);
+          color: var(--white);
           transition: 0.25s ease-in-out;
           cursor: pointer;
         }

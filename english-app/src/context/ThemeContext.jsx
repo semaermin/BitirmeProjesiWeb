@@ -17,10 +17,6 @@ export const ThemeProvider = ({ children }) => {
     });
   };
 
-  // const updateUser = (newUserData) => {
-  //   return setUser(newUserData);
-  // };
-
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, user, setUser }}>
       {children}

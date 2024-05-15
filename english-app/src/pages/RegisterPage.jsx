@@ -123,7 +123,7 @@ function RegisterPage() {
     <div className="register-container">
       <div className="register-left">
         <div className="register-left-image" />
-        <Link to="/login">
+        <Link to="/">
           <img
             className="sermify-logo"
             src="/src/assets/images/svg/logo-white-smile-text.svg"
@@ -135,11 +135,13 @@ function RegisterPage() {
         <div className="register">
           <div className="register-right-head">
             <h4>Hesap Oluştur</h4>
-            <img
-              className="sermify-logo-mobile"
-              src="/src/assets/images/svg/logo-red-smile-text.svg"
-              alt="logo-red"
-            />
+            <Link to="/">
+              <img
+                className="sermify-logo-mobile"
+                src="/src/assets/images/svg/logo-red-smile-text.svg"
+                alt="logo-red"
+              />
+            </Link>
           </div>
           <form onSubmit={handleSubmit}>
             <label className="register-label" htmlFor="name-surname">

@@ -1,0 +1,133 @@
+.section-1 {
+  width: 100%;
+  height: 140vh;
+  background: {
+    image: url('src/assets/images/landing-background.png');
+    position: center;
+    repeat: no-repeat;
+    size: cover;
+  }
+  nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 28px;
+    background-color: aquamarine transparent;
+    .sermify-logo {
+      img {
+        width: 170px;
+        height: 42px;
+      }
+    }
+    .button-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      .login-button {
+        background: transparent;
+        border: 2px solid var(--white);
+        color: var(--white);
+        height: var(--fs-46);
+        padding: 10px 26px;
+        border-radius: 4px;
+        font-size: 16px;
+        &:hover {
+          background-color: var(--white);
+          color: var(--primary-color);
+          cursor: pointer;
+        }
+      }
+      .register-button {
+        background: var(--white);
+        border: 2px solid var(--white);
+        color: var(--primary-color);
+        height: var(--fs-46);
+        padding: 10px 26px;
+        border-radius: 4px;
+        font-size: 16px;
+        &:hover {
+          background-color: var(--light-grey);
+          border-color: var(--light-grey);
+          color: var(--primary-color);
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .slogan-container {
+    height: max-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--white);
+    text-align: center;
+    margin-top: 60px;
+    .smile-shape-container {
+      .smile-shape {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60%;
+        position: absolute;
+        z-index: 0;
+        max-width: max-content;
+      }
+    }
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      p {
+        font-size: 72px;
+      }
+      .smile-text {
+        font-style: italic;
+        font-weight: bold;
+      }
+      .join-us-button {
+        background-color: var(--white);
+        border-radius: 4px;
+        color: var(--primary-color);
+        border: none;
+        width: max-content;
+        padding: 14px 16px;
+      }
+    }
+  }
+  .tablet-screen {
+    display: flex;
+    justify-content: center;
+    img {
+      z-index: 10;
+      margin-top: -20px;
+      width: 75%;
+    }
+  }
+}
+
+.section-2 {
+  width: 100%;
+  height: 100vh;
+  .section-2-text {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 300px;
+    color: var(--primary-color);
+    text-align: center;
+    p:first-child {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.section-3 {
+  width: 100%;
+  height: 100vh;
+  background-color: var(--light-grey);
+}

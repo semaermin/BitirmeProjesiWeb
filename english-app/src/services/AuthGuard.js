@@ -4,7 +4,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function AuthGuard({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const pagesWithAuthGuard = ['/login', '/register', '/forgot-password'];
+  const pagesWithAuthGuard = [
+    '/',
+    '/login',
+    '/register',
+    '/forgot-password',
+    '/sign-in',
+    '/auth/google',
+  ];
 
   useEffect(() => {
     checkUserLoggedIn();

@@ -10,19 +10,21 @@ import LeaderboardPage from './../pages/LeaderboardPage.jsx';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import HelpPage from '../pages/HelpPage.jsx';
+import LandingPage from '../pages/LandingPage.jsx';
 
 export const CustomRouter = [
+  { path: '/', element: <LandingPage /> },
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
-  { path: '/home', element: <HomePage /> },
+  { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/sign-in', element: <SignIn /> },
   { path: '/auth/google', element: <GoogleCallback /> },
-  { path: '/profile', element: <UserProfilePage /> },
+  { path: '/home', element: <HomePage /> },
   { path: '/video', element: <VideoPage /> },
   { path: '/exercises', element: <ExercisesPage /> },
+  { path: '/exercises/:slug', element: <ExercisesPage /> },
   { path: '/leaderboard', element: <LeaderboardPage /> },
-  { path: '/forgot-password', element: <ForgotPasswordPage /> },
+  { path: '/profile', element: <UserProfilePage /> },
   { path: '/help', element: <HelpPage /> },
   { path: '*', element: <NotFoundPage /> },
-  { path: '/exercises/:slug', element: <ExercisesPage /> },
 ];

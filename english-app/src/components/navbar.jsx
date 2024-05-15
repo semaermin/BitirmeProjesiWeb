@@ -47,6 +47,19 @@ export default function Navbar(props) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    var rootElement = document.getElementById('root');
+    if (rootElement) {
+      if (theme === 'light') {
+        rootElement.classList.remove('dark');
+        rootElement.classList.add('light');
+      } else {
+        rootElement.classList.remove('light');
+        rootElement.classList.add('dark');
+      }
+    }
+  }, [theme]);
+
   const handleItemClick = (item) => {
     setSelectedItem(item);
     if (menuOpen) {
@@ -54,6 +67,14 @@ export default function Navbar(props) {
     }
 
     if (item === 'logout') {
+      var rootElement = document.getElementById('root');
+      if (rootElement) {
+        if (theme === 'light') {
+          rootElement.classList.remove('light');
+        } else {
+          rootElement.classList.remove('dark');
+        }
+      }
       localStorage.removeItem('user');
       handleLogout();
     } else {
@@ -100,15 +121,17 @@ export default function Navbar(props) {
     <div className={theme} ref={navRef}>
       <nav className={`${menuOpen ? 'menu-open' : ''}`}>
         <div className="sermify-logo">
-          <img
-            className="sermify-logo-img"
-            src={
-              menuOpen
-                ? '/src/assets/images/svg/logo-white-smile-text.svg'
-                : '/src/assets/images/svg/logo-red-smile-text.svg'
-            }
-            alt={menuOpen ? 'sermify-red-logo' : 'sermify-white-logo'}
-          />
+          <Link to="/home">
+            <img
+              className="sermify-logo-img"
+              src={
+                menuOpen
+                  ? '/src/assets/images/svg/logo-white-smile-text.svg'
+                  : '/src/assets/images/svg/logo-red-smile-text.svg'
+              }
+              alt={menuOpen ? 'sermify-red-logo' : 'sermify-white-logo'}
+            />
+          </Link>
         </div>
         <div className="main-links">
           <ul>
