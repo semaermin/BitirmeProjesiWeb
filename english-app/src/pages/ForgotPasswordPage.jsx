@@ -30,7 +30,7 @@ function ForgotPasswordPage() {
       <div className="password-container">
         <div className="password-left">
           <div className="password-left-image" />
-          <Link to="/login">
+          <Link to="/">
             <img
               className="sermify-logo"
               src="/src/assets/images/svg/logo-white-smile-text.svg"
@@ -42,11 +42,13 @@ function ForgotPasswordPage() {
           <div className="password">
             <div className="password-right-head">
               <h4>Şifremi Unuttum</h4>
-              <img
-                className="sermify-logo-mobile"
-                src="/src/assets/images/svg/logo-red-smile-text.svg"
-                alt="sermify-red-logo-mobile"
-              />
+              <Link to="/">
+                <img
+                  className="sermify-logo-mobile"
+                  src="/src/assets/images/svg/logo-red-smile-text.svg"
+                  alt="sermify-red-logo-mobile"
+                />
+              </Link>
               <form onSubmit={handleSubmit}>
                 <label className="password-label" htmlFor="email">
                   E-posta Adresi

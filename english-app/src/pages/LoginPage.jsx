@@ -57,7 +57,7 @@ function LoginPage() {
       <div className="login-container">
         <div className="login-left">
           <div className="login-left-image" />
-          <Link to="/login">
+          <Link to="/">
             <img
               className="sermify-logo"
               src="/src/assets/images/svg/logo-white-smile-text.svg"
@@ -69,11 +69,13 @@ function LoginPage() {
           <div className="login">
             <div className="login-right-head">
               <h4>Giriş Yap</h4>
-              <img
-                className="sermify-logo-mobile"
-                src="/src/assets/images/svg/logo-red-smile-text.svg"
-                alt="sermify-red-logo-mobile"
-              />
+              <Link to="/">
+                <img
+                  className="sermify-logo-mobile"
+                  src="/src/assets/images/svg/logo-red-smile-text.svg"
+                  alt="sermify-red-logo-mobile"
+                />
+              </Link>
             </div>
             <form onSubmit={handleSubmit}>
               <label className="login-label" htmlFor="email">

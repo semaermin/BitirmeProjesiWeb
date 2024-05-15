@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Navbar from '../components/navbar';
+import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -34,8 +34,8 @@ function HomePage() {
     try {
       const response = await fetch('http://127.0.0.1:8000/test-list', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       if (response.ok) {
         const data = await response.json();
@@ -54,7 +54,9 @@ function HomePage() {
       <ul>
         {tests.map((test) => (
           <li key={test.id}>
-            <Link to={`/exercises/${test.slug}`}> {/* Link düzenlendi */}
+            <Link to={`/exercises/${test.slug}`}>
+              {' '}
+              {/* Link düzenlendi */}
               {test.id} - {test.name}
             </Link>
           </li>
