@@ -40,7 +40,7 @@ Route::middleware([
     Route::get('/quiz/{slug}', [QuizController::class, 'quizShow'])->name('quiz.show');
 
     Route::get('/quiz/{slug}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
-    // Route::put('/quiz/{slug}', [QuizController::class, 'update'])->name('quiz.update');
+    Route::put('/quiz/{slug}', [QuizController::class, 'update'])->name('quiz.update');
 });
 
 

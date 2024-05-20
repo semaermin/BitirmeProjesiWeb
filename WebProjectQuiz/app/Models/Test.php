@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Test extends Model
 {
-    protected $fillable = ['name', 'admin_id', 'slug', 'start_date', 'end_date','duration_minutes'];
+    protected $fillable = ['name', 'admin_id', 'slug','learning_purpose', 'duration_minutes'];
 
     protected static function boot()
     {

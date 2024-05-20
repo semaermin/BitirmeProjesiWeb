@@ -33,7 +33,7 @@ export default function UserProfile() {
           </div>
           <div className="user-arrangement">
             <span>
-              <TrophyFill></TrophyFill> 197
+              <TrophyFill></TrophyFill> {user.rank}
             </span>
             <span>Sıralama</span>
           </div>

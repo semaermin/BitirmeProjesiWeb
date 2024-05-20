@@ -8,16 +8,32 @@
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-xl dark:bg-gray-800 sm:rounded-lg">
+                <h2 class="m-3">
+                    Test Seviyesi: {{ $test->language_level }} - Öğrenme Amacı: {{ $test->learning_purpose }}
+                </h2>
                 <div class="list-group list-group-flush">
                     @foreach($test->questions as $index => $question)
                         <div class="list-group-item">
                             <h5 class="mb-1">{{ $index + 1 }}.) {{ $question->text }}</h5>
                             <br>
-                            @if ($question->media_path)
+                            {{-- @if ($question->media_path)
                                 <img src="{{ asset('storage/' . $question->media_path) }}" alt="Soru Resmi" width="200">
                             @else
                                 <p>Soru için fotoğraf yok</p>
+                            @endif --}}
+                            @if ($question->media_path)
+                                @if (pathinfo($question->media_path, PATHINFO_EXTENSION) == 'mp4')
+                                    <video width="320" height="240" controls>
+                                        <source src="{{ asset('storage/' . $question->media_path) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                @else
+                                    <img src="{{ asset('storage/' . $question->media_path) }}" alt="Soru Resmi" width="250">
+                                @endif
+                            @else
+                                <p>Soru için medya dosyası yok</p>
                             @endif
+
 
                             <ul class="list-group list-group-flush">
                                 @if($question->type == 1)
