@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import '../assets/styles/components/leaderboard.scss';
 import { ChevronLeft, ChevronRight, TrophyFill } from 'react-bootstrap-icons';
 
-export default function Leaderboard() {
+export default function Leaderboard({ recordsPerPage = 10 }) {
   const { theme } = useTheme();
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 5;
+  // const recordsPerPage = 10;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
   const records = data.slice(firstIndex, lastIndex);

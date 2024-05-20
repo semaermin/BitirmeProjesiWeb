@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Leaderboard from '../components/Leaderboard';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ function HomePage() {
       if (response.ok) {
         const data = await response.json();
         setTests(data.tests);
+        console.log(tests);
       } else {
         console.error('Failed to fetch test list:', response.statusText);
       }
@@ -51,6 +53,7 @@ function HomePage() {
   return (
     <div>
       <Navbar item="home"></Navbar>
+      <Leaderboard recordsPerPage={5}></Leaderboard>
       <ul>
         {tests.map((test) => (
           <li key={test.id}>

@@ -42,8 +42,8 @@ function LandingPage() {
             />
           </div>
         </div>
-        <div className="tablet-screen">
-          <img src="src/assets/images/tablet.png" alt="tablet" />
+        <div className="laptop-screen">
+          <img src="src/assets/images/laptop.png" alt="laptop" />
         </div>
       </div>
       <div className="section-2">
@@ -54,6 +54,11 @@ function LandingPage() {
             geliştir. <br />
             Puan tablosundaki rakiplerin ile yarış!
           </p>
+        </div>
+        <div className="section-box-container">
+          <div className="section-2-box"></div>
+          <div className="section-2-box"></div>
+          <div className="section-2-box"></div>
         </div>
       </div>
       <div className="section-3">3.bölüm</div>

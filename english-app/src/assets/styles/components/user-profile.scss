@@ -1,0 +1,84 @@
+.light,
+.dark {
+  height: 100%;
+  .user-profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 57%;
+    height: 35vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    .user-background {
+      height: 200px;
+      width: 100%;
+      background-color: black;
+      background: url(/src/assets/images/user-red-background.png) no-repeat
+        center center;
+      background-size: cover;
+      border-top-right-radius: 24px;
+      border-top-left-radius: 24px;
+      .user-profile-photo {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 115px;
+        flex-direction: column;
+        img {
+          width: 100px;
+          z-index: 100;
+          border-radius: 100%;
+          outline: 5px solid var(--bg-white-color);
+        }
+      }
+      p {
+        z-index: 1000;
+        color: var(--secondary-color);
+        font-weight: bold;
+      }
+    }
+    .user-info {
+      height: 200px;
+      width: 100%;
+      padding-top: 50px;
+      background-color: var(--bg-white-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      border: 2px solid var(--light-grey);
+      border-top: unset;
+      border-bottom-right-radius: 24px;
+      border-bottom-left-radius: 24px;
+      .user-point,
+      .user-arrangement {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+      div {
+        width: 25%;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        background-color: var(--mid-grey);
+        span {
+          color: var(--tertiary-color);
+          &:first-child {
+            display: flex;
+            gap: 5px;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
+}

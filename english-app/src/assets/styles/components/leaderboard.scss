@@ -1,5 +1,8 @@
 .light,
 .dark {
+  &:last-child {
+    padding-bottom: 50px;
+  }
   .leaderboard {
     display: flex;
     flex-direction: column;
@@ -159,6 +162,40 @@
       .leaderboard-user {
         padding: 14px;
         font-size: 14px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .light,
+  .dark {
+    .leaderboard {
+      .leaderboard-infos {
+        span {
+          margin: unset;
+          &:last-child {
+            gap: 18px;
+          }
+        }
+      }
+      .leaderboard-user {
+        .leaderboard-user-right {
+          gap: 20px;
+        }
+        .leaderboard-user-left {
+          gap: 10px;
+        }
+      }
+      .navigation {
+        .pagination {
+          gap: 2px;
+          .page-item {
+            button {
+              padding: 8px 10px;
+            }
+          }
+        }
       }
     }
   }
