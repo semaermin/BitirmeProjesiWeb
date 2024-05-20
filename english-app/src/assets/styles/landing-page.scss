@@ -97,13 +97,13 @@
       }
     }
   }
-  .tablet-screen {
+  .laptop-screen {
     display: flex;
     justify-content: center;
     img {
       z-index: 10;
-      margin-top: -20px;
-      width: 75%;
+      margin-top: 40px;
+      width: 70%;
     }
   }
 }
@@ -122,6 +122,11 @@
       font-size: 28px;
       font-weight: bold;
       margin-bottom: 12px;
+    }
+  }
+  .section-box-container {
+    .section-2-box {
+      width: 30%;
     }
   }
 }

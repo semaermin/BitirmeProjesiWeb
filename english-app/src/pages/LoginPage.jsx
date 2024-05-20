@@ -28,7 +28,7 @@ function LoginPage() {
       localStorage.setItem('user', JSON.stringify(userInfo?.user));
       navigate('/home');
     } catch (error) {
-      console.error('Giriş hatası:', error);
+      // console.error('Giriş hatası:', error);
     }
   };
 
