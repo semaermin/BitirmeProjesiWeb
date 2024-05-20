@@ -121,6 +121,7 @@ class AuthController extends Controller
         $user = User::findOrFail($id);
         return response()->json($user, 200);
     }
+
     //Kullanıcı kaydını is_admin değeri 0 olarak kaydediyoruz.
     public function store(Request $request)
     {
@@ -143,10 +144,36 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
         $user->is_admin = 0; // is_admin değeri 0 (false) olarak ayarlanır
+        $user->point = 0;
+        $user->level = 1;
+
+        $user->save();
+
+        // Kullanıcıların puanlarına göre sıralamasını yap
+        $rankedUsers = User::orderBy('point', 'desc')->get();
+
+        // Yeni kullanıcının sıralamasını bul
+        $rank = $rankedUsers->search(function ($item) use ($user) {
+            return $item->id === $user->id;
+        });
+
+        // Sıralama bulunamazsa, kullanıcının sıralamasını 0 olarak ayarla
+        if ($rank === false) {
+            $rank = 0;
+        } else {
+            // Sıralama bulunursa, 1 ekleyerek insanların 1'den başlayan sıralamasını sağla
+            $rank += 1;
+        }
+
+        // Kullanıcının sıralamasını güncelle
+        $user->rank = $rank;
         $user->save();
 
         // Başarıyla oluşturulan kullanıcıya ilişkin bilgileri ve başarılı mesajı dön
-        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user,
+        ], 201);
     }
 
 
@@ -190,8 +217,26 @@ class AuthController extends Controller
             // dd($user);
             $token = $user->createToken('MyApp')->plainTextToken;
 
+        // Kullanıcıların puanlarına göre sıralamasını yap
+        $rankedUsers = User::orderBy('point', 'desc')->get();
+            // Yeni kullanıcının sıralamasını bul
+        $rank = $rankedUsers->search(function ($item) use ($user) {
+            return $item->id === $user->id;
+        });
+
+        // Sıralama bulunamazsa, kullanıcının sıralamasını 0 olarak ayarla
+        if ($rank === false) {
+            $rank = 0;
+        } else {
+            // Sıralama bulunursa, 1 ekleyerek insanların 1'den başlayan sıralamasını sağla
+            $rank += 1;
+        }
+
+        // Kullanıcının sıralamasını güncelle
+        $user->rank = $rank;
+
             // Token'i kullanıcıya yanıt olarak gönder
-            return response()->json(['token' => $token, 'user' => $user, 'message' => 'Login successful'], 200);
+            return response()->json(['token' => $token, 'user' => $user ,'message' => 'Login successful'], 200);
         }
 
         // Giriş başarısız olduğunda yapılacak işlemler

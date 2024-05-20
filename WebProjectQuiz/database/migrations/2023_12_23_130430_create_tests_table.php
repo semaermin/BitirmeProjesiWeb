@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->foreignId('admin_id')->constrained('users');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->enum('learning_purpose', ['is', 'egitim', 'seyehat', 'eglence', 'kultur', 'ailevearkadaslar'])->default('egitim');//a1-a2-b1-b2 olarak değiştirilebilir
+            // $table->dateTime('start_date');
+            // $table->dateTime('end_date');
             $table->unsignedInteger('duration_minutes');
             $table->timestamps();
         });

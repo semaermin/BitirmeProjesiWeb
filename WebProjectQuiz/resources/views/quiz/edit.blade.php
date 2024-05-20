@@ -20,14 +20,14 @@
                             <label for="test_name">Test Adı:</label>
                             <input type="text" name="test_name" id="test_name" value="{{ $testName }}" class="form-control">
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="start_date">Başlangıç Tarihi:</label>
                             <input type="datetime-local" name="start_date" id="start_date" class="form-control" required value="{{ date('Y-m-d\TH:i', strtotime($startDate)) }}">
                         </div>
                         <div class="form-group">
                             <label for="end_date">Bitiş Tarihi:</label>
                             <input type="datetime-local" name="end_date" id="end_date" class="form-control" required value="{{ date('Y-m-d\TH:i', strtotime($endDate)) }}">
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="duration_minutes">Süre (Dakika):</label>
                             <input type="number" name="duration_minutes" id="duration_minutes" class="form-control" required value="{{ $durationMinutes }}">
@@ -90,8 +90,6 @@
                         <!-- Gönderme Butonu -->
                         <button type="submit" class="btn btn-primary">Güncelle</button>
                     </form>
-
-
                 </div>
             </div>
         </div>
