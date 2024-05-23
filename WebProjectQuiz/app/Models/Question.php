@@ -27,8 +27,8 @@ class Question extends Model
     {
         return $this->hasMany(MatchingOption::class);
     }
-    public function video()
-    {
-        return $this->hasOne(Video::class);
-    }
+    // public function video()
+    // {
+    //     return $this->hasOne(Video::class);
+    // }
 }

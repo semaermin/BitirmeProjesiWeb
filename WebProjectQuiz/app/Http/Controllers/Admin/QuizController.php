@@ -72,41 +72,28 @@ class QuizController extends Controller
     //Test oluşturma
     public function questionStore(Request $request)
     {
-
+        // dd($request->all());
         // Formdan gelen verileri al
         $adminId = $request->input('admin_id');
         $testName = $request->input('test_name');
-        $language_level= $request->input('language_level');
+        $language_level = $request->input('language_level');
         $learning_purpose = $request->input('learning_purpose');
         $questions = $request->input('question_text');
-        $types = $request->input('question_type');
+        $types = $request->input('question_type', []); // Boş array varsayılan
         $difficulties = $request->input('question_difficulty');
         $answers = $request->input('answers');
-        $matchingPairs= $request->input('matching_pairs');
+        $matchingPairs = $request->input('matching_pairs');
         $correctAnswers = $request->input('correct_answer');
         $points = $request->input('question_points');
         $imageInputs = $request->file('imageInput');
         $videoInputs = $request->file('videoInput');
-        // Yeni alanlar: başlangıç tarihi, bitiş tarihi ve süre
-        // $startDate = $request->input('start_date');
-        // $endDate = $request->input('end_date');
         $durationMinutes = $request->input('duration_minutes');
-
-        // Başlangıç tarihi, bitiş tarihinden önce ve en az güncel tarih kadar olmalı
-        $currentDate = now()->toDateString();
-        // $validatedData = $request->validate([
-        //     'start_date' => 'required|date|after_or_equal:' . $currentDate,
-        //     'end_date' => 'required|date|after:start_date',
-        //     // Diğer gerekli doğrulama kuralları buraya eklenebilir
-        // ]);
 
         // Test oluştur
         $test = new Test();
         $test->name = $testName;
         $test->admin_id = $adminId;
-        // $test->start_date = $startDate;
-        // $test->end_date = $endDate;
-        $test->language_level= $language_level;
+        $test->language_level = $language_level;
         $test->learning_purpose = $learning_purpose;
         $test->duration_minutes = $durationMinutes;
 
@@ -124,29 +111,42 @@ class QuizController extends Controller
         // Test save
         $test->save();
 
-        // question and answers save
+        // Soruları ve cevapları kaydet
         foreach ($questions as $index => $questionText) {
             // question save
             $question = new Question();
             $question->test_id = $test->id;
             $question->text = $questionText;
-            $question->type = $types[$index];
-            $question->difficulty = $difficulties[$index];
+
+            // question type
+            if (isset($types[$index])) {
+                $question->type = $types[$index];
+            } else {
+                // Varsayılan bir tür atanabilir veya hata yönetimi yapılabilir
+                return redirect()->back()->withErrors(['question_type' => 'Soru tipi belirtilmemiş.']);
+            }
+
+            // question difficulty
+            if (isset($difficulties[$index])) {
+                $question->difficulty = $difficulties[$index];
+            } else {
+                return redirect()->back()->withErrors(['question_difficulty' => 'Soru zorluk derecesi belirtilmemiş.']);
+            }
+
             $question->points = $this->calculatePoints($points, $index, $question->difficulty);
 
-            // Formdan gelen medya dosyalarini kontrol et
+            // Formdan gelen medya dosyalarını kontrol et
             if (isset($imageInputs[$index])) {
                 // Resim dosyası varsa
                 $imageInput = $imageInputs[$index];
                 $fileName = time() . '_' . $imageInput->getClientOriginalName();
                 $path = $imageInput->storeAs('admin/questionFile/photos', $fileName, 'public');
                 $question->media_path = 'admin/questionFile/photos/' . $fileName; // sadece dosya adını kaydet
-            }
-            elseif (isset($videoInputs[$index])) {
+            } elseif (isset($videoInputs[$index])) {
                 // Video dosyası varsa
                 $videoInput = $videoInputs[$index];
                 $fileName = time() . '_' . $videoInput->getClientOriginalName();
-                $path = $videoInput->storeAs('admin/questionFile/videos', $fileName ,'public'); // storage dizinine kaydet
+                $path = $videoInput->storeAs('admin/questionFile/videos', $fileName, 'public'); // storage dizinine kaydet
                 $question->media_path = $path; // dosyanın yolu veritabanına kaydedilir
             }
 
@@ -154,21 +154,21 @@ class QuizController extends Controller
             $question->save();
 
             if ($question->type == 1) { // Çoktan seçmeli soru
-               // answers save
-               foreach ($answers as $index => $answer) {
-                if (isset($answer['text']) && is_array($answer['text'])) {
-                    foreach ($answer['text'] as $answerIndex => $answerText) {
-                    $answer = new Answer();
-                    $answer->question_id = $question->id;
-                    $answer->text = $answerText;
+                if (isset($answers[$index]['text']) && is_array($answers[$index]['text'])) {
+                    foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
+                        $answerModel = new Answer();
+                        $answerModel->question_id = $question->id;
+                        $answerModel->text = $answerText;
 
-                    // Doğru cevabı belirle
-                    $isCorrect = isset($correctAnswers[$index]) && $correctAnswers[$index] == $answerIndex;
-                    $answer->is_correct = $isCorrect;
+                        // Doğru cevapları doğru sırayla al
+                        $isCorrect = isset($correctAnswers[$index]) && $answerIndex == $correctAnswers[$index];
+                        $answerModel->is_correct = $isCorrect;
 
-                    $answer->save();
-                }}}
-            } elseif ($question->type == 2) { // Eşleştirme sorusu
+                        $answerModel->save();
+                    }
+                }
+            }
+            elseif ($question->type == 2) { // Eşleştirme sorusu
                 foreach ($matchingPairs as $pairIndex => $pairs) {
                     // Her bir $pairs öğesinin alt dizilere sahip olup olmadığını kontrol edin
                     if (is_array($pairs)) {
@@ -186,8 +186,8 @@ class QuizController extends Controller
                         // Alt dizi yoksa, hata mesajı gönderin veya hatayı başka şekilde yönetin
                     }
                 }
-
             }
+
         }
 
         // Yönlendirme ve mesaj dön
@@ -198,22 +198,16 @@ class QuizController extends Controller
     }
 
 
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($slug)
     {
-        // Slug'a göre ilgili testi bul
         $test = Test::where('slug', $slug)->firstOrFail();
-        // Mevcut testin adını al
         $testName = $test->name;
-
-        // Mevcut testin başlangıç tarihi, bitiş tarihi ve süresini al
-        // $startDate = $test->start_date;
-        // $endDate = $test->end_date;
         $durationMinutes = $test->duration_minutes;
 
-        // Mevcut testin sorularını al ve her bir sorunun seçeneklerini ve doğru cevabını ekleyerek bir dizi oluştur
         $questions = [];
         foreach ($test->questions as $question) {
             $answers = [];
@@ -223,121 +217,102 @@ class QuizController extends Controller
                     'is_correct' => $answer->is_correct,
                 ];
             }
-            // Eşleştirme soruları için MatchingOption modelini kullanarak eşleştirme seçeneklerini al
+
             $matchingPairs = [];
             if ($question->type == 2) {
-                $matchingOptions = MatchingOption::where('question_id', $question->id)->get();
+                $matchingOptions = MatchingOption::where('question_id', $question->id)->orderBy('pair_order')->get();
+                $currentPair = [];
                 foreach ($matchingOptions as $option) {
-                    $matchingPairs[] = [
-                        'left' => $option->left_option,
-                        'right' => $option->right_option,
-                    ];
+                    if (empty($currentPair)) {
+                        // Eğer currentPair boşsa sol eşi ekle
+                        $currentPair['left'] = $option->option_text;
+                    } else {
+                        // Eğer currentPair doluysa sağ eşi ekle
+                        $currentPair['right'] = $option->option_text;
+                        // Mevcut çifti matchingPairs dizisine ekle
+                        $matchingPairs[] = $currentPair;
+                        // currentPair'i temizle
+                        $currentPair = [];
+                    }
                 }
             }
-            // Soruları diziye ekle
+
             $questions[] = [
                 'text' => $question->text,
                 'type' => $question->type,
                 'answers' => $answers,
-                'matching_pairs' => $matchingPairs, // Eşleştirme çiftlerini ekleyin
+                'matching_pairs' => $matchingPairs,
                 'difficulty' => $question->difficulty,
                 'points' => $question->points,
             ];
         }
-        // Düzenleme formunu döndür ve mevcut test verilerini iletmek
+
         return view('quiz.edit-copy', compact('test', 'testName', 'durationMinutes', 'questions'))->with([
             'message' => 'TESTİNİZ GÜNCELLENDİ',
             'alert-type' => 'success'
         ]);
     }
 
+
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $slug)
     {
-        // Formdan gelen verileri al
-        $testId = $request->input('test_id');
+        $test = Test::where('slug', $slug)->firstOrFail();
 
-        $adminId = $request->input('admin_id');
-        $testName = $request->input('test_name');
-        $questions = $request->input('question_text');
-        $types = $request->input('question_type');
-        $difficulties = $request->input('question_difficulty');
-        $answers = $request->input('answers');
-        $correctAnswers = $request->input('correct_answer');
-        $points = $request->input('question_points');
+        // Update the test details
+        $test->update([
+            'name' => $request->input('test_name'),
+            'duration_minutes' => $request->input('duration_minutes'),
+            'learning_purpose' => $request->input('learning_purpose'),
+            'language_level' => $request->input('language_level'),
+            'admin_id' => $request->input('admin_id'),
+        ]);
 
-        // Yeni alanlar: başlangıç tarihi, bitiş tarihi ve süre
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $durationMinutes = $request->input('duration_minutes');
+        // Handle existing questions
+        $existingQuestionIds = $request->input('existing_question_ids', []);
+        $existingQuestions = Question::where('test_id', $test->id)->whereIn('id', $existingQuestionIds)->get();
 
-        // Mevcut testi bul
-        $test = Test::findOrFail($testId);
+        foreach ($existingQuestions as $index => $question) {
+            $question->update([
+                'text' => $request->input('question_text')[$index],
+                'difficulty' => $request->input('question_difficulty')[$index],
+                'points' => $request->input('question_points')[$index],
+            ]);
 
-        // Test verilerini güncelle
-        $test->admin_id = $adminId;
-        $test->name = $testName;
-        $test->start_date = $startDate;
-        $test->end_date = $endDate;
-        $test->duration_minutes = $durationMinutes;
-        $test->save();
-
-        // Mevcut soruları ve cevapları al
-        $existingQuestions = $test->questions;
-
-        // Soruları güncelle veya ekle
-        foreach ($questions as $index => $questionText) {
-            // Sorunun index numarasını kontrol et
-            if (isset($existingQuestions[$index])) {
-                // Index varsa, mevcut soruyu güncelle
-                $question = $existingQuestions[$index];
-                $question->text = $questionText;
-                $question->type = $types[$index];
-                $question->difficulty = $difficulties[$index];
-                $question->points = $this->calculatePoints($points, $index, $difficulties[$index]);
-                $question->save();
-
-                // Cevapları güncelle
-                foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
-                    $answer = $question->answers[$answerIndex];
-                    $answer->text = $answerText;
-
-                    // Doğru cevabı güncelle
-                    $isCorrect = isset($correctAnswers[$index]) && $correctAnswers[$index] == $answerIndex;
-                    $answer->is_correct = $isCorrect;
-                    // dd($request);
-                    // dd($question,$answers,$answer,$correctAnswers,$answerIndex,$isCorrect);
-                    $answer->save();
-                }
-            } else {
-                // Index yoksa, yeni bir soru oluştur
-                $question = new Question();
-                $question->test_id = $testId;
-                $question->text = $questionText;
-                $question->type = $types[$index];
-                $question->difficulty = $difficulties[$index];
-                $question->points = $this->calculatePoints($points, $index, $difficulties[$index]);
-                $question->save();
-
-                // Yeni cevapları ekle
-                foreach ($answers[$index]['text'] as $answerIndex => $answerText) {
-                    $answer = new Answer();
-                    $answer->question_id = $question->id;
-                    $answer->text = $answerText;
-                    $answer->is_correct = ($correctAnswers[$index] == $answerIndex); // Doğru cevabı güncelle
-                    $answer->save();
-                }
+            // Update answers for the existing question
+            foreach ($question->answers as $answerIndex => $answer) {
+                $answer->update([
+                    'text' => $request->input('multiple_choice_answers')[$index][$answerIndex],
+                    'is_correct' => in_array($answerIndex, $request->input('correct_answers')[$index]),
+                ]);
             }
         }
 
-        // Yönlendirme ve mesaj dön
-        return redirect()->route('quiz.quiz')->with([
-            'message' => 'TESTİNİZ GÜNCELLENDİ',
-            'alert-type' => 'success'
-        ]);
+        // Handle new questions
+        $newQuestions = $request->input('new_questions', []);
+        foreach ($newQuestions as $index => $newQuestion) {
+            $question = Question::create([
+                'test_id' => $test->id,
+                'text' => $newQuestion['text'],
+                'difficulty' => $newQuestion['difficulty'],
+                'points' => $newQuestion['points'],
+            ]);
+
+            // Add answers for the new question
+            foreach ($newQuestion['answers'] as $answerIndex => $answerText) {
+                Answer::create([
+                    'question_id' => $question->id,
+                    'text' => $answerText,
+                    'is_correct' => in_array($answerIndex, $newQuestion['correct_answers']),
+                ]);
+            }
+        }
+
+        return redirect()->route('quiz.show', ['slug' => $slug])->with('success', 'Test updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
