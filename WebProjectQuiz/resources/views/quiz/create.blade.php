@@ -69,7 +69,7 @@
                         <button type="button" class="m-2 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">Yeni Soru Ekle</button>
 
                         <!-- Gönderme Butonu -->
-                        <button type="submit" class="m-2 btn btn-primary" onclick="return validateForm()">Testi
+                        <button type="submit" class="m-2 btn btn-danger" onclick="return validateForm()">Testi
                             Oluştur</button>
                     </form>
                 </div>
