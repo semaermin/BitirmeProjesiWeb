@@ -15,7 +15,7 @@
 
             <div>
                 <x-label for="password" value="{{ __('Parola') }}" />
-                <x-input id="password" class="block w-full mt-1" type="password" name="password" required autocomplete="current-password" autofocus />
+                <x-login-input id="password" class="block w-full mt-1" type="password" name="password" required autocomplete="current-password" autofocus />
             </div>
 
             <div class="flex justify-end mt-4">

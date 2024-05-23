@@ -39,8 +39,8 @@ Route::middleware([
     Route::post('/quiz/create', [QuizController::class, 'questionStore'])->name('quiz.store'); // Test ekleme formundan gelen verileri işleme
     Route::get('/quiz/{slug}', [QuizController::class, 'quizShow'])->name('quiz.show');
 
-    Route::get('/quiz/{slug}/edit', [QuizController::class, 'edit'])->name('quiz.edit');
-    Route::put('/quiz/{slug}', [QuizController::class, 'update'])->name('quiz.update');
+    Route::get('/quiz/{slug}/edit', [QuizController::class, 'edit'])->name('quiz.edit'); //daha önceki testi gösterir
+    Route::put('/quiz/{slug}', [QuizController::class, 'update'])->name('quiz.update'); // update fonksiyonu
 });
 
 

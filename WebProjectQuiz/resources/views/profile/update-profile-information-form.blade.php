@@ -10,7 +10,7 @@
     <x-slot name="form">
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 text-white sm:col-span-4">
                 <!-- Profile Photo File Input -->
                 <input type="file" id="photo" class="hidden"
                             wire:model.live="photo"
@@ -53,14 +53,14 @@
         @endif
 
         <!-- Name -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 text-white sm:col-span-4">
             <x-label for="name" value="{{ __('Ad') }}" />
             <x-input id="name" type="text" class="block w-full mt-1" wire:model="state.name" required autocomplete="name" />
             <x-input-error for="name" class="mt-2" />
         </div>
 
         <!-- Email -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 text-white sm:col-span-4">
             <x-label for="email" value="{{ __('Email') }}" />
             <x-input id="email" type="email" class="block w-full mt-1" wire:model="state.email" required autocomplete="username" />
             <x-input-error for="email" class="mt-2" />
@@ -88,7 +88,7 @@
             {{ __('Kaydedildi.') }}
         </x-action-message>
 
-        <x-button wire:loading.attr="disabled" wire:target="photo">
+        <x-button wire:target="photo">
             {{ __('Kaydet') }}
         </x-button>
     </x-slot>
