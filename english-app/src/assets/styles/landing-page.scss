@@ -1,6 +1,7 @@
 .section-1 {
+  text-align: justify;
   width: 100%;
-  height: 140vh;
+  height: auto;
   background: {
     image: url('src/assets/images/landing-background.png');
     position: center;
@@ -12,7 +13,7 @@
     justify-content: space-around;
     align-items: center;
     padding-top: 28px;
-    background-color: aquamarine transparent;
+    background-color: transparent;
     .sermify-logo {
       img {
         width: 170px;
@@ -24,6 +25,8 @@
       align-items: center;
       gap: 16px;
       .login-button {
+        display: flex;
+        align-items: center;
         background: transparent;
         border: 2px solid var(--white);
         color: var(--white);
@@ -31,13 +34,17 @@
         padding: 10px 26px;
         border-radius: 4px;
         font-size: 16px;
+        transition: transform 0.3s ease;
         &:hover {
           background-color: var(--white);
           color: var(--primary-color);
           cursor: pointer;
+          transform: scale(1.1);
         }
       }
       .register-button {
+        display: flex;
+        align-items: center;
         background: var(--white);
         border: 2px solid var(--white);
         color: var(--primary-color);
@@ -45,13 +52,18 @@
         padding: 10px 26px;
         border-radius: 4px;
         font-size: 16px;
+        transition: transform 0.3s ease;
         &:hover {
           background-color: var(--light-grey);
           border-color: var(--light-grey);
           color: var(--primary-color);
           cursor: pointer;
+          transform: scale(1.1);
         }
       }
+    }
+    .button-container-mobile {
+      display: none;
     }
   }
   .slogan-container {
@@ -63,6 +75,10 @@
     color: var(--white);
     text-align: center;
     margin-top: 60px;
+    padding: 0px 20px;
+    .slogan-container-long-text {
+      line-height: 1.5;
+    }
     .smile-shape-container {
       .smile-shape {
         display: flex;
@@ -80,6 +96,7 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
+      line-height: 1.2;
       p {
         font-size: 72px;
       }
@@ -87,37 +104,64 @@
         font-style: italic;
         font-weight: bold;
       }
-      .join-us-button {
-        background-color: var(--white);
-        border-radius: 4px;
-        color: var(--primary-color);
-        border: none;
-        width: max-content;
-        padding: 14px 16px;
+      a {
+        z-index: 100;
+        .join-us-button {
+          background-color: var(--white);
+          border-radius: 4px;
+          color: var(--primary-color);
+          border: none;
+          width: max-content;
+          padding: 14px 16px;
+          height: var(--fs-46);
+          z-index: 10;
+          display: flex !important;
+          align-items: center;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+          font-size: 14px;
+          &:hover {
+            background-color: var();
+            transform: scale(1.05);
+            background-color: var(--light-grey);
+          }
+        }
       }
     }
   }
   .laptop-screen {
     display: flex;
     justify-content: center;
+    filter: drop-shadow(2px -2px 4px rgb(48, 47, 47));
     img {
       z-index: 10;
       margin-top: 40px;
+      margin-bottom: -100px;
       width: 70%;
+    }
+  }
+  button {
+    display: none;
+    .mobile-scroll-button {
+      display: none;
     }
   }
 }
 
 .section-2 {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   .section-2-text {
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 300px;
     color: var(--primary-color);
     text-align: center;
+    margin-top: 180px;
     p:first-child {
       font-size: 28px;
       font-weight: bold;
@@ -125,8 +169,45 @@
     }
   }
   .section-box-container {
+    display: flex;
+    gap: 25px;
+    margin-top: 30px;
+    justify-content: center;
+    width: 80%;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
     .section-2-box {
-      width: 30%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 300px;
+      height: 200px;
+      padding: 24px;
+      background-color: var(--light-grey);
+      color: var(--primary-color);
+      border-radius: 24px;
+      // transition: transform 0.3s ease;
+      &:hover {
+        // transform: scale(1.02);
+        box-shadow: 2px 2px 8px var(--primary-color);
+      }
+      span {
+        svg {
+          width: 28px;
+          height: 20px;
+        }
+      }
+      div {
+        span {
+          font-weight: bold;
+          font-size: 20px;
+        }
+        p {
+          margin-top: 16px;
+          font-size: 14px;
+          color: var(--secondary-color);
+        }
+      }
     }
   }
 }
@@ -135,4 +216,176 @@
   width: 100%;
   height: 100vh;
   background-color: var(--light-grey);
+  position: relative;
+  .smile-shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    .other-content {
+      position: relative;
+      z-index: 2;
+    }
+  }
+  .mobile-screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 100;
+    margin-top: 30px;
+    filter: drop-shadow(2px -2px 4px rgb(48, 47, 47));
+    img {
+      margin-top: -40px;
+      max-width: auto;
+    }
+  }
+}
+
+footer {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--primary-color);
+  color: var(--white);
+  .footer-sermify {
+    img {
+      width: calc(170px * 0.9);
+      height: calc(42px * 0.9);
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .section-1 .slogan-container {
+    height: max-content;
+    width: 100%;
+    margin-top: 140px;
+    .smile-shape-container {
+      .smile-shape {
+        width: 60%;
+        position: absolute;
+        max-width: max-content;
+      }
+    }
+    div {
+      gap: 16px;
+      p {
+        font-size: 48px;
+      }
+      .join-us-button {
+        width: max-content;
+        padding: 14px 16px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section-1 {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    .laptop-screen {
+      display: none !important;
+    }
+    button {
+      background-color: unset;
+      border: unset;
+      display: inline-block;
+      .mobile-scroll-button {
+        max-width: 100%;
+        justify-content: center;
+        display: inline-flex;
+        position: absolute;
+        bottom: 0;
+        margin-bottom: 70px;
+        color: var(--white);
+        svg {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .smile-shape-container {
+      .smile-shape {
+        width: 100% !important;
+      }
+    }
+    nav {
+      .sermify-logo {
+        img {
+          width: 130px;
+          height: 32px;
+        }
+      }
+      .button-container {
+        display: none;
+      }
+      .button-container-mobile {
+        display: inline-flex;
+        button {
+          padding: unset;
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          justify-content: center;
+          background-color: unset;
+          border: unset;
+          color: var(--white);
+          cursor: pointer;
+          svg {
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+  .section-2 {
+    .section-2-text {
+      margin-top: 60px !important;
+    }
+  }
+  .section-3 {
+    margin-top: 50px !important;
+    .smile-shape {
+      display: none;
+    }
+  }
+  footer {
+    padding: 18px 30px;
+    .footer-sermify {
+      img {
+        width: 130px;
+        height: 32px;
+      }
+    }
+    .footer-copyright {
+      text-align: right;
+      font-size: 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .slogan-container {
+    .slogan-container-texts {
+      p {
+        font-size: 40px !important;
+      }
+    }
+  }
 }

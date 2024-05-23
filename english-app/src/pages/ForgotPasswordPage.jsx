@@ -54,14 +54,16 @@ function ForgotPasswordPage() {
                   E-posta Adresi
                 </label>
                 <input
-                  className="login-input"
+                  className="remember-password-input"
                   type="email"
                   value={email}
                   placeholder="johndoe@example.com"
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <button type="submit">Şifreyi Sıfırla</button>
+                <button className="remember-password-button" type="submit">
+                  Sıfırlama Bağlantısı Gönder
+                </button>
               </form>
               {message && <p>{message}</p>}
               {error && <p>{error}</p>}

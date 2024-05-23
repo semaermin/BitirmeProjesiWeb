@@ -27,8 +27,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="duration_minutes">Süre (Dakika):</label>
-                                            <input type="number" name="duration_minutes" id="duration_minutes"
-                                                class="form-control" required>
+                                            <input type="number" name="duration_minutes" id="duration_minutes" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -51,9 +50,9 @@
                                             <label for="language_level">Test Seviyesi:</label>
                                             <select name="language_level" id="language_level" class="form-control">
                                                 <option value="a1">A1</option>
-                                                <option value="a1">A2</option>
+                                                <option value="a2">A2</option>
                                                 <option value="b1">B1</option>
-                                                <option value="b1">B2</option>
+                                                <option value="b2">B2</option>
                                                 <option value="c1">C1</option>
                                                 <option value="c2">C2</option>
                                             </select>
@@ -67,8 +66,7 @@
                             <!-- Buraya otomatik olarak soru alanları eklenecek -->
                         </div>
                         <!-- Yeni Soru Ekle Butonu -->
-                        <button type="button" class="m-2 btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">Yeni Soru Ekle</button>
+                        <button type="button" class="m-2 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">Yeni Soru Ekle</button>
 
                         <!-- Gönderme Butonu -->
                         <button type="submit" class="m-2 btn btn-danger" onclick="return validateForm()">Testi
@@ -84,8 +82,7 @@
 
 
 <!-- Modal -->
-<div class="text-white modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="text-white modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content bg-dark">
             <div class="modal-header">

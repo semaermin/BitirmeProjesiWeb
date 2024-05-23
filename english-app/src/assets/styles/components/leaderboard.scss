@@ -87,6 +87,9 @@
         color: var(--primary-color);
         border-color: var(--primary-color);
       }
+      &:hover {
+        background-color: var(--light-grey) !important;
+      }
     }
     .navigation {
       width: 100%;
@@ -95,6 +98,10 @@
         background-color: var(--white);
         border: 1px solid var(--light-grey);
         border-radius: 4px;
+        transition: transform 0.3s ease;
+        &:hover {
+          transform: scale(1.08);
+        }
         button {
           padding: 8px 12px;
           background-color: unset;

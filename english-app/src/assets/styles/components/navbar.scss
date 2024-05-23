@@ -342,15 +342,17 @@ html {
     }
     .mobile-menu-items {
       ul {
-        li {
-          .mobile-user-fullname {
-            color: var(--secondary-color) !important;
-          }
-          color: var(--secondary-color);
-          .theme-switcher {
-            svg {
-              border-color: black;
-              background-color: unset;
+        a {
+          li {
+            .mobile-user-fullname {
+              color: var(--secondary-color) !important;
+            }
+            color: var(--secondary-color);
+            .theme-switcher {
+              svg {
+                border-color: black;
+                background-color: unset;
+              }
             }
           }
         }
