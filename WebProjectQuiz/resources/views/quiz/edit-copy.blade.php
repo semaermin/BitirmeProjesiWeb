@@ -28,7 +28,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="duration_minutes">Süre (Dakika):</label>
-                                            <input type="number" name="duration_minutes" id="duration_minutes" value="{{ $durationMinutes }}"class="form-control" required>
+                                            <input type="number" name="duration_minutes" id="duration_minutes" value="{{ $durationMinutes }}" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -69,110 +69,109 @@
                                 <div class="card-body">
                                     <div class="m-2 form-group row">
                                         @foreach ($questions as $index => $question)
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="question_difficulty_{{ $index }}">Zorluk:</label>
-                                                        <select name="question_difficulty[]" id="question_difficulty_{{ $index }}" class="form-control" required>
-                                                            <option value="easy" {{ $question['difficulty'] == 'easy' ? 'selected' : '' }}>Kolay</option>
-                                                            <option value="medium" {{ $question['difficulty'] == 'medium' ? 'selected' : '' }}>Orta</option>
-                                                            <option value="hard" {{ $question['difficulty'] == 'hard' ? 'selected' : '' }}>Zor</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="question_points_{{ $index }}">Puan:</label>
-                                                        <select name="question_points[]" id="question_points_{{ $index }}" class="form-control">
-                                                            <option value="1" {{ $question['points'] == 1 ? 'selected' : '' }}>1</option>
-                                                            <option value="2" {{ $question['points'] == 2 ? 'selected' : '' }}>2</option>
-                                                            <option value="3" {{ $question['points'] == 3 ? 'selected' : '' }}>3</option>
-                                                            <option value="4" {{ $question['points'] == 4 ? 'selected' : '' }}>4</option>
-                                                            <option value="5" {{ $question['points'] == 5 ? 'selected' : '' }}>5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="question_difficulty_{{ $index }}">Zorluk:</label>
+                                                <select name="question_difficulty[]" id="question_difficulty_{{ $index }}" class="form-control" required>
+                                                    <option value="easy" {{ $question['difficulty'] == 'easy' ? 'selected' : '' }}>Kolay</option>
+                                                    <option value="medium" {{ $question['difficulty'] == 'medium' ? 'selected' : '' }}>Orta</option>
+                                                    <option value="hard" {{ $question['difficulty'] == 'hard' ? 'selected' : '' }}>Zor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="question_points_{{ $index }}">Puan:</label>
+                                                <select name="question_points[]" id="question_points_{{ $index }}" class="form-control">
+                                                    <option value="1" {{ $question['points'] == 1 ? 'selected' : '' }}>1</option>
+                                                    <option value="2" {{ $question['points'] == 2 ? 'selected' : '' }}>2</option>
+                                                    <option value="3" {{ $question['points'] == 3 ? 'selected' : '' }}>3</option>
+                                                    <option value="4" {{ $question['points'] == 4 ? 'selected' : '' }}>4</option>
+                                                    <option value="5" {{ $question['points'] == 5 ? 'selected' : '' }}>5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="question_text_{{ $index }}">Soru Metni:</label>
+                                            <div class="mb-3 input-group">
+                                                <label class="btn btn-outline-secondary">
+                                                    <i class="fa-solid fa-image"></i>
+                                                    <input type="file" id="imageInput_{{ $index }}" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)"> </label>
+                                                <label class="btn btn-outline-secondary">
+                                                    <i class="fa-solid fa-video"></i>
+                                                    <input type="file" id="videoInput_{{ $index }}" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
+                                                </label>
+                                                <input type="text" id="question_text_{{ $index }}" name="question_text[]" class="form-control" value="{{ $question['text'] }}" placeholder="Soru">
+                                            </div>
+                                        </div>
+                                        <div class="m-2 form-group row">
+                                            <div class="answer-option">
+                                                @if ($question['type'] == 1)
+                                                <!-- Çoktan Seçmeli Soru için -->
                                                 <div class="form-group row">
-                                                    <label for="question_text_{{ $index }}">Soru Metni:</label>
-                                                    <div class="mb-3 input-group">
-                                                        <label class="btn btn-outline-secondary">
-                                                            <i class="fa-solid fa-image"></i>
-                                                            <input type="file" id="imageInput_{{ $index }}" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">                                                        </label>
-                                                        <label class="btn btn-outline-secondary">
-                                                            <i class="fa-solid fa-video"></i>
-                                                            <input type="file" id="videoInput_{{ $index }}" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
-                                                        </label>
-                                                        <input type="text" id="question_text_{{ $index }}" name="question_text[]" class="form-control" value="{{ $question['text'] }}" placeholder="Soru">
+                                                    <label for="answers">Seçenekler:</label>
+                                                    <div class="answer-options">
+                                                        @foreach ($question['answers'] as $answerIndex => $answer)
+                                                        <div class="input-group">
+                                                            <button class="btn btn-outline-secondary" type="button" onclick="addImage(this)">
+                                                                <i class="fa-solid fa-image"></i>
+                                                            </button>
+                                                            <input type="text" name="multiple_choice_answers[{{ $index }}][{{ $answerIndex }}]" class="form-control" value="{{ $answer['text'] }}" placeholder="Seçenek" required>
+                                                            <input type="checkbox" name="correct_answers[{{ $index }}][]" value="{{ $answerIndex }}" {{ $answer['is_correct'] ? 'checked' : '' }}>
+                                                            <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
+                                                                <i class="fa-solid fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                        @endforeach
                                                     </div>
                                                 </div>
-                                                <div class="m-2 form-group row">
-                                                    <div class="answer-option">
-                                                        @if ($question['type'] == 1)
-                                                            <!-- Çoktan Seçmeli Soru için -->
-                                                            <div class="form-group row">
-                                                                <label for="answers">Seçenekler:</label>
-                                                                <div class="answer-options">
-                                                                    @foreach ($question['answers'] as $answerIndex => $answer)
-                                                                        <div class="input-group">
-                                                                            <button class="btn btn-outline-secondary" type="button" onclick="addImage(this)">
-                                                                                <i class="fa-solid fa-image"></i>
-                                                                            </button>
-                                                                            <input type="text" name="multiple_choice_answers[{{ $index }}][{{ $answerIndex }}]" class="form-control" value="{{ $answer['text'] }}" placeholder="Seçenek" required>
-                                                                            <input type="checkbox" name="correct_answers[{{ $index }}][]" value="{{ $answerIndex }}" {{ $answer['is_correct'] ? 'checked' : '' }}>
-                                                                            <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                                                                <i class="fa-solid fa-trash"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                    @endforeach
+                                                @elseif ($question['type'] == 2)
+                                                <!-- Eşleştirme için -->
+                                                <div class="form-group row">
+                                                    <label for="answers">Eşleştirme Çiftleri:</label>
+                                                    <div class="answer-options">
+                                                        @foreach ($question['matching_pairs'] as $pairIndex => $pair)
+                                                        <div class="mb-3 row">
+                                                            <div class="input-group">
+                                                                <label class="btn btn-outline-secondary">
+                                                                    <i class="fa-solid fa-image"></i>
+                                                                    <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
+                                                                </label>
+                                                                <input type="text" name="matching_pairs[{{ $index }}][{{ $pairIndex }}][left]" value="{{ $pair['left'] }}" class="form-control" placeholder="Sol Eş" required>
+                                                                <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
+                                                                    <i class="fa-solid fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md d-flex justify-content-center align-items-center"><i class="fa-solid fa-arrows-left-right"></i></div>
+                                                        <div class="col-md">
+                                                            <div class="mb-3 row">
+                                                                <div class="input-group">
+                                                                    <button class="btn btn-outline-secondary" type="button" onclick="addImage(this)">
+                                                                        <i class="fa-solid fa-image"></i>
+                                                                    </button>
+                                                                    <input type="text" name="matching_pairs[{{ $index }}][{{ $pairIndex }}][right]" value="{{ $pair['right'] }}" class="form-control" placeholder="Sağ Eş" required>
+                                                                    <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
+                                                                        <i class="fa-solid fa-trash"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
-                                                        @elseif ($question['type'] == 2)
-                                                            <!-- Eşleştirme için -->
-                                                            <div class="form-group row">
-                                                                <label for="answers">Eşleştirme Çiftleri:</label>
-                                                                <div class="answer-options">
-                                                                    @foreach ($question['matching_pairs'] as $pairIndex => $pair)
-                                                                        <div class="mb-3 row">
-                                                                            <div class="input-group">
-                                                                                <label class="btn btn-outline-secondary">
-                                                                                    <i class="fa-solid fa-image"></i>
-                                                                                    <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                                                                                </label>
-                                                                                <input type="text" name="matching_pairs[{{ $index }}][{{ $pairIndex }}][left]" value="{{ $pair['left'] }}" class="form-control" placeholder="Sol Eş" required>
-                                                                                <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                                                                    <i class="fa-solid fa-trash"></i>
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md d-flex justify-content-center align-items-center"><i class="fa-solid fa-arrows-left-right"></i></div>
-                                                                        <div class="col-md">
-                                                                            <div class="mb-3 row">
-                                                                                <div class="input-group">
-                                                                                    <button class="btn btn-outline-secondary" type="button" onclick="addImage(this)">
-                                                                                        <i class="fa-solid fa-image"></i>
-                                                                                    </button>
-                                                                                    <input type="text" name="matching_pairs[{{ $index }}][{{ $pairIndex }}][right]" value="{{ $pair['right'] }}" class="form-control" placeholder="Sağ Eş" required>
-                                                                                    <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                                                                        <i class="fa-solid fa-trash"></i>
-                                                                                    </button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                        @endif
+                                                        </div>
+                                                        @endforeach
                                                     </div>
-
-
                                                 </div>
+                                                @endif
+                                            </div>
+
+
+                                        </div>
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Yeni Soru Ekle Butonu -->
-                        <button type="button" class="m-2 btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">Yeni Soru Ekle</button>
+                        <button type="button" class="m-2 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">Yeni Soru Ekle</button>
 
                         <!-- Gönderme Butonu -->
                         <button type="submit" class="m-2 btn btn-primary" onclick="return validateForm()">Testi
@@ -188,8 +187,7 @@
 
 
 <!-- Modal -->
-<div class="text-white modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="text-white modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content bg-dark">
             <div class="modal-header">

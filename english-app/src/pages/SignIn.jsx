@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 function SignIn() {
   const [loginUrl, setLoginUrl] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch('http://localhost:8000/auth', {
@@ -18,11 +19,25 @@ function SignIn() {
         }
         throw new Error('Something went wrong!');
       })
-      .then((data) => setLoginUrl(data.url))
-      .catch((error) => console.error(error));
+      .then((data) => {
+        setLoginUrl(data.url);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
   }, []);
 
-  return <div>{loginUrl != null && <a href={loginUrl}>Google Sign In</a>}</div>;
+  return (
+    <div>
+      {loading ? (
+        <>Google ile Giriş Yap</>
+      ) : (
+        loginUrl != null && <a href={loginUrl}>Google ile Giriş Yap</a>
+      )}
+    </div>
+  );
 }
 
 export default SignIn;

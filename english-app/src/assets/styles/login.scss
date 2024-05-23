@@ -52,7 +52,6 @@
   color: #ffffff;
   border: 2px solid var(--primary-color);
   border-radius: 4px;
-  // padding: 12px 0;
   height: var(--fs-46);
   cursor: pointer;
   &:hover {
@@ -166,26 +165,29 @@
         }
       }
     }
-    a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .remember-password {
-        text: {
-          align: center;
-          decoration: underline;
-        }
-        color: var(--primary-color);
-        background: none;
-        border: none;
-        cursor: pointer;
-        width: min-content;
-        height: min-content;
-        margin: 20px auto 40px;
-        font-weight: 700;
-        font-size: var(--fs-14);
-        &:hover {
-          color: #c33939;
+    .remember-password-wrapper {
+      margin: 20px auto 40px;
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .remember-password {
+          text: {
+            align: center;
+            decoration: underline;
+          }
+          color: var(--primary-color);
+          background: none;
+          border: none;
+          cursor: pointer;
+          width: min-content;
+          height: min-content;
+          // margin: 20px auto 40px;
+          font-weight: 700;
+          font-size: var(--fs-14);
+          &:hover {
+            color: #c33939;
+          }
         }
       }
     }

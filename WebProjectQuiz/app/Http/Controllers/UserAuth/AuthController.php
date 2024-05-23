@@ -150,8 +150,9 @@ class AuthController extends Controller
         $user->save();
 
         // Kullanıcıların puanlarına göre sıralamasını yap
-        $rankedUsers = User::orderBy('point', 'desc')->get();
-
+        $rankedUsers = User::orderBy('level', 'desc')
+            ->orderBy('point', 'desc')
+            ->get();
         // Yeni kullanıcının sıralamasını bul
         $rank = $rankedUsers->search(function ($item) use ($user) {
             return $item->id === $user->id;
@@ -217,26 +218,27 @@ class AuthController extends Controller
             // dd($user);
             $token = $user->createToken('MyApp')->plainTextToken;
 
-        // Kullanıcıların puanlarına göre sıralamasını yap
-        $rankedUsers = User::orderBy('point', 'desc')->get();
-            // Yeni kullanıcının sıralamasını bul
-        $rank = $rankedUsers->search(function ($item) use ($user) {
-            return $item->id === $user->id;
-        });
+            // Kullanıcıların puanlarına göre sıralamasını yap
+            $rankedUsers = User::orderBy('level', 'desc')
+                ->orderBy('point', 'desc')
+                ->get();            // Yeni kullanıcının sıralamasını bul
+            $rank = $rankedUsers->search(function ($item) use ($user) {
+                return $item->id === $user->id;
+            });
 
-        // Sıralama bulunamazsa, kullanıcının sıralamasını 0 olarak ayarla
-        if ($rank === false) {
-            $rank = 0;
-        } else {
-            // Sıralama bulunursa, 1 ekleyerek insanların 1'den başlayan sıralamasını sağla
-            $rank += 1;
-        }
+            // Sıralama bulunamazsa, kullanıcının sıralamasını 0 olarak ayarla
+            if ($rank === false) {
+                $rank = 0;
+            } else {
+                // Sıralama bulunursa, 1 ekleyerek insanların 1'den başlayan sıralamasını sağla
+                $rank += 1;
+            }
 
-        // Kullanıcının sıralamasını güncelle
-        $user->rank = $rank;
+            // Kullanıcının sıralamasını güncelle
+            $user->rank = $rank;
 
             // Token'i kullanıcıya yanıt olarak gönder
-            return response()->json(['token' => $token, 'user' => $user ,'message' => 'Login successful'], 200);
+            return response()->json(['token' => $token, 'user' => $user, 'message' => 'Login successful'], 200);
         }
 
         // Giriş başarısız olduğunda yapılacak işlemler

@@ -135,88 +135,102 @@ export default function Navbar(props) {
         </div>
         <div className="main-links">
           <ul>
-            <li
-              onClick={() => handleItemClick('home')}
-              style={{
-                color:
-                  selectedItem === 'home'
-                    ? 'var(--primary-color)'
-                    : 'var(--tertiary-color)',
-              }}
-            >
-              {selectedItem === 'home' ? <HouseFill /> : <House />}
-              <span
+            <Link to="/home">
+              <li
+                onClick={() => handleItemClick('home')}
                 style={{
-                  fontWeight: selectedItem === 'home' ? 'bold' : 'normal',
+                  color:
+                    selectedItem === 'home'
+                      ? 'var(--primary-color)'
+                      : 'var(--tertiary-color)',
                 }}
-                title="Ana Sayfa"
               >
-                <Link to="/home">Ana Sayfa</Link>
-              </span>
-            </li>
-            <li
-              onClick={() => handleItemClick('video')}
-              style={{
-                color:
-                  selectedItem === 'video'
-                    ? 'var(--primary-color)'
-                    : 'var(--tertiary-color)',
-              }}
-            >
-              {selectedItem === 'video' ? <CameraReelsFill /> : <CameraReels />}
-              <span
+                {selectedItem === 'home' ? <HouseFill /> : <House />}
+                <span
+                  style={{
+                    fontWeight: selectedItem === 'home' ? 'bold' : 'normal',
+                  }}
+                  title="Ana Sayfa"
+                >
+                  Ana Sayfa
+                </span>
+              </li>
+            </Link>
+            <Link to="/video">
+              <li
+                onClick={() => handleItemClick('video')}
                 style={{
-                  fontWeight: selectedItem === 'video' ? 'bold' : 'normal',
+                  color:
+                    selectedItem === 'video'
+                      ? 'var(--primary-color)'
+                      : 'var(--tertiary-color)',
                 }}
-                title="Video"
               >
-                <Link to="/video">Video</Link>
-              </span>
-            </li>
-            <li
-              onClick={() => handleItemClick('exercises')}
-              style={{
-                color:
-                  selectedItem === 'exercises'
-                    ? 'var(--primary-color)'
-                    : 'var(--tertiary-color)',
-              }}
-            >
-              {selectedItem === 'exercises' ? (
-                <RocketTakeoffFill />
-              ) : (
-                <RocketTakeoff />
-              )}
-              <span
+                {selectedItem === 'video' ? (
+                  <CameraReelsFill />
+                ) : (
+                  <CameraReels />
+                )}
+                <span
+                  style={{
+                    fontWeight: selectedItem === 'video' ? 'bold' : 'normal',
+                  }}
+                  title="Video"
+                >
+                  Video
+                </span>
+              </li>
+            </Link>
+            <Link to="/exercises">
+              <li
+                onClick={() => handleItemClick('exercises')}
                 style={{
-                  fontWeight: selectedItem === 'exercises' ? 'bold' : 'normal',
+                  color:
+                    selectedItem === 'exercises'
+                      ? 'var(--primary-color)'
+                      : 'var(--tertiary-color)',
                 }}
-                title="Alıştırmalar"
               >
-                <Link to="/exercises">Alıştırmalar</Link>
-              </span>
-            </li>
-            <li
-              onClick={() => handleItemClick('leaderboard')}
-              style={{
-                color:
-                  selectedItem === 'leaderboard'
-                    ? 'var(--primary-color)'
-                    : 'var(--tertiary-color)',
-                fontWeight: selectedItem === 'leaderboard' ? 'bold' : 'normal',
-              }}
-            >
-              {selectedItem === 'leaderboard' ? <TrophyFill /> : <Trophy />}
-              <span
+                {selectedItem === 'exercises' ? (
+                  <RocketTakeoffFill />
+                ) : (
+                  <RocketTakeoff />
+                )}
+                <span
+                  style={{
+                    fontWeight:
+                      selectedItem === 'exercises' ? 'bold' : 'normal',
+                  }}
+                  title="Alıştırmalar"
+                >
+                  Alıştırmalar
+                </span>
+              </li>
+            </Link>
+            <Link to="/leaderboard">
+              <li
+                onClick={() => handleItemClick('leaderboard')}
                 style={{
+                  color:
+                    selectedItem === 'leaderboard'
+                      ? 'var(--primary-color)'
+                      : 'var(--tertiary-color)',
                   fontWeight:
                     selectedItem === 'leaderboard' ? 'bold' : 'normal',
                 }}
-                title="Puan Tablosu"
               >
-                <Link to="/leaderboard">Puan Tablosu</Link>
-              </span>
-            </li>
+                {selectedItem === 'leaderboard' ? <TrophyFill /> : <Trophy />}
+                <span
+                  style={{
+                    fontWeight:
+                      selectedItem === 'leaderboard' ? 'bold' : 'normal',
+                  }}
+                  title="Puan Tablosu"
+                >
+                  Puan Tablosu
+                </span>
+              </li>
+            </Link>
           </ul>
         </div>
         <div className="user-profile">

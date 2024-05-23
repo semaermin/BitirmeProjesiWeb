@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { login, setAxiosInterceptors } from '../services/LoginService';
+import SignIn from '../pages/SignIn';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -122,13 +123,16 @@ function LoginPage() {
                 onClick={handleSubmit}
               />
             </form>
-            <Link to="/forgot-password">
-              <input
-                className="remember-password"
-                type="button"
-                value="Şifrenizi mi unuttunuz?"
-              />
-            </Link>
+            <div className="remember-password-wrapper">
+              <Link to="/forgot-password">
+                <input
+                  className="remember-password"
+                  type="button"
+                  value="Şifrenizi mi unuttunuz?"
+                />
+              </Link>
+            </div>
+
             <div className="create-account">
               <div>
                 <span className="horizontal-line"></span>
@@ -153,7 +157,7 @@ function LoginPage() {
                 alt="google-logo"
               />
             </span>
-            Google ile Giriş Yap
+            <SignIn></SignIn>
           </div>
         </div>
       </div>

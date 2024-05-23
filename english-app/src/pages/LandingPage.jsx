@@ -1,3 +1,10 @@
+import {
+  BoxArrowInRight,
+  ChevronDown,
+  PeopleFill,
+  Reception4,
+  TrophyFill,
+} from 'react-bootstrap-icons';
 import '../assets/styles/landing-page.scss';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +14,12 @@ function LandingPage() {
       <div className="section-1">
         <nav>
           <div className="sermify-logo">
-            <img src="src/assets/images/svg/logo-white-smile-text.svg" alt="" />
+            <Link to="/">
+              <img
+                src="src/assets/images/svg/logo-white-smile-text.svg"
+                alt="sermify-logo"
+              />
+            </Link>
           </div>
           <div className="button-container">
             <Link to="/login">
@@ -17,22 +29,31 @@ function LandingPage() {
               <button className="register-button">Kayıt Ol</button>
             </Link>
           </div>
+          <div className="button-container-mobile">
+            <Link to="/login">
+              <button>
+                Giriş Yap <BoxArrowInRight></BoxArrowInRight>
+              </button>
+            </Link>
+          </div>
         </nav>
         <div className="slogan-container">
-          <div>
+          <div className="slogan-container-texts">
             <h3>SEVİYENE GÖRE İNGİLİZCE</h3>
             <p>Öğrenmek için</p>
             <p className="smile-text">gülümse!</p>
             <span>
-              <div>
+              <div className="slogan-container-long-text">
                 Seviyene göre ingilizce testler ve alıştırmalar ile ingilizceni
                 geliştir. <br />
                 Puan tablosundaki rakiplerin ile yarış!
               </div>
             </span>
-            <button className="join-us-button">
-              Sen de aramıza katıl --{'>'}
-            </button>
+            <Link to="/register">
+              <button className="join-us-button">
+                Sen de aramıza katıl --{'>'}
+              </button>
+            </Link>
           </div>
           <div className="smile-shape-container">
             <img
@@ -45,6 +66,17 @@ function LandingPage() {
         <div className="laptop-screen">
           <img src="src/assets/images/laptop.png" alt="laptop" />
         </div>
+        <button>
+          <div className="mobile-scroll-button">
+            <ChevronDown
+              onClick={() => {
+                document
+                  .querySelector('.section-2')
+                  .scrollIntoView({ behavior: 'smooth' });
+              }}
+            ></ChevronDown>
+          </div>
+        </button>
       </div>
       <div className="section-2">
         <div className="section-2-text">
@@ -56,12 +88,60 @@ function LandingPage() {
           </p>
         </div>
         <div className="section-box-container">
-          <div className="section-2-box"></div>
-          <div className="section-2-box"></div>
-          <div className="section-2-box"></div>
+          <div className="section-2-box">
+            <span>
+              <PeopleFill></PeopleFill>
+            </span>
+            <div>
+              <span>Seviyene Göre</span>
+              <p>
+                Video testler ile ingilizcenin gerçek hayatta nasıl
+                kullanıldığını keşfet!
+              </p>
+            </div>
+          </div>
+          <div className="section-2-box">
+            <span>
+              <Reception4></Reception4>
+            </span>
+            <div>
+              <span>Hızlı Altyapı</span>
+              <p>Alıştırmalar ile kendini seviyene göre test et!</p>
+            </div>
+          </div>
+          <div className="section-2-box">
+            <span>
+              <TrophyFill></TrophyFill>
+            </span>
+            <div>
+              <span>Puan Tablosu</span>
+              <p>Puan tablosunda rakiplerin ile yarış, kendini test et!</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="section-3">3.bölüm</div>
+      <div className="section-3">
+        <div className="smile-shape">
+          <img
+            src="/src/assets/images/svg/smile-shape-mid-grey.svg"
+            alt="smile-shape"
+          />
+        </div>
+        <div className="mobile-screen">
+          <img src="/src/assets/images/mobile.png" alt="mobile-screen" />
+        </div>
+      </div>
+      <footer>
+        <div className="footer-sermify">
+          <img
+            src="/src/assets/images/svg/logo-white-smile-text.svg"
+            alt="sermify-logo"
+          />
+        </div>
+        <div className="footer-copyright">
+          <p>{new Date().getFullYear()} Sermify | Tüm hakları saklıdır.</p>
+        </div>
+      </footer>
     </div>
   );
 }

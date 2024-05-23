@@ -58,8 +58,6 @@ function HomePage() {
         {tests.map((test) => (
           <li key={test.id}>
             <Link to={`/exercises/${test.slug}`}>
-              {' '}
-              {/* Link düzenlendi */}
               {test.id} - {test.name}
             </Link>
           </li>

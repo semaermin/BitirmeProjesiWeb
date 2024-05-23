@@ -3,6 +3,7 @@ import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import SignIn from '../pages/SignIn';
 import axios from 'axios';
 
 function RegisterPage() {
@@ -245,7 +246,7 @@ function RegisterPage() {
               alt="google-logo"
             />
           </span>
-          Google ile Giriş Yap
+          <SignIn></SignIn>
         </div>
       </div>
     </div>
