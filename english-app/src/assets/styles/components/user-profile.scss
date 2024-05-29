@@ -28,11 +28,16 @@
         gap: 10px;
         margin-top: 115px;
         flex-direction: column;
+        transition: outline-color 0.3s ease, color 0.3s ease;
         img {
           width: 100px;
           z-index: 100;
           border-radius: 100%;
           outline: 5px solid var(--bg-white-color);
+          transition: outline-color 0.3s ease, color 0.3s ease;
+        }
+        p {
+          transition: color 0.3s ease, color 0.3s ease;
         }
       }
       p {
@@ -79,6 +84,30 @@
             font-weight: bold;
             color: var(--primary-color);
           }
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  .user-profile-container {
+    .user-info {
+      background-color: var(--bg-dark-color) !important;
+      border: var(--bg-dark-color) !important ;
+      .user-point,
+      .user-arrangement {
+        background-color: var(--secondary-color) !important;
+      }
+    }
+    .user-background {
+      .user-profile-photo {
+        transition: outline-color 0.3s ease, color 0.3s ease;
+        img {
+          outline-color: var(--bg-dark-color) !important;
+        }
+        p {
+          color: var(--white-text);
         }
       }
     }

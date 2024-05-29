@@ -324,7 +324,9 @@ html {
     background-color: lime;
   }
 }
-
+#root {
+  transition: background-color 0.25s;
+}
 #root.dark {
   background-color: var(--secondary-color);
   transition: background-color 0.25s;
@@ -335,9 +337,10 @@ html {
 
 .dark {
   nav {
-    background-color: var(--secondary-color-hover);
-    border-color: var(--light-grey);
+    background-color: var(--bg-dark-color);
+    border-color: var(--bg-dark-color);
     .dropdown-content {
+      box-shadow: 0px 0px 8px 0px black !important;
       background-color: var(--secondary-color-hover) !important;
     }
     .mobile-menu-items {

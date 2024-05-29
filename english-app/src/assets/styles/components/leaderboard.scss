@@ -1,8 +1,5 @@
 .light,
 .dark {
-  &:last-child {
-    padding-bottom: 50px;
-  }
   .leaderboard {
     display: flex;
     flex-direction: column;
@@ -126,9 +123,34 @@
   }
 }
 
+#leaderboard.light,
+#leaderboard.dark {
+  &:last-child {
+    padding-bottom: 50px;
+  }
+}
+
 .dark {
   .leaderboard {
-    background-color: var(--secondary-color-hover);
+    background-color: var(--bg-dark-color);
+    ul {
+      li.leaderboard-user {
+        background-color: var(--secondary-color);
+        &:hover {
+          background-color: var(--secondary-color-) !important;
+        }
+      }
+    }
+  }
+  .navigation {
+    .pagination {
+      .page-item {
+        border-color: var(--primary-color);
+        .active {
+          border-color: var(--dark-grey);
+        }
+      }
+    }
   }
 }
 

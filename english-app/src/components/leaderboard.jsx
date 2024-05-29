@@ -68,7 +68,7 @@ export default function Leaderboard({ recordsPerPage = 10 }) {
   }
 
   return (
-    <div className={theme}>
+    <div id="leaderboard" className={theme}>
       <div className="leaderboard">
         <h3 className="leaderboard-title">
           <TrophyFill /> Puan Tablosu
