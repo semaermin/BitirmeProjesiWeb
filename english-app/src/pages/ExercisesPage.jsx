@@ -120,9 +120,15 @@ function ExercisesPage() {
                 <h2>Seviye {level.toUpperCase()}</h2>
                 <ul className="list-group">
                   {categorizedTests[level].map((test) => (
-                    <li key={test.id} className="list-group-item">
-                      <Link to={`/exercises/${test.slug}`}>{test.name}</Link>
-                    </li>
+                    // <li key={test.id} className="list-group-item">
+                    //   <Link to={`/exercises/${test.slug}`}>{test.name}</Link>
+                    // </li>
+                    <Link
+                      className="list-group-item"
+                      to={`/exercises/${test.slug}`}
+                    >
+                      {test.name}
+                    </Link>
                   ))}
                 </ul>
               </div>

@@ -58,3 +58,13 @@
     }
   }
 }
+
+.dark {
+  .video-container {
+    .video-box {
+      .video-texts-container {
+        background-color: var(--bg-dark-color);
+      }
+    }
+  }
+}

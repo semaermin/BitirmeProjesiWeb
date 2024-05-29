@@ -186,9 +186,9 @@
       background-color: var(--light-grey);
       color: var(--primary-color);
       border-radius: 24px;
-      // transition: transform 0.3s ease;
+      transition: transform 0.3s ease;
       &:hover {
-        // transform: scale(1.02);
+        transform: scale(1.01);
         box-shadow: 2px 2px 8px var(--primary-color);
       }
       span {
@@ -361,8 +361,15 @@ footer {
   }
   .section-3 {
     margin-top: 50px !important;
+    height: auto;
     .smile-shape {
       display: none;
+    }
+    .mobile-screen {
+      height: auto;
+      img {
+        width: -webkit-fill-available;
+      }
     }
   }
   footer {
@@ -385,6 +392,16 @@ footer {
     .slogan-container-texts {
       p {
         font-size: 40px !important;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 768px) {
+  .section-3 {
+    .mobile-screen {
+      img {
+        width: 50%;
       }
     }
   }
