@@ -10,7 +10,7 @@
     height: 100%;
     background-color: var(--light-grey);
     border-radius: 24px;
-    box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     .leaderboard-title {
       display: flex;
       align-items: center;
@@ -133,6 +133,7 @@
 .dark {
   .leaderboard {
     background-color: var(--bg-dark-color);
+    border: 2px solid var(--dark-grey) !important;
     ul {
       li.leaderboard-user {
         background-color: var(--secondary-color);

@@ -39,10 +39,10 @@
                 </a>
                 @endif
 
-                <x-button class="ms-4">
+                <x-button class="ms-2">
                     {{ __('Giriş') }}
                 </x-button>
-                <x-a href="{{ route('register') }}">
+                <x-a class="ms-2" href="{{ route('register') }}">
                     {{ __('Kayıt Ol') }}
                 </x-a>
             </div>
