@@ -13,7 +13,7 @@
                 </h2>
                 <div class="m-2 list-group">
                     @foreach($test->questions as $index => $question)
-                        <div class="list-group-item list-group-item-light">
+                        <div class="list-group-item list-group-item-secondary">
                             <h5 class="mb-1">{{ $index + 1 }}.) {{ $question->text }}</h5>
                             <br>
                             @if ($question->media_path)
@@ -34,12 +34,12 @@
                                 @if($question->type == 1)
                                     {{-- Çoktan Seçmeli Soru --}}
                                     @foreach($question->answers as $answer)
-                                        <li class="list-group-item list-group-item-light">
+                                        <li class="list-group-item list-group-item-secondary">
                                             {{ $answer->text }} -
                                             @if($answer->is_correct)
-                                                <span class="text-success">Doğru Cevap</span>
+                                                <span class="text-success fw-bold">Doğru Cevap</span>
                                             @else
-                                                <span class="text-danger">Yanlış Cevap</span>
+                                                <span class="text-danger fw-bold">Yanlış Cevap</span>
                                             @endif
                                         </li>
                                     @endforeach

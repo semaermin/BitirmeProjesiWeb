@@ -7,7 +7,7 @@
                 <div class="list-group list-group-dark">
                     @foreach($tests as $test)
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="{{ route('quiz.show', $test->slug) }}" class="px-3 mr-2 border-0 text-white-200 list-group-item list-group-item-light list-group-item-action">{{ $test->name }}</a>
+                            <a href="{{ route('quiz.show', $test->slug) }}" class="px-3 mr-2 border-0 text-white-200 list-group-item list-group-item-secondary list-group-item-action">{{ $test->name }}</a>
                         </div>
                     @endforeach
                 </div>
