@@ -22,7 +22,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="test_name">Test Adı:</label>
-                                            <input type="text" name="test_name" id="test_name" class="form-control" value="{{ $testName }}">
+                                            <input type="text" name="test_name" id="test_name" class="form-control" value="{{ $testName }}" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -66,10 +66,28 @@
                         <div id="questions_section">
                             <!-- Mevcut Soruları Doldurma -->
                             @foreach($questions as $index => $question)
-                            <div class="m-2 text-white card bg-dark">
+                            <div class="m-2 text-white card bg-dark" data-question-index="{{ $index + 1 }}">
                                 <div class="card-body">
                                     <span>{{ $index + 1 }}. Soru</span>
-                                    <div class="m-2 form-group row">
+                                        <input type="hidden" name="question_type[]" value="{{ $question['type'] }}">
+
+                                        <div class="form-group">
+                                            @if ($question['media_path'])
+                                                @if (pathinfo($question['media_path'], PATHINFO_EXTENSION) == 'mp4')
+                                                    <video width="320" height="240" controls>
+                                                        <source src="{{ asset('storage/' . $question['media_path']) }}" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                    <input type="hidden" name="existing_video[{{ $index }}]" value="{{ $question['media_path'] }}">
+                                                @else
+                                                    <img src="{{ asset('storage/' . $question['media_path']) }}" alt="Soru Resmi" width="250">
+                                                    <input type="hidden" name="existing_image[{{ $index }}]" value="{{ $question['media_path'] }}">
+                                                @endif
+                                            @else
+                                                <p>Soru için medya dosyası yok</p>
+                                            @endif
+                                        </div>
+                                    <div class="mb-3 form-group row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="question_difficulty_{{ $index }}">Zorluk:</label>
@@ -92,115 +110,63 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
+                                        <div class="mb-2 form-group row">
                                             <label for="question_text_{{ $index }}">Soru Metni:</label>
                                             <div class="mb-3 input-group">
                                                 <label class="btn btn-outline-secondary">
                                                     <i class="fa-solid fa-image"></i>
-                                                    <input type="file" id="imageInput_{{ $index }}" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)"> </label>
+                                                    <input type="file" id="imageInput_{{ $index }}" name="imageInput[{{ $index }}]" style="display: none;" accept="image/*" onchange="addImage(this, {{ $index }})">
+                                                </label>
                                                 <label class="btn btn-outline-secondary">
                                                     <i class="fa-solid fa-video"></i>
-                                                    <input type="file" id="videoInput_{{ $index }}" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
+                                                    <input type="file" id="videoInput_{{ $index }}" name="videoInput[{{ $index }}]" style="display: none;" accept="video/*" onchange="addVideo(this, {{ $index }})">
                                                 </label>
-                                                <input type="text" id="question_text_{{ $index }}" name="question_text[]" class="form-control" value="{{ $question['text'] }}" placeholder="Soru">
+                                                <input type="text" id="question_text_{{ $index }}" name="question_text[]" class="form-control" value="{{ $question['text'] }}" placeholder="Soru" required>
+                                                <button class="btn btn-outline-secondary" type="button" onclick="removeQuestion(this)">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                                <input type="hidden" name="existing_image_{{ $index }}" value="{{ $question['media_path'] ?? '' }}">
+                                                <input type="hidden" name="existing_video_{{ $index }}" value="{{ $question['media_path'] ?? '' }}">
                                             </div>
                                         </div>
                                         @if ($question['type'] == 1)
-                                        <div class="m-2 form-group row">
+                                        <div class="form-group row">
                                             <label for="answers">Seçenekler:</label>
                                             <div class="answer-option">
-                                                @foreach($question->answers as $answerIndex => $answer)
+                                                @foreach ($question['answers'] as $answerIndex => $answer)
                                                 <div class="mb-3 row">
+                                                    <input type="hidden" name="answer_id[{{ $index }}][]" value="{{ $answer['id'] ?? '' }}">
                                                     <div class="input-group">
-                                                        <label class="btn btn-outline-secondary">
-                                                            <i class="fa-solid fa-image"></i>
-                                                            <input type="file" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                                                        </label>
-                                                        <input type="text" name="answers[{{ $index }}][text][]" class="form-control" placeholder="Cevap" value="{{ $answer->text }}">
+                                                        <button class="btn btn-outline-secondary" type="button">
+                                                            <input type="radio" id="correct_answer_{{ $index }}_{{ $answerIndex }}" name="correct_answer[{{ $index }}]" value="{{ $answerIndex }}" {{ $answer['is_correct'] ? 'checked' : '' }}>
+                                                        </button>
+                                                        <input type="text" id="{{ $index }}_{{ $answerIndex }}" name="answers[{{ $index }}][text][]" class="form-control" placeholder="Cevap" value="{{ $answer['text'] }}" required>
                                                         <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
                                                             <i class="fa-solid fa-trash"></i>
                                                         </button>
                                                     </div>
-                                                    <div class="px-5 mt-2 form-check form-check-reverse">
-                                                        <input type="radio" name="correct_answer[{{ $index }}]" class="form-check-input" value="{{ $answerIndex }}" {{ $answer->is_correct ? 'checked' : '' }}>
-                                                        <label class="form-check-label">Doğru Cevap</label>
-                                                    </div>
                                                 </div>
                                                 @endforeach
                                             </div>
                                         </div>
-                                        <button type="button" class="m-2 btn btn-secondary" onclick="addAnswer(this)">Yeni Seçenek Ekle</button>
-                                        @elseif ($question['type'] == 2)
-                                        <div class="m-2 form-group row">
-                                            <label for="answers">Eşleştirme Çiftleri:</label>
-                                            <div class="answer-options">
-                                                @foreach ($question['matching_pairs'] as $pairIndex => $pair)
-                                                <div class="mb-3 row justify-content-center">
-                                                    <div class="col-md">
-                                                        <div class="mb-3 row">
-                                                            <div class="input-group">
-                                                                <label class="btn btn-outline-secondary">
-                                                                    <i class="fa-solid fa-image"></i>
-                                                                    <input type="file" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                                                                </label>
-                                                                <input type="text" name="answers[{{ $index }}][pair1][]" class="form-control" placeholder="Sol Seçenek" value="{{ $pair->pair1 }}">
-                                                                <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                                                    <i class="fa-solid fa-trash"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <div class="mb-3 row">
-                                                            <div class="input-group">
-                                                                <label class="btn btn-outline-secondary">
-                                                                    <i class="fa-solid fa-image"></i>
-                                                                    <input type="file" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                                                                </label>
-                                                                <input type="text" name="answers[{{ $index }}][pair2][]" class="form-control" placeholder="Sağ Seçenek" value="{{ $pair->pair2 }}">
-                                                                <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                                                    <i class="fa-solid fa-trash"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            </div>
+                                    @else
+                                        <div class="form-group">
+                                            <button class="btn btn-outline-secondary" type="button">
+                                                <input type="radio" name="correct_answer[{{ $index }}]" class="form-check-input" style="margin:unset;" value="0" {{ $question['is_correct'] ? 'checked' : '' }}>
+                                            </button>
+                                            <input type="text" id="correct_text_answer_{{ $index }}" name="correct_text_answer[{{ $index }}]" class="form-control" value="{{ $question['correct_text_answer'] }}" required>
                                         </div>
-                                        <button type="button" class="m-2 btn btn-secondary" onclick="addAnswer(this)">Yeni Eşleştirme Çifti Ekle</button>
-                                        @elseif($question->type == 3)
-                                        <div class="m-2 form-group row">
-                                            <label for="answers">Boşluk Doldurma Cümleleri:</label>
-                                            <div class="answer-options">
-                                                @foreach($question->fill_in_the_blanks as $blankIndex => $blank)
-                                                <div class="mb-3 row">
-                                                    <div class="input-group">
-                                                        <label class="btn btn-outline-secondary">
-                                                            <i class="fa-solid fa-image"></i>
-                                                            <input type="file" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                                                        </label>
-                                                        <input type="text" name="answers[{{ $index }}][text][]" class="form-control" placeholder="Boşluk Doldurma Cümlesi" value="{{ $blank->text }}">
-                                                        <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                                            <i class="fa-solid fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="px-5 mt-2 form-check form-check-reverse">
-                                                        <input type="text" name="correct_answer[{{ $index }}][blank][]" class="form-control" placeholder="Doğru Cevap" value="{{ $blank->correct_answer }}">
-                                                    </div>
-                                                </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                        <button type="button" class="m-2 btn btn-secondary" onclick="addAnswer(this)">Yeni Boşluk Doldurma Cümlesi Ekle</button>
-                                        @endif
+                                    @endif
+                                    <button type="button" class="m-2 mx-auto btn btn-secondary d-block" style="width: 50% !important;" onclick="addAnswer(this)">Yeni Seçenek Ekle</button>
+
                                     </div>
                                 </div>
                             </div>
                             @endforeach
                         </div>
-                        <button type="button" class="m-3 btn btn-primary" onclick="addQuestion()">Yeni Soru Ekle</button>
-                        <button type="submit" class="m-3 btn btn-success">Kaydet</button>
+
+                        <button type="button" class="m-2 btn btn-secondary" id="add_question_button">Yeni Soru Ekle</button>
+                        <button type="submit" class="m-2 btn btn-danger">Kaydet</button>
                     </form>
                 </div>
             </div>
@@ -208,108 +174,167 @@
     </div>
 
     <script>
-        function addQuestion() {
-            const questionSection = document.getElementById('questions_section');
-            const questionIndex = questionSection.childElementCount + 1;
 
-            const questionCard = document.createElement('div');
-            questionCard.className = 'm-2 text-white card bg-dark';
-            questionCard.innerHTML = `
-                <div class="card-body">
-                    <span>${questionIndex}. Soru</span>
-                    <div class="m-2 form-group row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="question_difficulty">Zorluk:</label>
-                                <select name="question_difficulty[]" class="form-control" required>
-                                    <option value="easy">Kolay</option>
-                                    <option value="medium">Orta</option>
-                                    <option value="hard">Zor</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="question_points">Puan:</label>
-                                <select name="question_points[]" class="form-control">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="question_text">Soru Metni:</label>
-                            <div class="mb-3 input-group">
-                                <label class="btn btn-outline-secondary">
-                                    <i class="fa-solid fa-image"></i>
-                                    <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                                </label>
-                                <label class="btn btn-outline-secondary">
-                                    <i class="fa-solid fa-video"></i>
-                                    <input type="file" id="videoInput" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
-                                </label>
-                                <input type="text" id="question_text" name="question_text[]" class="form-control" placeholder="Soru">
-                            </div>
+        function addImage(input, index) {
+            var file = input.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var image = new Image();
+                    image.src = e.target.result;
+                    image.onload = function () {
+                        // Resmi önizleme olarak ekleyin
+                        $('#imagePreview_' + index).attr('src', e.target.result);
+
+                        // Gizli inputa dosya yolu ekle
+                        $('input[name="existing_image_' + index + '"]').val('');
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function addVideo(input, index) {
+            var file = input.files[0];
+            if (file) {
+                // Video önizlemesi için src değiştirme
+                $('#videoPreview_' + index).attr('src', URL.createObjectURL(file));
+
+                // Gizli inputa dosya yolu ekle
+                $('input[name="existing_video_' + index + '"]').val('');
+            }
+        }
+
+
+        let questionIndex = document.querySelectorAll('#questions_section .card').length;
+
+        function removeQuestion(button) {
+            var questionCard = button.closest('.card');
+            questionCard.remove();
+
+            var remainingQuestions = document.querySelectorAll('#questions_section .card');
+            remainingQuestions.forEach((card, index) => {
+                card.setAttribute('data-question-index', index + 1);
+                card.querySelector('span').textContent = (index + 1) + ". Soru";
+
+                var inputs = card.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    if (input.name) {
+                        input.name = input.name.replace(/\[\d+\]/, `[${index}]`);
+                    }
+                });
+            });
+
+            questionIndex = remainingQuestions.length;
+        }
+
+        function removeAnswer(button) {
+            var answerSection = button.closest('.answer-option');
+            var answerToRemove = button.closest('.mb-3.row');
+            var allAnswers = answerSection.querySelectorAll('.mb-3.row');
+
+            var optionsCount = answerSection.querySelectorAll('.mb-3.row input[type="text"]').length;
+
+            if (optionsCount > 1) {
+                answerToRemove.parentNode.removeChild(answerToRemove);
+            } else {
+                alert("En az bir cevap kalmalı!");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('add_question_button').addEventListener('click', function () {
+                const index = document.querySelectorAll('#questions_section .card').length;
+                const questionTemplate = `
+                <div class="m-2 text-white card bg-dark" data-question-index="${index + 1}">
+                    <div class="card-body">
+                        <span>${index + 1}. Soru</span>
+                        <input type="hidden" name="question_type[]" value="1">
+                        <div class="form-group">
+                            <p>Soru için medya dosyası yok</p>
                         </div>
                         <div class="m-2 form-group row">
-                            <label for="answers">Seçenekler:</label>
-                            <div class="answer-option">
-                                <div class="mb-3 row">
-                                    <div class="input-group">
-                                        <label class="btn btn-outline-secondary">
-                                            <i class="fa-solid fa-image"></i>
-                                            <input type="file" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                                        </label>
-                                        <input type="text" name="answers[${questionIndex - 1}][text][]" class="form-control" placeholder="Cevap">
-                                        <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                    <div class="px-5 mt-2 form-check form-check-reverse">
-                                        <input type="radio" name="correct_answer[${questionIndex - 1}]" class="form-check-input" value="0">
-                                        <label class="form-check-label">Doğru Cevap</label>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="question_difficulty_${index}">Zorluk:</label>
+                                    <select name="question_difficulty[]" id="question_difficulty_${index}" class="form-control" required>
+                                        <option value="easy">Kolay</option>
+                                        <option value="medium">Orta</option>
+                                        <option value="hard">Zor</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="question_points_${index}">Puan:</label>
+                                    <select name="question_points[]" id="question_points_${index}" class="form-control">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="question_text_${index}">Soru Metni:</label>
+                                <div class="mb-3 input-group">
+                                    <label class="btn btn-outline-secondary">
+                                        <i class="fa-solid fa-image"></i>
+                                        <input type="file" id="imageInput_${index}" name="imageInput[${index}]" style="display: none;" accept="image/*" onchange="addImage(this)">
+                                    </label>
+                                    <label class="btn btn-outline-secondary">
+                                        <i class="fa-solid fa-video"></i>
+                                        <input type="file" id="videoInput_${index}" name="videoInput[${index}]" style="display: none;" accept="video/*" onchange="addVideo(this)">
+                                    </label>
+                                    <input type="text" id="question_text_${index}" name="question_text[]" class="form-control" placeholder="Soru" required>
+                                </div>
+                            </div>
+                            <div class="m-2 form-group row">
+                                <label for="answers">Seçenekler:</label>
+                                <div class="answer-option">
+                                    <div class="mb-3 row">
+                                        <div class="input-group">
+                                            <button class="btn btn-outline-secondary" type="button">
+                                                <input type="radio" name="correct_answer[${index}]" class="form-check-input" style="margin:unset;" value="0">
+                                            </button>
+                                            <input type="text" name="answers[${index}][text][]" class="form-control" placeholder="Cevap" required>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <button type="button" class="m-2 mx-auto btn btn-secondary d-block" style="width: 50% !important;" onclick="addAnswer(this)">Yeni Seçenek Ekle</button>
                         </div>
                     </div>
-                </div>
-            `;
-
-            questionSection.appendChild(questionCard);
-        }
+                </div>`;
+                document.getElementById('questions_section').insertAdjacentHTML('beforeend', questionTemplate);
+            });
+        });
 
         function addAnswer(button) {
-            const answerOption = button.previousElementSibling.querySelector('.answer-option');
-            const answerIndex = answerOption.childElementCount;
+            var questionCard = button.closest('.card');
+            var answerSection = questionCard.querySelector('.answer-option');
+            var optionsCount = answerSection.querySelectorAll('.mb-3.row input[type="text"]').length;
+            var questionIndex = parseInt(questionCard.getAttribute('data-question-index'), 10) - 1;
 
-            const answerDiv = document.createElement('div');
-            answerDiv.className = 'mb-3 row';
-            answerDiv.innerHTML = `
+            const answerTemplate = `
+            <div class="mb-3 row">
                 <div class="input-group">
-                    <label class="btn btn-outline-secondary">
-                        <i class="fa-solid fa-image"></i>
-                        <input type="file" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                    </label>
-                    <input type="text" name="answers[${answerOption.dataset.questionIndex}][text][]" class="form-control" placeholder="Cevap">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <input type="radio" name="correct_answer[${questionIndex}]" class="form-check-input" style="margin:unset;" value="${optionsCount}">
+                    </button>
+                    <input type="text" name="answers[${questionIndex}][text][]" class="form-control" placeholder="Cevap" required>
                     <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
-                <div class="px-5 mt-2 form-check form-check-reverse">
-                    <input type="radio" name="correct_answer[${answerOption.dataset.questionIndex}]" class="form-check-input" value="${answerIndex}">
-                    <label class="form-check-label">Doğru Cevap</label>
-                </div>
-            `;
-
-            answerOption.appendChild(answerDiv);
-        }
-
-        function removeAnswer(button) {
-            button.closest('.row').remove();
+            </div>`;
+            answerSection.insertAdjacentHTML('beforeend', answerTemplate);
         }
     </script>
+
+
 </x-app-layout>

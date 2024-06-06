@@ -14,47 +14,50 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
+    <!-- Icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
     <style>
         /* public/css/welcome.css */
-body {
-    height: 100vh;
-    background-image: url('../images/landing-background.png'); /* Arkaplan resminizin yolunu buraya ekleyin */
-    background-size: cover;
-    background-position: center;
-}
+        body {
+            height: 100vh;
+            background-image: url('../images/landing-background.png'); /* Arkaplan resminizin yolunu buraya ekleyin */
+            background-size: cover;
+            background-position: center;
+        }
 
-.landing-logo {
-    text-align: center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+        .landing-logo {
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-.landing-logo img {
-    /* max-width: 50%; */
-    height: auto;
-    min-width: 50%;
-}
+        .landing-logo img {
+            /* max-width: 50%; */
+            height: auto;
+            min-width: 50%;
+        }
 
-.btn {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 0.375rem;
-    transition: background-color 0.3s;
-}
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s;
+        }
 
-.background-image{
-    height: 100%;
-}
+        .background-image{
+            height: 100%;
+        }
 
-.ml-2 {
-    margin-left: 0.5rem;
-}
+        .ml-2 {
+            margin-left: 0.5rem;
+        }
 
 
     </style>

@@ -16,11 +16,6 @@
                         <div class="list-group-item list-group-item-light">
                             <h5 class="mb-1">{{ $index + 1 }}.) {{ $question->text }}</h5>
                             <br>
-                            {{-- @if ($question->media_path)
-                                <img src="{{ asset('storage/' . $question->media_path) }}" alt="Soru Resmi" width="200">
-                            @else
-                                <p>Soru için fotoğraf yok</p>
-                            @endif --}}
                             @if ($question->media_path)
                                 @if (pathinfo($question->media_path, PATHINFO_EXTENSION) == 'mp4')
                                     <video width="320" height="240" controls>
@@ -48,8 +43,7 @@
                                             @endif
                                         </li>
                                     @endforeach
-                                @elseif($question->type == 2)
-                                    {{-- Eşleştirme Sorusu --}}
+                                {{-- @elseif($question->type == 2)
                                     @foreach($question->matchingOptions->groupBy('pair_order') ?? [] as $pairOrder => $matchingOptions)
                                         <li class="list-group-item list-group-item-light">
                                             @foreach($matchingOptions as $index => $matchingOption)
@@ -59,7 +53,7 @@
                                                 @endif
                                             @endforeach
                                         </li>
-                                    @endforeach
+                                    @endforeach--}}
                                 @endif
                             </ul>
                         </div>

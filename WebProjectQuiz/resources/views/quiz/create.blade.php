@@ -92,7 +92,7 @@
             <div class="modal-body">
                 <ul class="list-group">
                     <li class="list-group-item" onclick="addQuestion(1)">Seçenekli Soru</li>
-                    <li class="list-group-item" onclick="addQuestion(2)">Eşleştirmeli Soru</li>
+                    {{-- <li class="list-group-item" onclick="addQuestion(2)">Eşleştirmeli Soru</li> --}}
                     <!-- Diğer soru tipleri buraya eklenebilir -->
                 </ul>
             </div>
@@ -116,6 +116,7 @@
         // Kart içeriğini oluştur
         var kart = document.createElement('div');
         kart.classList.add('m-2', 'text-white', 'card', 'bg-dark');
+        kart.setAttribute('data-question-index', questionIndex); // Her karta soru indeksini ekleyin
 
         var cardBody = document.createElement('div');
         cardBody.classList.add('card-body');
@@ -129,26 +130,28 @@
 
         if (soruTipi == 1) {
             kartIcerik.innerHTML = `
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="question_difficulty">Zorluk:</label>
-                        <select name="question_difficulty[]" class="form-control" required>
-                            <option value="easy">Kolay</option>
-                            <option value="medium">Orta</option>
-                            <option value="hard">Zor</option>
-                        </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="question_difficulty">Zorluk:</label>
+                            <select name="question_difficulty[]" class="form-control" required>
+                                <option value="easy">Kolay</option>
+                                <option value="medium">Orta</option>
+                                <option value="hard">Zor</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="question_points">Puan:</label>
-                        <select name="question_points[]" class="form-control">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="question_points">Puan:</label>
+                            <select name="question_points[]" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -163,57 +166,21 @@
                             <input type="file" id="videoInput" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
                         </label>
                         <input type="text" id="question_text" name="question_text[]" class="form-control" placeholder="Soru">
+                        <button class="btn btn-outline-secondary" type="button" onclick="removeQuestion(this)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="m-2 form-group row">
+                <div class="form-group row">
                     <label for="answers">Seçenekler:</label>
                     <div class="answer-option">
 
                     </div>
                 </div>
-                <button type="button" class="m-2 btn btn-secondary" onclick="addAnswer(this)">Yeni Seçenek Ekle</button>
-            `;
-        } else if (soruTipi == 2) {
-            kartIcerik.innerHTML = `
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="question_difficulty">Zorluk:</label>
-                        <select name="question_difficulty[]" class="form-control" required>
-                            <option value="easy">Kolay</option>
-                            <option value="medium">Orta</option>
-                            <option value="hard">Zor</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="question_points">Puan:</label>
-                        <input type="number" name="question_points[]" class="form-control">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="question_text">Soru Metni:</label>
-                    <div class="mb-3 input-group">
-                        <label class="btn btn-outline-secondary">
-                            <i class="fa-solid fa-image"></i>
-                            <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                        </label>
-                        <label class="btn btn-outline-secondary">
-                            <i class="fa-solid fa-video"></i>
-                            <input type="file" id="videoInput" name="videoInput[]" style="display: none;" accept="video/*" onchange="addVideo(this)">
-                        </label>
-                        <input type="text" id="question_text" name="question_text[]" class="form-control" placeholder="Soru">
-                    </div>
-                </div>
-                <div class="m-2 form-group row">
-                    <label for="answers">Seçenekler:</label>
-                    <div class="answer-options">
-
-                    </div>
-                </div>
-                <button type="button" class="m-2 btn btn-secondary" onclick="addMatchingPair(this)">Yeni Seçenek Ekle</button>
+                <button type="button" class="m-2 mx-auto btn btn-secondary d-block" style="width: 50% !important;" onclick="addAnswer(this)">Yeni Seçenek Ekle</button>
             `;
         }
+
         cardBody.appendChild(kartIcerik);
         kart.appendChild(cardBody);
         formIcerik.appendChild(kart);
@@ -226,15 +193,14 @@
         kartIcerik.appendChild(questionTypeInput);
 
         $("#closeModal").click(); // Modalı kapat
-
     }
+
 
     function addAnswer(button) {
         var answerSection = button.parentNode.querySelector('.answer-option');
 
         // Seçeneklerin sayısını kontrol et
         var optionsCount = answerSection.querySelectorAll('.mb-3.row input[type="text"]').length;
-        console.log("Seçenek Sayısı:", optionsCount);
 
         var newAnswer = document.createElement('div');
         newAnswer.classList.add('answer-option');
@@ -242,47 +208,20 @@
             <!-- Yeni Cevap için form alanları -->
             <div class="mb-3 row">
                 <div class="input-group">
-                    <label class="btn btn-outline-secondary">
-                        <i class="fa-solid fa-image"></i>
-                        <input type="file" id="imageInput" name="imageInput[]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                    </label>
+                    <button class="btn btn-outline-secondary" type="button">
+                        <input type="radio" name="correct_answer[${questionIndex - 1}]" class="form-check-input" style="margin:unset;" value="${optionsCount}">
+                    </button>
                     <input type="text" name="answers[${questionIndex - 1}][text][]" class="form-control" placeholder="Cevap" required>
                     <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
-                <div class="px-5 mt-2 form-check form-check-reverse">
-                    <input type="radio" name="correct_answer[${questionIndex - 1}]" class="form-check-input" value="${optionsCount}">
-                    <label class="form-check-label">Doğru Cevap</label>
-                </div>
+
             </div>
         `;
 
         answerSection.appendChild(newAnswer);
     }
-
-    // function removeAnswer(button) {
-    //     var answerSection = button.closest('.answer-option');
-    //     var answerToRemove = button.closest('.mb-3.row');
-    //     var allAnswers = answerSection.querySelectorAll('.mb-3.row');
-
-    //     // Tüm cevapların sayısını kontrol et
-    //     var optionsCount = answerSection.querySelectorAll('.mb-3.row input[type="text"]').length;
-    //     console.log("Seçenek Sayısı:", optionsCount);
-
-    //     // En az bir cevap kalmalı
-    //     if (optionsCount > 1) {
-    //         answerToRemove.parentNode.removeChild(answerToRemove);
-
-    //         // Silinen cevaba bağlı olan doğru cevap checkboxunu da sil
-    //         var correctAnswerCheckbox = answerToRemove.querySelector('.form-check-input');
-    //         if (correctAnswerCheckbox) {
-    //             correctAnswerCheckbox.parentNode.parentNode.removeChild(correctAnswerCheckbox.parentNode);
-    //         }
-    //     } else {
-    //         alert("En az bir cevap kalmalı!");
-    //     }
-    // }
 
     function removeAnswer(button) {
         var answerSection = button.closest('.answer-option');
@@ -291,7 +230,6 @@
 
         // Tüm cevapların sayısını kontrol et
         var optionsCount = answerSection.querySelectorAll('.mb-3.row input[type="text"]').length;
-        console.log("Seçenek Sayısı:", optionsCount);
 
         // En az bir cevap kalmalı
         if (optionsCount > 1) {
@@ -308,10 +246,14 @@
         }
     }
 
+    // var matchingPairs = [];
+
     // function addMatchingPair(button) {
     //     var answerSection = button.parentNode.querySelector('.answer-options');
     //     var newMatchingPair = document.createElement('div');
     //     newMatchingPair.classList.add('matching-pair');
+
+    //     var questionIndex = matchingPairs.length; // Soru dizisinin uzunluğu, mevcut soru sayısını temsil eder
 
     //     newMatchingPair.innerHTML = `
     //         <!-- Eşleştirme için form alanları -->
@@ -319,11 +261,10 @@
     //             <div class="col-md">
     //                 <div class="mb-3 row">
     //                     <div class="input-group">
-    //                         <label class="btn btn-outline-secondary">
+    //                         <button class="btn btn-outline-secondary" type="button" onclick="addImage(this)">
     //                             <i class="fa-solid fa-image"></i>
-    //                             <input type="file" id="fileInput" name="fileInput" style="display: none;" accept="image/*" onchange="addImage(this)">
-    //                         </label>
-    //                         <input type="text" name="matching-pair[${questionIndex - 1}][text][]" class="form-control" placeholder="Cevap" required>
+    //                         </button>
+    //                         <input type="text" name="matching_pairs[${questionIndex}][left]" class="form-control" placeholder="Sol Eş" required>
     //                         <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
     //                             <i class="fa-solid fa-trash"></i>
     //                         </button>
@@ -337,7 +278,7 @@
     //                         <button class="btn btn-outline-secondary" type="button" onclick="addImage(this)">
     //                             <i class="fa-solid fa-image"></i>
     //                         </button>
-    //                         <input type="text" name="matching-pair[${questionIndex - 1}][text][]" class="form-control" placeholder="Cevap" required>
+    //                         <input type="text" name="matching_pairs[${questionIndex}][right]" class="form-control" placeholder="Sağ Eş" required>
     //                         <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
     //                             <i class="fa-solid fa-trash"></i>
     //                         </button>
@@ -345,64 +286,50 @@
     //                 </div>
     //             </div>
     //         </div>
-
     //     `;
 
     //     answerSection.appendChild(newMatchingPair);
+
+    //     // Yeni eşleştirme çiftini eşleştirme dizisine ekleyin
+    //     matchingPairs.push([]);
     // }
-
-    var matchingPairs = [];
-
-    function addMatchingPair(button) {
-        var answerSection = button.parentNode.querySelector('.answer-options');
-        var newMatchingPair = document.createElement('div');
-        newMatchingPair.classList.add('matching-pair');
-
-        var questionIndex = matchingPairs.length; // Soru dizisinin uzunluğu, mevcut soru sayısını temsil eder
-
-        newMatchingPair.innerHTML = `
-            <!-- Eşleştirme için form alanları -->
-            <div class="mb-3 row justify-content-center">
-                <div class="col-md">
-                    <div class="mb-3 row">
-                        <div class="input-group">
-                            <label class="btn btn-outline-secondary">
-                                <i class="fa-solid fa-image"></i>
-                                <input type="file" name="matching_pairs[${questionIndex}][left]" style="display: none;" accept="image/*" onchange="addImage(this)">
-                            </label>
-                            <input type="text" name="matching_pairs[${questionIndex}][left]" class="form-control" placeholder="Sol Eş" required>
-                            <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md d-flex justify-content-center align-items-center"><i class="fa-solid fa-arrows-left-right"></i></div>
-                <div class="col-md">
-                    <div class="mb-3 row">
-                        <div class="input-group">
-                            <button class="btn btn-outline-secondary" type="button" onclick="addImage(this)">
-                                <i class="fa-solid fa-image"></i>
-                            </button>
-                            <input type="text" name="matching_pairs[${questionIndex}][right]" class="form-control" placeholder="Sağ Eş" required>
-                            <button class="btn btn-outline-secondary" type="button" onclick="removeAnswer(this)">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        answerSection.appendChild(newMatchingPair);
-
-        // Yeni eşleştirme çiftini eşleştirme dizisine ekleyin
-        matchingPairs.push([]);
-    }
 
 
     function removeMatchingPair(button) {
         var matchingPairToRemove = button.closest('.matching-pair');
         matchingPairToRemove.parentNode.removeChild(matchingPairToRemove);
     }
+
+    function removeQuestion(button) {
+        // Soru kartını alın ve DOM'dan kaldırın
+        var questionCard = button.closest('.card');
+        questionCard.remove();
+
+        // Kalan soruların indekslerini güncelleyin
+        var remainingQuestions = document.querySelectorAll('.card[data-question-index]');
+        remainingQuestions.forEach((card, index) => {
+            card.setAttribute('data-question-index', index + 1);
+            card.querySelector('span').textContent = (index + 1) + ". Soru";
+
+            // Soru numarasını güncellemek için card içindeki span öğesini bulun
+            var questionNumberSpan = card.querySelector('span');
+            if (questionNumberSpan) {
+                questionNumberSpan.textContent = (index + 1) + ". Soru";
+            }
+
+            // Seçeneklerin adlarını güncelleyin
+            var inputs = card.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.name) {
+                    input.name = input.name.replace(/\[\d+\]/, `[${index}]`);
+                }
+            });
+        });
+
+        // Soru sayısını güncelleyin
+        questionIndex = remainingQuestions.length;
+    }
+
+
 </script>
+
