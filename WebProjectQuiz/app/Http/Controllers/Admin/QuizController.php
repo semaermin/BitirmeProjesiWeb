@@ -587,7 +587,7 @@ class QuizController extends Controller
 
     public function update(Request $request, $slug)
     {
-        dd($request->all());
+        // dd($request->all());
         // Testi bul
         $test = Test::where('slug', $slug)->firstOrFail();
 
