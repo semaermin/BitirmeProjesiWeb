@@ -92,12 +92,12 @@ export default function Leaderboard({ recordsPerPage = 10 }) {
               }`}
             >
               <div className="leaderboard-user-left">
-                <div>{firstIndex + index + 1}.</div>
+                <div className="center-content">{firstIndex + index + 1}.</div>
                 <div>{user.name}</div>
               </div>
               <div className="leaderboard-user-right">
-                <div>{user.point}</div>
-                <div>{user.level}</div>
+                <div className="center-content">{user.point}</div>
+                <div className="center-content">{user.level}</div>
               </div>
             </li>
           ))}

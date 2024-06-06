@@ -18,6 +18,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        background-color: var(--tertiary-color);
       }
       .video-texts-container {
         padding: 0px 40px;
@@ -28,6 +29,7 @@
           padding: 0px 5px;
           text-align: center;
           font-size: clamp(12px, 2vw, 16px);
+          color: var(--secondary-color);
         }
         .video-choices {
           display: flex;
@@ -64,6 +66,9 @@
     .video-box {
       .video-texts-container {
         background-color: var(--bg-dark-color);
+        .video-text {
+          color: var(--tertiary-color);
+        }
       }
     }
   }

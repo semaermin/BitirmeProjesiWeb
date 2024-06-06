@@ -14,15 +14,26 @@ function VideoPage() {
     try {
       const response = await axios.get('http://127.0.0.1:8000/video-list');
       setVideoQuestions(response.data.videoQuestions); // Videolu soruları güncelle
+      // console.log(videoQuestions);
     } catch (error) {
       console.error('Error fetching video questions:', error);
     }
   };
+  videoQuestions.forEach((questionObj) => {
+    console.log(questionObj.media_path);
+    console.log(`WebProjectQuiz\\storage${questionObj.media_path}`);
+  }); // console.log(videoQuestions.map());
 
   return (
     <div>
       <Navbar item="video"></Navbar>
       <VideoBox></VideoBox>
+      <video width="320" height="240" controls>
+        <source
+          src="http://localhost:8000/storage/admin/questionFile/videos/1716487362_4tn12p15hk2y12.mp4"
+          type="video/mp4"
+        />
+      </video>
       {/* <div>
         {videoQuestions && videoQuestions.length > 0 ? (
           videoQuestions.map((question) => (

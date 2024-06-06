@@ -128,8 +128,14 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-a{
+a {
   text-decoration: none;
   font-weight: unset;
   color: unset;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

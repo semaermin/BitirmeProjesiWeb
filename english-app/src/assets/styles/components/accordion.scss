@@ -1,0 +1,108 @@
+.light,
+.dark {
+  .accordion {
+    width: 70%;
+    margin: auto;
+    background-color: var();
+  }
+
+  #accordion {
+    margin-top: 30px;
+  }
+
+  .accordion-element {
+    background-color: var(--white);
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: height 1s ease, opacity 1s ease;
+
+    .accordion-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background-color: var(--bg-white-color);
+      border-radius: 8px;
+      transition: border-bottom-left-radius 0.5s,
+        border-bottom-right-radius 0.5s;
+      cursor: pointer;
+      &.active {
+        border-bottom-left-radius: unset !important;
+        border-bottom-right-radius: unset !important;
+        background-color: var(--light-grey);
+        transition: border-bottom-left-radius 0.5s,
+          border-bottom-right-radius 0.5s;
+      }
+      &:hover {
+        h3 {
+          color: var(--primary-color) !important;
+        }
+      }
+      h3 {
+        color: var(--tertiary-color);
+        font-weight: 600;
+
+        &.active {
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    .accordion-bottom-text {
+      background-color: var(--bg-white-color);
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      height: 0;
+      opacity: 0;
+      transition: height 0.5s ease, opacity 0.5s ease;
+      p {
+        margin: 0;
+        padding: 10px 20px 20px 20px;
+        color: var(--tertiary-color);
+        line-height: 1.4;
+        text-align: left;
+      }
+    }
+
+    .arrow {
+      span.active {
+        color: var(--primary-color);
+        svg {
+          transition: transform 0.3s ease;
+          transform: rotate(180deg);
+        }
+      }
+      span.inactive {
+        color: var(--secondary-color);
+        svg {
+          transition: transform 0.3s ease;
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  .accordion {
+    .accordion-element {
+      background-color: var(--bg-dark-color);
+
+      .accordion-heading {
+        background-color: var(--bg-dark-color);
+        .arrow {
+          span.inactive {
+            color: var(--tertiary-color);
+          }
+        }
+      }
+
+      .accordion-bottom-text {
+        background-color: var(--bg-dark-color);
+        & p.active {
+          background-color: var(--dark-grey);
+        }
+      }
+    }
+  }
+}

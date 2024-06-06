@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
-import '../assets/styles/exercies-page.scss';
+import '../assets/styles/exercises-page.scss';
 
 function ExercisesPage() {
   const [test, setTest] = useState({});
   const [tests, setTests] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
   const { slug } = useParams();
-  const { theme } = useTheme();
+  const { theme, user } = useTheme();
 
   useEffect(() => {
     if (slug) {
@@ -28,12 +30,13 @@ function ExercisesPage() {
       );
       if (response.data && response.data.test) {
         setTest(response.data.test);
+        setCurrentQuestionIndex(0); // Yeni bir test yüklendiğinde mevcut soru indeksini sıfırla
         console.log(response.data);
       } else {
-        console.error('Failed to fetch test details:', response.statusText);
+        console.error('Test detayları getirilemedi:', response.statusText);
       }
     } catch (error) {
-      console.error('Failed to fetch test details:', error.message);
+      console.error('Test detayları getirilemedi:', error.message);
     }
   }
 
@@ -54,10 +57,10 @@ function ExercisesPage() {
         setTests(response.data.tests);
         console.log(response.data.tests);
       } else {
-        console.error('Failed to fetch test list:', response.statusText);
+        console.error('Test listesi getirilemedi:', response.statusText);
       }
     } catch (error) {
-      console.error('Failed to fetch test list:', error.message);
+      console.error('Test listesi getirilemedi:', error.message);
     }
   }
 
@@ -70,61 +73,142 @@ function ExercisesPage() {
     return acc;
   }, {});
 
+  const handleQuestionNavigation = (direction) => {
+    if (direction === 'next') {
+      if (currentQuestionIndex < test.questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        alert('Test tamamlandı!');
+      }
+    } else if (direction === 'prev') {
+      if (currentQuestionIndex > 0) {
+        setCurrentQuestionIndex(currentQuestionIndex - 1);
+      }
+    }
+  };
+
+  const handleAnswerSelect = (questionIndex, answerId) => {
+    setSelectedAnswers({
+      ...selectedAnswers,
+      [questionIndex]: answerId,
+    });
+  };
+
+  const handleSubmit = async () => {
+    const unansweredQuestions = test.questions.filter(
+      (_, index) => !(index in selectedAnswers)
+    );
+
+    if (unansweredQuestions.length > 0) {
+      alert('Lütfen tüm soruları yanıtlayın.');
+      return;
+    }
+
+    try {
+      const answers = Object.keys(selectedAnswers).map((questionIndex) => ({
+        questionId: test.questions[questionIndex].id,
+        answerId: selectedAnswers[questionIndex],
+      }));
+
+      console.log(answers);
+
+      const response = await axios.post(
+        'http://127.0.0.1:8000/submit-answers',
+        {
+          userId: user.id,
+          testId: test.id,
+          answers: answers,
+        }
+      );
+
+      console.log('Gönderim yanıtı:', response);
+      alert('Yanıtlarınız gönderildi!');
+    } catch (error) {
+      console.error('Yanıtlar gönderilemedi:', error.message);
+    }
+  };
+
+  const currentQuestion = test.questions
+    ? test.questions[currentQuestionIndex]
+    : null;
+
   return (
     <div>
       <Navbar item="exercises" />
       <div className={theme}>
         {slug && test.name ? (
-          <div>
-            <h2>Test Adı: {test.name}</h2>
-            {test.questions && test.questions.length > 0 ? (
-              test.questions.map((question, index) => (
-                <div key={index} className="mb-4">
-                  <h5>
-                    {index + 1}.) {question.text} - Soru Süresi{' '}
-                    {question.duration} saniye
-                  </h5>
-                  {question.media_path ? (
-                    <img
-                      src={question.media_path}
-                      alt="Soru Resmi"
-                      width="200"
-                    />
-                  ) : (
-                    <p>Soru için fotoğraf yok</p>
-                  )}
-                  <ul className="list-group list-group-flush mt-2">
-                    {question.answers &&
-                      question.answers.length > 0 &&
-                      question.answers.map((answer, answerIndex) => (
-                        <li className="list-group-item" key={answerIndex}>
-                          {answer.text} -{' '}
-                          {answer.is_correct ? (
-                            <span className="text-success">Doğru Cevap</span>
-                          ) : (
-                            <span className="text-danger">Yanlış Cevap</span>
-                          )}
+          <div className="question-container">
+            <div className="question">
+              <h2 className="question-number">
+                Soru {currentQuestionIndex + 1}
+              </h2>
+              {currentQuestion ? (
+                <>
+                  <h4>{currentQuestion.text}</h4>
+                  <ul className="answer-group">
+                    {currentQuestion.answers &&
+                      currentQuestion.answers.length > 0 &&
+                      currentQuestion.answers.map((answer, answerIndex) => (
+                        <li className="answer-group-item" key={answerIndex}>
+                          <input
+                            type="radio"
+                            name={`question-${currentQuestionIndex}`}
+                            value={answer.id}
+                            id={answer.id}
+                            checked={
+                              selectedAnswers[currentQuestionIndex] ===
+                              answer.id
+                            }
+                            onChange={() =>
+                              handleAnswerSelect(
+                                currentQuestionIndex,
+                                answer.id
+                              )
+                            }
+                          />
+                          <label for={answer.id}>{answer.text}</label>
                         </li>
                       ))}
                   </ul>
-                </div>
-              ))
-            ) : (
-              <p>Test soruları bulunamadı.</p>
-            )}
+                  <div className="toggle-buttons">
+                    <button
+                      className="prev-question-button"
+                      onClick={() => handleQuestionNavigation('prev')}
+                    >
+                      {'<'}-- Önceki Soru
+                    </button>
+                    <div className="question-index center-content">
+                      {currentQuestionIndex + 1} / {test.questions.length}
+                    </div>
+                    {currentQuestionIndex !== test.questions.length - 1 ? (
+                      <button
+                        className="next-question-button"
+                        onClick={() => handleQuestionNavigation('next')}
+                      >
+                        Sonraki Soru --{'>'}
+                      </button>
+                    ) : (
+                      <button className="submit-answers" onClick={handleSubmit}>
+                        Yanıtları Gönder
+                      </button>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <p>Test soruları bulunamadı.</p>
+              )}
+            </div>
           </div>
         ) : (
           <div className="test-group-container">
             {Object.keys(categorizedTests).map((level) => (
               <div className="test-group" key={level}>
                 <h2>Seviye {level.toUpperCase()}</h2>
-                <ul className="list-group">
+                <ul className="test-group-list">
                   {categorizedTests[level].map((test) => (
-                    // <li key={test.id} className="list-group-item">
-                    //   <Link to={`/exercises/${test.slug}`}>{test.name}</Link>
-                    // </li>
                     <Link
-                      className="list-group-item"
+                      className="test-group-item"
+                      key={test.id}
                       to={`/exercises/${test.slug}`}
                     >
                       {test.name}

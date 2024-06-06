@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Leaderboard from '../components/Leaderboard';
+import UserProfile from '../components/UserProfile';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ function HomePage() {
   return (
     <div>
       <Navbar item="home"></Navbar>
+      <UserProfile></UserProfile>
       <Leaderboard recordsPerPage={5}></Leaderboard>
       <ul>
         {tests.map((test) => (
