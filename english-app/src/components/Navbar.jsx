@@ -22,6 +22,7 @@ import {
   Person,
   Sun,
   MoonFill,
+  ChevronDown,
 } from 'react-bootstrap-icons';
 
 export default function Navbar(props) {
@@ -233,9 +234,17 @@ export default function Navbar(props) {
             </Link>
           </ul>
         </div>
-        <div className="user-profile">
-          <div className="user-fullname">{user?.name}</div>
-          <div className="user-avatar" onClick={toggleDropdown}>
+        <div className="user-profile" onClick={toggleDropdown}>
+          <div className="name-point-info">
+            <div className="user-fullname">{user?.name}</div>
+            <div className="user-point">
+              <span>
+                <ChevronDown></ChevronDown>
+              </span>
+              Puan: {user.point}
+            </div>
+          </div>
+          <div className="user-avatar">
             <img
               src={
                 user.profile_photo_path
@@ -247,10 +256,8 @@ export default function Navbar(props) {
             {dropdownOpen && (
               <div className="dropdown-content">
                 <ul>
-
                   <Link
                     to="/profile"
-
                     onClick={() => handleItemClick('profile')}
                     data-selected={
                       selectedItem === 'profile' ? 'true' : 'false'
@@ -309,7 +316,6 @@ export default function Navbar(props) {
                   </Link>
                   <Link
                     to="/login"
-
                     onClick={() => handleItemClick('logout')}
                     data-selected={selectedItem === 'logout' ? 'true' : 'false'}
                   >
@@ -327,7 +333,6 @@ export default function Navbar(props) {
                     >
                       Çıkış Yap
                     </span>
-
                   </Link>
 
                   <li
