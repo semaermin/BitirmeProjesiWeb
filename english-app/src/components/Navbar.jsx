@@ -247,8 +247,10 @@ export default function Navbar(props) {
             {dropdownOpen && (
               <div className="dropdown-content">
                 <ul>
+
                   <Link
                     to="/profile"
+
                     onClick={() => handleItemClick('profile')}
                     data-selected={
                       selectedItem === 'profile' ? 'true' : 'false'
@@ -307,6 +309,7 @@ export default function Navbar(props) {
                   </Link>
                   <Link
                     to="/login"
+
                     onClick={() => handleItemClick('logout')}
                     data-selected={selectedItem === 'logout' ? 'true' : 'false'}
                   >
@@ -324,7 +327,9 @@ export default function Navbar(props) {
                     >
                       Çıkış Yap
                     </span>
+
                   </Link>
+
                   <li
                     id="dropdown-theme-switcher"
                     ref={lastItemRef}
