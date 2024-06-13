@@ -7,6 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\UserAuth\AuthController;
 use App\Http\Controllers\UserAuth\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UsersTestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,12 +58,14 @@ Route::post('/logout', [AuthController::class, 'logout']);
 //     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
 // });
 
-Route::group(['middleware' => 'cors'], function () {
+Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], function () {
     Route::get('auth', [AuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
     // Route::post('/user/login', [AuthController::class, 'login']);
     Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
     Route::post('/user/register', [AuthController::class, 'store']);
+    Route::post('/check-answers', [UsersTestController::class, 'checkAnswers']);
+    Route::post('/check-video-answers', [UsersTestController::class, 'checkVideoAnswers']);
 });
 
 Route::get('/csrf-token', [CsrfTokenController::class, 'getToken']);
@@ -72,3 +75,4 @@ Route::get('/userLoggedIn', function () {
     return response()->json(['isLoggedIn' => Auth::check()]);
 });
 // Route::post('/reset-password', 'ResetPasswordController@reset');
+// Route::get('/check-answers', [UsersTestController::class, 'checkAnswers']);

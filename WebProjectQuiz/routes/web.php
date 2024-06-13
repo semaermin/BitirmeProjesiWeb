@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\UserAuth\AuthController;
 use App\Http\Controllers\UserAuth\ResetPasswordController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UsersTestController;
 use App\Http\Controllers\VideoController;
 
 /*
@@ -61,22 +62,24 @@ Route::get('/users', [AuthController::class, 'index']);
 
 
 // CORS HATASI ALMAMAK İÇİN MİDDLEWARE YAZDIK KULLANIYORUZ.
-// Route::group(['middleware' => 'cors'], function () {
+Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], function () {
     Route::get('auth', [AuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
     Route::get('user/logout', [AuthController::class, 'logout']);
     // Route::post('/user/login', [AuthController::class, 'login']);
-    Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
+    // Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
     Route::post('/user/register', [AuthController::class, 'store']);
-// });
 
+
+});
+// Route::post('/check-answers', [UsersTestController::class, 'checkAnswers']);
 // // Kayıt formunu göstermek için
-Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
+// Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
 // Kayıt formunun gönderildiği route
 Route::post('/user/register', [AuthController::class, 'store']);
 
 // Giriş formunu göstermek için
-Route::get('/user/login', [AuthController::class, 'showLoginForm'])->name('user.login');
+// Route::get('/user/login', [AuthController::class, 'showLoginForm'])->name('user.login');
 Route::get('/error', [AuthController::class, 'dash'])->name('error');
 
 Route::group(['middleware' => ['web']], function () {
@@ -99,4 +102,6 @@ Route::get('/test-list/{slug}', [HomeController::class, 'testData']);
 //videolu soruları gönder
 Route::get('/video-list', [VideoController::class, 'videoList']);
 // Route::get('/video', [VideoController::class, 'getVideoQuestions']);
+
+
 

@@ -113,7 +113,7 @@ function ExercisesPage() {
       console.log(answers);
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/submit-answers',
+        'http://127.0.0.1:8000/api/check-answers',
         {
           userId: user.id,
           testId: test.id,
@@ -121,7 +121,6 @@ function ExercisesPage() {
         }
       );
 
-      console.log('Gönderim yanıtı:', response);
       alert('Yanıtlarınız gönderildi!');
     } catch (error) {
       console.error('Yanıtlar gönderilemedi:', error.message);
