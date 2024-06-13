@@ -31,6 +31,7 @@ class VideoController extends Controller
             // Videolu soruları listele ve ilişkili cevaplarıyla birlikte getir
             $videoQuestions = Question::where('is_video', 1)
                                     ->with('answers')
+                                    ->inRandomOrder()
                                     ->get();
 
             return response()->json(['videoQuestions' => $videoQuestions], 200);

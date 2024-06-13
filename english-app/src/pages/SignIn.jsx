@@ -7,7 +7,7 @@ function SignIn() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:8000/auth', {
+    fetch('http://localhost:8000/api/auth', {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

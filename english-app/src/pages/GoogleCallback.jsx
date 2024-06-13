@@ -10,7 +10,7 @@ function GoogleCallback() {
   const location = useLocation();
 
   useEffect(() => {
-    fetch(`http://localhost:8000/auth/callback${location.search}`, {
+    fetch(`http://localhost:8000/api/auth/callback${location.search}`, {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
