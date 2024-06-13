@@ -67,28 +67,14 @@ html {
         ul {
           border-radius: 16px;
           padding: 20px;
-          li {
+          a {
             display: flex;
             align-items: center;
             gap: 8px;
             color: var(--tertiary-color);
             text-align: left;
-            margin-bottom: 20px;
             width: fit-content;
-            .theme-switcher {
-              width: 24px;
-              height: 24px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              margin-right: unset !important;
-              padding: 5px;
-              background-color: var(--primary-color);
-              border-radius: 100%;
-              svg {
-                color: white;
-              }
-            }
+            margin-bottom: 16px;
             &:last-child {
               margin-bottom: 0 !important;
             }
@@ -96,11 +82,24 @@ html {
               font-weight: bold;
               color: var(--primary-color);
             }
-            &:hover {
-              cursor: pointer;
-            }
             span {
               font-weight: bold !important;
+              cursor: pointer;
+            }
+          }
+          .theme-switcher {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: unset !important;
+            padding: 5px;
+            background-color: var(--primary-color);
+            border-radius: 100%;
+            cursor: pointer;
+            svg {
+              color: white;
             }
           }
         }

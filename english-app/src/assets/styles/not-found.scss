@@ -2,9 +2,11 @@ html,
 body {
   height: 100%;
 }
+#notfound {
+  height: 100vh;
+}
 .light,
 .dark {
-  height: 100%;
   .not-found-wrapper {
     width: 100% !important;
     height: 100% !important;

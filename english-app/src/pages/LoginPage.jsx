@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { login, setAxiosInterceptors } from '../services/LoginService';
+import { Helmet } from 'react-helmet';
 import SignIn from '../pages/SignIn';
 
 function LoginPage() {
@@ -55,6 +56,10 @@ function LoginPage() {
 
   return (
     <div>
+      {/* <Helmet>
+        <title>Sermify | Giriş Sayfası</title>
+        <meta name="description" content="Sermify Giriş Sayfası" />
+      </Helmet> */}
       <div className="login-container">
         <div className="login-left">
           <div className="login-left-image" />

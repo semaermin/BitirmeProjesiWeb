@@ -6,7 +6,7 @@ function NotFoundPage() {
   const { theme } = useTheme();
 
   return (
-    <div className={theme}>
+    <div id="notfound" className={theme}>
       <div className="not-found-wrapper">
         <img
           src="/src/assets/images/svg/404-not-found.svg"

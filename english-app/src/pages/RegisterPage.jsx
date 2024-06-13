@@ -3,6 +3,7 @@ import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { Helmet } from 'react-helmet';
 import SignIn from '../pages/SignIn';
 import axios from 'axios';
 
@@ -122,6 +123,10 @@ function RegisterPage() {
 
   return (
     <div className="register-container">
+      {/* <Helmet>
+        <title>Sermify | Hesap Oluşturma Sayfası</title>
+        <meta name="description" content="Sermify Giriş Sayfası" />
+      </Helmet> */}
       <div className="register-left">
         <div className="register-left-image" />
         <Link to="/">

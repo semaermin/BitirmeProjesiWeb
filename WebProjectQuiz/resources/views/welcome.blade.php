@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +24,8 @@
         /* public/css/welcome.css */
         body {
             height: 100vh;
-            background-image: url('../images/landing-background.png'); /* Arkaplan resminizin yolunu buraya ekleyin */
+            background-image: url('../images/landing-background.png');
+            /* Arkaplan resminizin yolunu buraya ekleyin */
             background-size: cover;
             background-position: center;
         }
@@ -51,17 +53,16 @@
             transition: background-color 0.3s;
         }
 
-        .background-image{
+        .background-image {
             height: 100%;
         }
 
         .ml-2 {
             margin-left: 0.5rem;
         }
-
-
     </style>
 </head>
+
 <body class="antialiased">
     <div class="relative flex items-center justify-center min-h-screen background-image">
         <div class="text-center landing-logo">
@@ -71,18 +72,19 @@
 
             <!-- Buttons -->
             @if (Route::has('login'))
-                <div class="p-6">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="mb-4 btn btn-primary btn-login">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="btn btn-outline-light">Log in</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-2 btn btn-light">Register</a>
-                        @endif
-                    @endauth
-                </div>
+            <div class="p-6">
+                @auth
+                <a href="{{ url('/dashboard') }}" class="mb-4 btn btn-outline-light btn-login">Dashboard</a>
+                @else
+                <a href="{{ route('login') }}" class="btn btn-outline-light">Log in</a>
+                @if (Route::has('register'))
+                <a href="{{ route('register') }}" class="ml-2 btn btn-light">Register</a>
+                @endif
+                @endauth
+            </div>
             @endif
         </div>
     </div>
 </body>
+
 </html>
