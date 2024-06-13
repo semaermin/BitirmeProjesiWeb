@@ -5,65 +5,58 @@ import axios from 'axios';
 
 export default function VideoBox() {
   const { theme } = useTheme();
-  const [videoQuestions, setVideoQuestions] = useState([]);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [videoQuestion, setVideoQuestion] = useState(null); // Başlangıçta null olarak ayarlayın
 
   useEffect(() => {
-    fetchVideoQuestions();
+    fetchVideoQuestion();
   }, []);
 
-  const fetchVideoQuestions = async () => {
+  const fetchVideoQuestion = async () => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/video-list');
-      setVideoQuestions(response.data.videoQuestions); // Videolu soruları güncelle
+      // console.log(response.data); // API yanıtını konsola yazdır
+      setVideoQuestion(response.data.videoQuestion); // Videolu soruyu güncelle
     } catch (error) {
-      console.error('Error fetching video questions:', error);
+      console.error('Error fetching video question:', error);
     }
   };
 
-  const handleNextVideo = () => {
-    setCurrentVideoIndex(
-      (prevIndex) => (prevIndex + 1) % videoQuestions.length
-    );
-  };
+  if (!videoQuestion) {
+    return <p>Loading...</p>; // Eğer videoQuestion undefined veya null ise, Loading... mesajı göster
+  }
 
-  const currentVideo = videoQuestions[currentVideoIndex];
-
-  console.log(currentVideo);
+  // console.log(videoQuestion);
 
   return (
     <div className={theme}>
       <div className="video-container">
-        {currentVideo && (
-          <div className="video-box">
-            <div className="video">
-              <video autoPlay controls key={currentVideo.id}>
-                <source
-                  src={`http://localhost:8000/storage/${currentVideo.media_path}`}
-                  type="video/mp4"
-                />
-              </video>
-            </div>
-            <div className="video-texts-container">
-              <p className="video-text">
-                {currentVideo.text}
-                <button
-                  onClick={handleNextVideo}
-                  disabled={videoQuestions.length === 0}
-                >
-                  Sıradaki Video
+        <div className="video-box">
+          <div className="video">
+            <video autoPlay controls key={videoQuestion.id}>
+              <source
+                src={`http://localhost:8000/storage/${videoQuestion.media_path}`}
+                type="video/mp4"
+              />
+            </video>
+          </div>
+          <div className="video-texts-container">
+            <p className="video-text">
+              {videoQuestion.text}
+              <button
+                onClick={fetchVideoQuestion}
+              >
+                Sıradaki Video
+              </button>
+            </p>
+            <div className="video-choices">
+              {videoQuestion.answers?.map((answer, index) => (
+                <button value={answer.id} id={answer.id} key={index}>
+                  {answer.text}
                 </button>
-              </p>
-              <div className="video-choices">
-                {currentVideo.answers?.map((answer, index) => (
-                  <button value={answer.id} id={answer.id} key={index}>
-                    {answer.text}
-                  </button>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
