@@ -247,7 +247,10 @@ export default function Navbar(props) {
             {dropdownOpen && (
               <div className="dropdown-content">
                 <ul>
-                  <li
+
+                  <Link
+                    to="/profile"
+
                     onClick={() => handleItemClick('profile')}
                     data-selected={
                       selectedItem === 'profile' ? 'true' : 'false'
@@ -265,9 +268,9 @@ export default function Navbar(props) {
                       }}
                       title="Profilim"
                     >
-                      <Link to="/profile">Profilim</Link>
+                      Profilim
                     </span>
-                  </li>
+                  </Link>
                   {/* <li
                     onClick={() => handleItemClick('settings')}
                     data-selected={
@@ -285,7 +288,8 @@ export default function Navbar(props) {
                       Ayarlar
                     </span>
                   </li> */}
-                  <li
+                  <Link
+                    to="/help"
                     onClick={() => handleItemClick('help')}
                     data-selected={selectedItem === 'help' ? 'true' : 'false'}
                   >
@@ -300,10 +304,12 @@ export default function Navbar(props) {
                       }}
                       title="Yardım"
                     >
-                      <Link to="/help">Yardım</Link>
+                      Yardım
                     </span>
-                  </li>
-                  <li
+                  </Link>
+                  <Link
+                    to="/login"
+
                     onClick={() => handleItemClick('logout')}
                     data-selected={selectedItem === 'logout' ? 'true' : 'false'}
                   >
@@ -321,7 +327,9 @@ export default function Navbar(props) {
                     >
                       Çıkış Yap
                     </span>
-                  </li>
+
+                  </Link>
+
                   <li
                     id="dropdown-theme-switcher"
                     ref={lastItemRef}

@@ -128,7 +128,16 @@ function LandingPage() {
           />
         </div>
         <div className="mobile-screen">
-          <img src="/src/assets/images/mobile.png" alt="mobile-screen" />
+          <img
+            className="mobile-screen-with-text"
+            src="/src/assets/images/mobile.png"
+            alt="mobile-screen"
+          />
+          <img
+            className="mobile-screen-without-text"
+            src="/src/assets/images/mobile-without-text.png"
+            alt="mobile-screen"
+          />
         </div>
       </div>
       <footer>
@@ -140,6 +149,19 @@ function LandingPage() {
         </div>
         <div className="footer-copyright">
           <p>{new Date().getFullYear()} Sermify | Tüm hakları saklıdır.</p>
+        </div>
+        <div className="developers-name">
+          Developed by
+          <a href="https://www.linkedin.com/in/sema-ermin/" target="_blank">
+            Sema E.
+          </a>
+          and
+          <a
+            href="https://www.linkedin.com/in/serhatzunluoglu/"
+            target="_blank"
+          >
+            Serhat Z.
+          </a>
         </div>
       </footer>
     </div>
