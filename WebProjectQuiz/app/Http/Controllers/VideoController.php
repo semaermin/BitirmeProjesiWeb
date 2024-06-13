@@ -28,18 +28,24 @@ class VideoController extends Controller
     public function videoList()
     {
         try {
-            // Videolu soruları listele ve ilişkili cevaplarıyla birlikte getir
-            $videoQuestions = Question::where('is_video', 1)
+            // Rastgele bir videolu soruyu ve ilişkili cevaplarını getir
+            $videoQuestion = Question::where('is_video', 1)
                                     ->with('answers')
                                     ->inRandomOrder()
-                                    ->get();
+                                    ->first();
 
-            return response()->json(['videoQuestions' => $videoQuestions], 200);
+            // Eğer videoQuestion bulunamazsa uygun bir yanıt döndür
+            if (!$videoQuestion) {
+                return response()->json(['message' => 'Videolu soru bulunamadı.'], 404);
+            }
+
+            return response()->json(['videoQuestion' => $videoQuestion], 200);
         } catch (\Exception $e) {
             // Hata durumunda uygun bir hata yanıtı döndür
             return response()->json(['message' => 'Bir hata oluştu.'], 500);
         }
     }
+
 
     // public function getVideoQuestions(Request $request)
     // {
