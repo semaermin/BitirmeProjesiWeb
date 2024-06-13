@@ -11,7 +11,7 @@ function ExercisesPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const { slug } = useParams();
-  const { theme, user } = useTheme();
+  const { theme, user, setUser } = useTheme();
 
   useEffect(() => {
     if (slug) {
@@ -121,10 +121,21 @@ function ExercisesPage() {
         }
       );
 
+      // console.log(response.data.userPoint);
+      updateUserPoints(response.data.userPoint);
+
       alert('Yanıtlarınız gönderildi!');
     } catch (error) {
       console.error('Yanıtlar gönderilemedi:', error.message);
     }
+  };
+
+  const updateUserPoints = (newPoints) => {
+    setUser((prevUser) => {
+      const updatedUser = { ...prevUser, point: newPoints };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      return updatedUser;
+    });
   };
 
   const currentQuestion = test.questions
