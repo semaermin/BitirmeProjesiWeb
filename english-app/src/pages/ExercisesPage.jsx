@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar';
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import '../assets/styles/exercises-page.scss';
@@ -11,8 +11,7 @@ function ExercisesPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const { slug } = useParams();
-  const { theme, user } = useTheme();
-  const navigate = useNavigate(); // Get navigate function from useNavigate
+  const { theme, user, setUser } = useTheme();
 
   useEffect(() => {
     if (slug) {
@@ -31,7 +30,8 @@ function ExercisesPage() {
       );
       if (response.data && response.data.test) {
         setTest(response.data.test);
-        setCurrentQuestionIndex(0);
+        setCurrentQuestionIndex(0); // Yeni bir test yüklendiğinde mevcut soru indeksini sıfırla
+        console.log(response.data);
       } else {
         console.error('Test detayları getirilemedi:', response.statusText);
       }
@@ -55,6 +55,7 @@ function ExercisesPage() {
       });
       if (response.data && response.data.tests) {
         setTests(response.data.tests);
+        console.log(response.data.tests);
       } else {
         console.error('Test listesi getirilemedi:', response.statusText);
       }
@@ -63,6 +64,7 @@ function ExercisesPage() {
     }
   }
 
+  // Testleri language_level'e göre kategorize et
   const categorizedTests = ['a1', 'a2', 'b1'].reduce((acc, level) => {
     const filteredTests = tests.filter((test) => test.language_level === level);
     if (filteredTests.length > 0) {
@@ -108,6 +110,8 @@ function ExercisesPage() {
         answerId: selectedAnswers[questionIndex],
       }));
 
+      console.log(answers);
+
       const response = await axios.post(
         'http://127.0.0.1:8000/api/check-answers',
         {
@@ -117,15 +121,21 @@ function ExercisesPage() {
         }
       );
 
-      console.log('Gönderim yanıtı:', response.data);
+      // console.log(response.data.userPoint);
+      updateUserPoints(response.data.userPoint);
+
       alert('Yanıtlarınız gönderildi!');
-      
-      // Redirect to exercises page after successful submission
-      navigate('/exercises');
-      
     } catch (error) {
       console.error('Yanıtlar gönderilemedi:', error.message);
     }
+  };
+
+  const updateUserPoints = (newPoints) => {
+    setUser((prevUser) => {
+      const updatedUser = { ...prevUser, point: newPoints };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      return updatedUser;
+    });
   };
 
   const currentQuestion = test.questions
@@ -166,7 +176,7 @@ function ExercisesPage() {
                               )
                             }
                           />
-                          <label htmlFor={answer.id}>{answer.text}</label>
+                          <label for={answer.id}>{answer.text}</label>
                         </li>
                       ))}
                   </ul>
