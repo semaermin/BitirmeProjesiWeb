@@ -56,7 +56,7 @@ function HomePage() {
       <Navbar item="home"></Navbar>
       <UserProfile></UserProfile>
       <Leaderboard recordsPerPage={5}></Leaderboard>
-      <ul>
+      {/* <ul>
         {tests.map((test) => (
           <li key={test.id}>
             <Link to={`/exercises/${test.slug}`}>
@@ -64,7 +64,7 @@ function HomePage() {
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 }
