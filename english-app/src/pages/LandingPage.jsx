@@ -106,7 +106,10 @@ function LandingPage() {
             </span>
             <div>
               <span>Hızlı Altyapı</span>
-              <p>Alıştırmalar ile kendini seviyene göre test et!</p>
+              <p>
+                Kullanıcı deneyimini hızlı altyapımızla en üst seviyeye
+                getiriyoruz.
+              </p>
             </div>
           </div>
           <div className="section-2-box">

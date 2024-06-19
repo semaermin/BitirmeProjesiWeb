@@ -6,8 +6,6 @@ import { LightningChargeFill, TrophyFill } from 'react-bootstrap-icons';
 export default function UserProfile() {
   const { user, theme } = useTheme();
 
-  console.log(user);
-
   return (
     <div className={theme}>
       <div className="user-profile-container">

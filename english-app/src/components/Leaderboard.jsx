@@ -101,7 +101,6 @@ export default function Leaderboard({ recordsPerPage = 10 }) {
               </div>
             </li>
           ))}
-          {console.log(records)}
         </ul>
         <div className="navigation">
           <ul className="pagination">

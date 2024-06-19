@@ -57,13 +57,23 @@ function RegisterPage() {
     }
   };
 
+  const capitalizeFirstLetter = (string) => {
+    return string
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Diğer inputlar için userData state'ini güncelle
+    // Process name input to capitalize first letters
+    const processedValue =
+      name === 'name' ? capitalizeFirstLetter(value) : value;
+
     setUserData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: processedValue,
     }));
   };
 
@@ -87,7 +97,6 @@ function RegisterPage() {
         'http://127.0.0.1:8000/user/register',
         updatedUserData
       );
-      console.log(response.data);
       if (response.status === 201) {
         // Kullanıcı kaydı başarılı olduysa sunucudan gelen token'ı al
         const token = response.data.token;

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
+import useUpdateUserPoints from '../utils/UseUpdateUserPoints.js';
 import '../assets/styles/exercises-page.scss';
 
 function ExercisesPage() {
@@ -11,7 +12,8 @@ function ExercisesPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const { slug } = useParams();
-  const { theme, user, setUser } = useTheme();
+  const { theme, user } = useTheme();
+  const updateUserPoints = useUpdateUserPoints();
 
   useEffect(() => {
     if (slug) {
@@ -31,7 +33,6 @@ function ExercisesPage() {
       if (response.data && response.data.test) {
         setTest(response.data.test);
         setCurrentQuestionIndex(0); // Yeni bir test yüklendiğinde mevcut soru indeksini sıfırla
-        console.log(response.data);
       } else {
         console.error('Test detayları getirilemedi:', response.statusText);
       }
@@ -48,14 +49,13 @@ function ExercisesPage() {
         return;
       }
 
-      const response = await axios.get('http://127.0.0.1:8000/test-list', {
+      const response = await axios.get(`http://127.0.0.1:8000/test-list`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (response.data && response.data.tests) {
         setTests(response.data.tests);
-        console.log(response.data.tests);
       } else {
         console.error('Test listesi getirilemedi:', response.statusText);
       }
@@ -110,8 +110,6 @@ function ExercisesPage() {
         answerId: selectedAnswers[questionIndex],
       }));
 
-      console.log(answers);
-
       const response = await axios.post(
         'http://127.0.0.1:8000/api/check-answers',
         {
@@ -121,7 +119,6 @@ function ExercisesPage() {
         }
       );
 
-      // console.log(response.data.userPoint);
       updateUserPoints(response.data.userPoint);
 
       alert('Yanıtlarınız gönderildi!');
@@ -130,13 +127,13 @@ function ExercisesPage() {
     }
   };
 
-  const updateUserPoints = (newPoints) => {
-    setUser((prevUser) => {
-      const updatedUser = { ...prevUser, point: newPoints };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      return updatedUser;
-    });
-  };
+  // const updateUserPoints = (newPoints, setUser) => {
+  //   setUser((prevUser) => {
+  //     const updatedUser = { ...prevUser, point: newPoints };
+  //     localStorage.setItem('user', JSON.stringify(updatedUser));
+  //     return updatedUser;
+  //   });
+  // };
 
   const currentQuestion = test.questions
     ? test.questions[currentQuestionIndex]
@@ -176,7 +173,7 @@ function ExercisesPage() {
                               )
                             }
                           />
-                          <label for={answer.id}>{answer.text}</label>
+                          <label htmlFor={answer.id}>{answer.text}</label>
                         </li>
                       ))}
                   </ul>
