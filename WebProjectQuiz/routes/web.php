@@ -104,4 +104,8 @@ Route::get('/video-list', [VideoController::class, 'videoList']);
 // Route::get('/video', [VideoController::class, 'getVideoQuestions']);
 
 
+    // Şifremi Unuttum İsteği
+    Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword']);
 
+    // Şifre Sıfırlama İsteği
+    Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);
