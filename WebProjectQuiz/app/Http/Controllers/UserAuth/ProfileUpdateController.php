@@ -63,7 +63,11 @@ class ProfileUpdateController extends Controller
                 $user->profile_photo_path = $path;
                 $user->save();
 
-                return response()->json(['success' => 'Profil fotoğrafı başarıyla güncellendi'], 200);
+                // Profil fotoğrafı başarıyla güncellendiğinde kullanıcı bilgilerini döndür
+                return response()->json([
+                    'success' => 'Profil fotoğrafı başarıyla güncellendi',
+                    'user' => $user
+                ], 200);
             } catch (\Exception $e) {
                 return response()->json(['error' => 'Dosya yüklenemedi: ' . $e->getMessage()], 400);
             }
@@ -71,6 +75,7 @@ class ProfileUpdateController extends Controller
 
         return response()->json(['error' => 'Fotoğraf yüklenemedi'], 400);
     }
+
 
 
 

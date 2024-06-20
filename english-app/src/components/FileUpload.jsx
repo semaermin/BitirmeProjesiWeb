@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 const FileUpload = () => {
   const { user, setUser } = useTheme();
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(''); // Mesaj durumu ekleyin
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -32,17 +33,19 @@ const FileUpload = () => {
       );
 
       // Kullanıcı bilgilerini güncelle
-      const updatedUser = { ...user, profile_photo: response.data.profile_photo_url };
+      const updatedUser = { ...user, profile_photo_path: response.data.user.profile_photo_path };
       setUser(updatedUser);
 
       // localStorage'ı yeni kullanıcı bilgileriyle güncelle
       localStorage.setItem('user', JSON.stringify(updatedUser));
-      
-      // Sayfayı yeniden yükle
-      // window.location.reload();
+
+      // Başarılı mesajı ayarla
+      setMessage(response.data.success);
 
     } catch (error) {
       console.error('Profil fotoğrafı güncelleme hatası:', error);
+      // Hata mesajı ayarla
+      setMessage('Profil fotoğrafı güncellenirken bir hata oluştu.');
     } finally {
       setLoading(false); // Yükleme durumunu sıfırla
     }
@@ -66,6 +69,7 @@ const FileUpload = () => {
       <button onClick={handleClick} disabled={loading}>
         {loading ? 'Yükleniyor...' : 'Profil Fotoğrafını Değiştir'}
       </button>
+      {message && <p>{message}</p>} {/* Mesajı görüntüleyin */}
     </div>
   );
 };

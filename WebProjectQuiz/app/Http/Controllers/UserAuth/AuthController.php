@@ -144,7 +144,7 @@ class AuthController extends Controller
         $user->is_admin = 0; // is_admin değeri 0 (false) olarak ayarlanır
         $user->point = 0;
         $user->level = 1;
-
+        $user->profile_photo_path = "";
         $user->save();
 
         // Kullanıcıların puanlarına göre sıralamasını yap
