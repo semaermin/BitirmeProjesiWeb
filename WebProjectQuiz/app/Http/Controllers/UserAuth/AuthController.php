@@ -29,67 +29,32 @@ class AuthController extends Controller
                 ->stateless()
                 ->redirect()
                 ->getTargetUrl(),
+                'message' => 'Başarılı bir şekilde oturum açıldı.',
         ]);
     }
     // Google Authentication
-    // public function handleAuthCallback(): JsonResponse
-    // {
-    //     try {
-    //         /** @var SocialiteUser $socialiteUser */
-    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
-    //     } catch (ClientException $e) {
-    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
-    //         return response()->json(['error' => 'Invalid credentials provided.'], 422);
-    //     }
-
-    //     /** @var User $user */
-    //     $user = User::query()
-    //         ->firstOrCreate(
-    //             [
-    //                 'email' => $socialiteUser->getEmail(),
-    //                 'password' => "0",
-    //                 'is_admin'=> false, // is_admin değerini false olarak ayarla
-    //             ],
-    //             [
-    //                 'email_verified_at' => now(),
-    //                 'name' => $socialiteUser->getName(),
-    //                 'google_id' => $socialiteUser->getId(),
-    //             ]
-    //         );
-
-    //     Auth::login($user);
-
-    //     return response()->json([
-    //         'user' => $user,
-    //         'access_token' => $user->createToken('google-token')->plainTextToken,
-    //         'token_type' => 'Bearer',
-    //     ], 200);
-    // }
     public function handleAuthCallback(): JsonResponse
     {
         try {
-            /** @var \Laravel\Socialite\Two\User $socialiteUser */
+            /** @var SocialiteUser $socialiteUser */
             $socialiteUser = Socialite::driver('google')->stateless()->user();
-        } catch (Throwable $e) {
-            return response()->json(['error' => 'Google OAuth işlemi sırasında bir hata oluştu.'], 500);
+        } catch (ClientException $e) {
+            $socialiteUser = Socialite::driver('google')->stateless()->user();
+            return response()->json(['error' => 'Invalid credentials provided.'], 422);
         }
-        // catch (ClientException $e) {
-        //     // İlk hatayı zaten yakaladık, burada bir daha yakalamaya gerek yok
-        //     return response()->json(['error' => 'Invalid credentials provided.'], 422);
-        // }
 
-        // Kullanıcıyı oluştururken is_admin değerini manuel olarak 0 olarak ayarla
+        /** @var User $user */
         $user = User::query()
             ->firstOrCreate(
                 [
                     'email' => $socialiteUser->getEmail(),
+                    'password' => "0",
+                    'is_admin'=> false, // is_admin değerini false olarak ayarla
                 ],
                 [
-                    'password' => bcrypt(str_random(10)), // Rastgele bir şifre oluşturabilirsiniz.
                     'email_verified_at' => now(),
                     'name' => $socialiteUser->getName(),
                     'google_id' => $socialiteUser->getId(),
-                    'is_admin' => false,
                 ]
             );
 
@@ -101,6 +66,39 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ], 200);
     }
+    // public function handleAuthCallback(): JsonResponse
+    // {
+    //     try {
+    //         /** @var \Laravel\Socialite\Two\User $socialiteUser */
+    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
+    //     } catch (Throwable $e) {
+    //         return response()->json(['error' => 'Google OAuth işlemi sırasında bir hata oluştu.'], 500);
+    //     }
+
+    //     // Kullanıcıyı oluştururken is_admin değerini manuel olarak 0 olarak ayarla
+    //     $user = User::query()
+    //         ->firstOrCreate(
+    //             [
+    //                 'email' => $socialiteUser->getEmail(),
+    //             ],
+    //             [
+    //                 'password' => bcrypt(str_random(10)), // Rastgele bir şifre oluşturabilirsiniz.
+    //                 'email_verified_at' => now(),
+    //                 'name' => $socialiteUser->getName(),
+    //                 'google_id' => $socialiteUser->getId(),
+    //                 'is_admin' => false,
+    //             ]
+    //         );
+
+    //     Auth::login($user);
+
+    //     return response()->json([
+    //         'user' => $user,
+    //         'access_token' => $user->createToken('google-token')->plainTextToken,
+    //         'token_type' => 'Bearer',
+    //         'message' => 'Başarılı bir şekilde oturum açıldı.',
+    //     ], 200);
+    // }
 
     //KULLANICILAR LİSTESİ
     public function index()

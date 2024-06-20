@@ -1,8 +1,8 @@
-import '../assets/styles/forgot-password.scss';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import '../assets/styles/forgot-password.scss';
 
 function ForgotPasswordPage() {
   const { theme } = useTheme();
@@ -14,7 +14,7 @@ function ForgotPasswordPage() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/user/reset-password',
+        'http://localhost:8000/api/forgot-password',
         { email }
       );
       setMessage(response.data.message);

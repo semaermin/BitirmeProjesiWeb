@@ -8,6 +8,7 @@ import VideoPage from '../pages/VideoPage.jsx';
 import ExercisesPage from '../pages/ExercisesPage.jsx';
 import LeaderboardPage from './../pages/LeaderboardPage.jsx';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage.jsx';
+import ResetPasswordPage from '../pages/ResetPasswordPage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import HelpPage from '../pages/HelpPage.jsx';
 import LandingPage from '../pages/LandingPage.jsx';
@@ -17,6 +18,8 @@ export const CustomRouter = [
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
+  { path: '/reset-password', element: <ResetPasswordPage /> }, // No token param here
+  { path: '/reset-password/:token', element: <ResetPasswordPage /> }, // With token param
   { path: '/sign-in', element: <SignIn /> },
   { path: '/auth/google', element: <GoogleCallback /> },
   { path: '/home', element: <HomePage /> },

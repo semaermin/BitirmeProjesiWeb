@@ -1,41 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import '../assets/styles/components/user-profile.scss';
 import { LightningChargeFill, TrophyFill } from 'react-bootstrap-icons';
+import PasswordUpdateForm from './PasswordUpdate';
+import FileUpload from './FileUpload';
 
 export default function UserProfile() {
-  const { user, theme } = useTheme();
+  const { theme, user } = useTheme();
+  const [userData, setUserData] = useState(null);
 
+  useEffect(() => {
+    fetchUserData(user.id);
+  }, [user.id]);
+
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/user/${userId}`);
+      setUserData(response.data.user);
+    } catch (error) {
+      console.error('Kullanıcı bilgileri alınırken hata oluştu:', error);
+    }
+  };
+
+  useEffect(() => {
+    const handleClick = () => {
+      const fileUploadElement = document.getElementById('file-upload');
+      if (fileUploadElement) {
+        fileUploadElement.click();
+      }
+    };
+
+    const userProfilePhoto = document.getElementById('user-profile-photo');
+    if (userProfilePhoto) {
+      userProfilePhoto.addEventListener('click', handleClick);
+    }
+
+    return () => {
+      if (userProfilePhoto) {
+        userProfilePhoto.removeEventListener('click', handleClick);
+      }
+    };
+  }, []);
+
+  if (!userData) {
+    return <p>Loading...</p>;
+  }
+
+
+  const profilePhotoUrl = userData.profile_photo_path
+    ? `http://localhost:8000/storage/${userData.profile_photo_path}`
+    : `${userData.profile_photo_url}&size=100&background=random`;
+    
   return (
     <div className={theme}>
       <div className="user-profile-container">
         <div className="user-background">
-          <div className="user-profile-photo">
-            <img
-              src={
-                user.profile_photo_path
-                  ? user.profile_photo_path
-                  : user.profile_photo_url
-              }
-              alt="user-profile-photo"
-            />
-            <p>{user.name}</p>
+          <div className="user-profile-photo" id="user-profile-photo">
+            <img src={profilePhotoUrl} alt="user-profile-photo" />
+            <p>{userData.name}</p>
           </div>
         </div>
         <div className="user-info">
           <div className="user-point">
             <span>
-              <LightningChargeFill></LightningChargeFill> {user.point}
+              <LightningChargeFill /> {userData.point}
             </span>
             <span>Puan</span>
           </div>
           <div className="user-arrangement">
             <span>
-              <TrophyFill></TrophyFill> {user.rank}
+              <TrophyFill /> {userData.rank}
             </span>
             <span>Sıralama</span>
           </div>
         </div>
+        <FileUpload userId={userData.id} />
+        <PasswordUpdateForm />
       </div>
     </div>
   );

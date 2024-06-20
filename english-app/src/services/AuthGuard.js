@@ -11,6 +11,9 @@ function AuthGuard({ children }) {
     '/forgot-password',
     '/sign-in',
     '/auth/google',
+    '/reset-password',
+    '/auth/google',
+    '/sign-in'
   ];
 
   useEffect(() => {
@@ -19,15 +22,10 @@ function AuthGuard({ children }) {
 
   function checkUserLoggedIn() {
     const token = localStorage.getItem('token');
-    if (
-      pagesWithAuthGuard.includes(location.pathname) &&
-      localStorage.getItem('token')
-    ) {
-      // If the user is on one of the pages in the pagesWithAuthGuard array and there is a token, assign the user to the home page
+    if (token && pagesWithAuthGuard.includes(location.pathname)) {
       navigate('/home');
     } else if (!token && !pagesWithAuthGuard.includes(location.pathname)) {
       navigate('/login');
-      // If there is no token and the user is not on one of the pages in the pagesWithAuthGuard array, assign the user to the login page
     }
   }
 
