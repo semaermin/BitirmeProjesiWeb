@@ -69,7 +69,8 @@ class AuthController extends Controller
 
     public function index()
     {
-        $users = User::orderBy('level', 'desc')
+        $users = User::where('is_admin', 0)
+            ->orderBy('level', 'desc')
             ->orderBy('point', 'desc')
             ->take(50)
             ->get(['id', 'name', 'level', 'point'])
@@ -77,6 +78,7 @@ class AuthController extends Controller
 
         return response()->json(['users' => $users], 200);
     }
+
 
     public function show($id)
     {

@@ -7,6 +7,7 @@ use App\Models\Test;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\User;
+use App\Models\TestResult;
 
 class UsersTestController extends Controller
 {
@@ -65,7 +66,15 @@ class UsersTestController extends Controller
             }
         }
 
+        // Kullanıcının doğru cevap yüzdesini hesapla
+        $correctPercentage = ($totalQuestions > 0) ? ($correctCount / $totalQuestions) * 100 : 0;
 
+        // Test sonucunu test_results tablosuna kaydet
+        TestResult::create([
+            'user_id' => $userId,
+            'test_id' => $testId,
+            'correct_percentage' => $correctPercentage,
+        ]);
 
         // Kullanıcının puanını güncelle
         $user->point += $totalPoints;
@@ -84,10 +93,11 @@ class UsersTestController extends Controller
             'unanswered' => $unansweredCount,
             'totalQuestions' => $totalQuestions,
             'totalPoints' => $totalPoints,
-            'userPoint' => $user->point, // Bu satırı kaldırın
-            'userLevel' => $user->level, // Bu satırı kaldırın
+            'correctPercentage' => $correctPercentage,
+            'userLevel' => $user->level,
         ]);
     }
+
 
     // public function checkVideoAnswers(Request $request)
     // {

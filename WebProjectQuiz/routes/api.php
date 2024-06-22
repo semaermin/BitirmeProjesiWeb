@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\TestResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,9 @@ Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], funct
     Route::put('/profile/update-password', [ProfileUpdateController::class, 'updatePassword']);
     Route::post('/profile/update-photo/{userId}', [ProfileUpdateController::class, 'updatePhoto']);
     Route::get('/user/{id}', [UserProfileController::class, 'getUser']);
+
+    Route::get('/user-test-results/{userId}', [TestResultController::class, 'getUserTestResults']);
+
 
     // forgot-password route
     Route::post('/forgot-password', function (Request $request) {
