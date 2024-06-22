@@ -51,7 +51,6 @@ class UsersTestController extends Controller
                         // Sorunun doğru cevabını al
                         $correctAnswer = $question->answers->where('is_correct', true)->first();
 
-                        $deneme = $correctAnswer;
                         // Kullanıcının cevabı doğru mu?
                         if ($correctAnswer && $userAnswerId == $correctAnswer->id) {
                             // Doğru cevap verilmişse puanı arttır
@@ -68,13 +67,15 @@ class UsersTestController extends Controller
 
 
 
-        // Kullanıcının puanını ve seviyesini güncelle
-        $user->point += $totalPoints; // Bu satırı kaldırın
-        $user->level = $this->calculateLevel($user->point); // Bu satırı kaldırın
-        $user->save(); // Bu satırı kaldırın
+        // Kullanıcının puanını güncelle
+        $user->point += $totalPoints;
+        $user->save();
 
-         // Rank ve seviyeyi güncelle
-        $this->updateRanks(); // Kullanıcı sıralamalarını güncelle
+        // Rank ve seviyeyi güncelle
+        $this->updateRanks();
+
+        // Kullanıcının yeni seviyesini alın (rank hesaplamasından sonra)
+        $user->refresh(); // Veritabanından güncel kullanıcı bilgilerini çek
 
         // Sonuçları döndür
         return response()->json([
@@ -88,51 +89,51 @@ class UsersTestController extends Controller
         ]);
     }
 
-    public function checkVideoAnswers(Request $request)
-    {
-        $userId = $request->input('userId');
-        $testId = $request->input('testId');
-        $answerId = $request->input('answerId');
+    // public function checkVideoAnswers(Request $request)
+    // {
+    //     $userId = $request->input('userId');
+    //     $testId = $request->input('testId');
+    //     $answerId = $request->input('answerId');
 
-        // Test ve soruları al
-        $test = Test::with('questions.answers')->find($testId);
+    //     // Test ve soruları al
+    //     $test = Test::with('questions.answers')->find($testId);
 
-        if (!$test) {
-            return response()->json(['error' => 'Test bulunamadı.'], 404);
-        }
+    //     if (!$test) {
+    //         return response()->json(['error' => 'Test bulunamadı.'], 404);
+    //     }
 
-        // Kullanıcıyı bul
-        $user = User::find($userId);
-        if (!$user) {
-            return response()->json(['error' => 'Kullanıcı bulunamadı.'], 404);
-        }
+    //     // Kullanıcıyı bul
+    //     $user = User::find($userId);
+    //     if (!$user) {
+    //         return response()->json(['error' => 'Kullanıcı bulunamadı.'], 404);
+    //     }
 
-        $userPoint = $user->point; // Kullanıcının mevcut puanını al
+    //     $userPoint = $user->point; // Kullanıcının mevcut puanını al
 
-        // Verilen cevabın doğruluğunu kontrol et
-        $isCorrect = false;
-        foreach ($test->questions as $question) {
-            $correctAnswer = $question->answers->where('is_correct', true)->first();
-            if ($correctAnswer && $correctAnswer->id == $answerId) {
-                $isCorrect = true;
-                $userPoint += $question->points; // Puanı güncelle
-                break;
-            }
-        }
+    //     // Verilen cevabın doğruluğunu kontrol et
+    //     $isCorrect = false;
+    //     foreach ($test->questions as $question) {
+    //         $correctAnswer = $question->answers->where('is_correct', true)->first();
+    //         if ($correctAnswer && $correctAnswer->id == $answerId) {
+    //             $isCorrect = true;
+    //             $userPoint += $question->points; // Puanı güncelle
+    //             break;
+    //         }
+    //     }
 
-        // Kullanıcının puanını kaydet
-        $user->point = $userPoint;
-        $user->save(); // Kullanıcı nesnesinin veritabanına kaydedilmesi
+    //     // Kullanıcının puanını kaydet
+    //     $user->point = $userPoint;
+    //     $user->save(); // Kullanıcı nesnesinin veritabanına kaydedilmesi
 
-         // Rank ve seviyeyi güncelle
-        $this->updateRanks(); // Kullanıcı sıralamalarını güncelle
+    //      // Rank ve seviyeyi güncelle
+    //     $this->updateRanks(); // Kullanıcı sıralamalarını güncelle
 
-        // Sonuçları döndür
-        return response()->json([
-            'is_correct' => $isCorrect,
-            'user_point' => $userPoint,
-        ]);
-    }
+    //     // Sonuçları döndür
+    //     return response()->json([
+    //         'is_correct' => $isCorrect,
+    //         'user_point' => $userPoint,
+    //     ]);
+    // }
 
     public function updateRanks()
     {
@@ -165,6 +166,4 @@ class UsersTestController extends Controller
             $user->save(); // Kullanıcı bilgilerini güncelle
         }
     }
-
-
 }
