@@ -35,10 +35,12 @@
         transition: outline-color 0.3s ease, color 0.3s ease;
         img {
           width: 100px;
+          height: 100px;
           z-index: 100;
           border-radius: 100%;
           outline: 5px solid var(--bg-white-color);
           transition: outline-color 0.3s ease, color 0.3s ease;
+          object-fit: cover;
         }
         p {
           transition: color 0.3s ease, color 0.3s ease;

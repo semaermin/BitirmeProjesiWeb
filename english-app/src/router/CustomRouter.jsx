@@ -18,8 +18,8 @@ export const CustomRouter = [
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
-  { path: '/reset-password', element: <ResetPasswordPage /> }, // No token param here
-  { path: '/reset-password/:token', element: <ResetPasswordPage /> }, // With token param
+  { path: '/reset-password', element: <ResetPasswordPage /> },
+  { path: '/reset-password/:token', element: <ResetPasswordPage /> },
   { path: '/sign-in', element: <SignIn /> },
   { path: '/auth/google', element: <GoogleCallback /> },
   { path: '/home', element: <HomePage /> },

@@ -69,8 +69,6 @@ Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], funct
     // Route::post('/user/login', [AuthController::class, 'login']);
     // Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
     Route::post('/user/register', [AuthController::class, 'store']);
-
-
 });
 // Route::post('/check-answers', [UsersTestController::class, 'checkAnswers']);
 // // Kayıt formunu göstermek için
@@ -102,10 +100,3 @@ Route::get('/test-list/{slug}', [HomeController::class, 'testData']);
 //videolu soruları gönder
 Route::get('/video-list', [VideoController::class, 'videoList']);
 // Route::get('/video', [VideoController::class, 'getVideoQuestions']);
-
-
-    // Şifremi Unuttum İsteği
-    Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword']);
-
-    // Şifre Sıfırlama İsteği
-    Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);

@@ -36,11 +36,11 @@
 
         <!-- Page Heading -->
         @if (isset($header))
-            <header class="shadow bg-dark dark:bg-gray-800">
-                <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
+        <header class="shadow bg-dark dark:bg-gray-800">
+            <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                {{ $header }}
+            </div>
+        </header>
         @endif
 
         <!-- Page Content -->
@@ -64,23 +64,23 @@
 
 <script>
     @if(session('message'))
-        var message = "{{ session('message') }}";
-        var alertType = "{{ session('alert-type', 'info') }}";
+    var message = "{{ session('message') }}";
+    var alertType = "{{ session('alert-type', 'info') }}";
 
-        switch(alertType) {
-            case 'success':
-                toastr.success(message);
-                break;
-            case 'error':
-                toastr.error(message);
-                break;
-            case 'warning':
-                toastr.warning(message);
-                break;
-            default:
-                toastr.info(message);
-                break;
-        }
+    switch (alertType) {
+        case 'success':
+            toastr.success(message);
+            break;
+        case 'error':
+            toastr.error(message);
+            break;
+        case 'warning':
+            toastr.warning(message);
+            break;
+        default:
+            toastr.info(message);
+            break;
+    }
     @endif
 </script>
 

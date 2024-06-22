@@ -8,6 +8,7 @@ export const useTheme = () => useContext(ThemeContext);
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [passwordToken, setPasswordToken] = useState();
 
   const toggleTheme = () => {
     setTheme((current) => {
@@ -18,7 +19,16 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, user, setUser }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme,
+        user,
+        setUser,
+        passwordToken,
+        setPasswordToken,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

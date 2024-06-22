@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-// import '../assets/styles/reset-password.scss';
 
 function ResetPasswordPage() {
-  const { theme } = useTheme();
+  const { theme, setPasswordToken } = useTheme();
   const { token } = useParams();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
@@ -13,9 +12,13 @@ function ResetPasswordPage() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    setPasswordToken(token);
+  }, [token, setPasswordToken]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Şifrelerin eşleşip eşleşmediğini kontrol et
     if (password !== passwordConfirmation) {
       setError('Şifreler eşleşmiyor.');
@@ -23,18 +26,23 @@ function ResetPasswordPage() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8000/api/reset-password', {
-        token,
-        password,
-        password_confirmation: passwordConfirmation,
-      });
+      const response = await axios.post(
+        'http://localhost:8000/api/reset-password',
+        {
+          token,
+          password,
+          password_confirmation: passwordConfirmation,
+        }
+      );
       setMessage(response.data.message);
       setError('');
       setTimeout(() => {
         navigate('/login'); // Şifre sıfırlandıktan sonra login sayfasına yönlendirme
-      }, 3000);
+      }, 1000);
     } catch (error) {
-      setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+      setError(
+        'Şifreniz en az 8 karakter uzunluğunda olmalı ve en az 1 büyük harf, 1 küçük harf, 1 rakam ve 1 sembol içermelidir.'
+      );
       setMessage('');
     }
   };

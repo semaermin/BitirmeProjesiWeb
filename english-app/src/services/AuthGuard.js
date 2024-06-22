@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 function AuthGuard({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
+
   const pagesWithAuthGuard = [
     '/',
     '/login',
@@ -12,8 +13,6 @@ function AuthGuard({ children }) {
     '/sign-in',
     '/auth/google',
     '/reset-password',
-    '/auth/google',
-    '/sign-in'
   ];
 
   useEffect(() => {
@@ -22,9 +21,17 @@ function AuthGuard({ children }) {
 
   function checkUserLoggedIn() {
     const token = localStorage.getItem('token');
-    if (token && pagesWithAuthGuard.includes(location.pathname)) {
+    const path = location.pathname;
+
+    const isResetPasswordWithToken = path.startsWith('/reset-password/');
+
+    if (token && pagesWithAuthGuard.includes(path)) {
       navigate('/home');
-    } else if (!token && !pagesWithAuthGuard.includes(location.pathname)) {
+    } else if (
+      !token &&
+      !pagesWithAuthGuard.includes(path) &&
+      !isResetPasswordWithToken
+    ) {
       navigate('/login');
     }
   }

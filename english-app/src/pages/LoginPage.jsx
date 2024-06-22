@@ -68,6 +68,7 @@ function LoginPage() {
               className="sermify-logo"
               src="/src/assets/images/svg/logo-white-smile-text.svg"
               alt="sermify-white-logo"
+              title="Sermify Ana Sayfa"
             />
           </Link>
         </div>

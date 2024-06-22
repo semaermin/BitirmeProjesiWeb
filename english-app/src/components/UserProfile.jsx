@@ -3,8 +3,6 @@ import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import '../assets/styles/components/user-profile.scss';
 import { LightningChargeFill, TrophyFill } from 'react-bootstrap-icons';
-import PasswordUpdateForm from './PasswordUpdate';
-import FileUpload from './FileUpload';
 
 export default function UserProfile() {
   const { theme, user } = useTheme();
@@ -16,7 +14,9 @@ export default function UserProfile() {
 
   const fetchUserData = async (userId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/user/${userId}`);
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/user/${userId}`
+      );
       setUserData(response.data.user);
     } catch (error) {
       console.error('Kullanıcı bilgileri alınırken hata oluştu:', error);
@@ -47,11 +47,10 @@ export default function UserProfile() {
     return <p>Loading...</p>;
   }
 
-
   const profilePhotoUrl = userData.profile_photo_path
     ? `http://localhost:8000/storage/${userData.profile_photo_path}`
     : `${userData.profile_photo_url}&size=100&background=random`;
-    
+
   return (
     <div className={theme}>
       <div className="user-profile-container">
@@ -75,8 +74,6 @@ export default function UserProfile() {
             <span>Sıralama</span>
           </div>
         </div>
-        <FileUpload userId={userData.id} />
-        <PasswordUpdateForm />
       </div>
     </div>
   );

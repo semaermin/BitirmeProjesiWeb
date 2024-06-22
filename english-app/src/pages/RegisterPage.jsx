@@ -23,17 +23,11 @@ function RegisterPage() {
 
   const isPasswordValid = (password) => {
     return (
-      (password.length >= 8 &&
-        /[A-Z]/.test(password) &&
-        /[a-z]/.test(password) &&
-        /\d/.test(password) &&
-        /[!@#$%^&*(),.?":{}|<>]/.test(password)) ||
-      (password.length >= 8 &&
-        /[A-Z]/.test(password) &&
-        /[a-z]/.test(password) &&
-        /\d/.test(password) &&
-        /[!@#$%^&*(),.?":{}|<>]/.test(password) &&
-        /[ÇĞIİÖŞÜçğıöşü]/.test(password))
+      password.length >= 8 &&
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /\d/.test(password) &&
+      /[!@#$%^&*(),.?":{}|<>]/.test(password)
     );
   };
 
@@ -85,7 +79,7 @@ function RegisterPage() {
       return; // Şifreler eşleşmiyorsa kayıt işlemini gerçekleştirme
     } else if (!isPasswordValid(password1)) {
       alert(
-        'Şifreniz en az 8 karakter uzunluğunda olmalı ve en az bir büyük harf, bir küçük harf, bir rakam ve bir sembol içermelidir.'
+        'Şifreniz en az 8 karakter uzunluğunda olmalıdır ve en az 1 büyük harf, 1 küçük harf, 1 rakam ve şu(?, _, @, !, #, %, +, -, *, $, &, .) özel karakterlerden birini içermelidir.'
       );
       return;
     }
@@ -143,6 +137,7 @@ function RegisterPage() {
             className="sermify-logo"
             src="/src/assets/images/svg/logo-white-smile-text.svg"
             alt="logo-white"
+            title="Sermify Ana Sayfa"
           />
         </Link>
       </div>

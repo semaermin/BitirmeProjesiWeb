@@ -1,8 +1,8 @@
 import {
   BoxArrowInRight,
   ChevronDown,
-  PeopleFill,
   Reception4,
+  MoonFill,
   TrophyFill,
 } from 'react-bootstrap-icons';
 import '../assets/styles/landing-page.scss';
@@ -90,7 +90,7 @@ function LandingPage() {
         <div className="section-box-container">
           <div className="section-2-box">
             <span>
-              <PeopleFill></PeopleFill>
+              <Reception4></Reception4>
             </span>
             <div>
               <span>Seviyene Göre</span>
@@ -102,13 +102,13 @@ function LandingPage() {
           </div>
           <div className="section-2-box">
             <span>
-              <Reception4></Reception4>
+              <MoonFill></MoonFill>
             </span>
             <div>
-              <span>Hızlı Altyapı</span>
+              <span>Açık/Koyu Tema</span>
               <p>
-                Kullanıcı deneyimini hızlı altyapımızla en üst seviyeye
-                getiriyoruz.
+                Kullanıcılarımızın rahatlığı için açık ve koyu tema seçenekleri
+                sunuyoruz.
               </p>
             </div>
           </div>

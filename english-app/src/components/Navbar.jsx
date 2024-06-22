@@ -34,28 +34,14 @@ export default function Navbar(props) {
   const navigate = useNavigate();
   const navRef = useRef(null);
   const lastItemRef = useRef(null);
-  const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    fetchUserData(user.id);
-  }, [user.id]);
-
-  const fetchUserData = async (userId) => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/user/${userId}`);
-      setUserData(response.data.user);
-    } catch (error) {
-      console.error('Kullanıcı bilgileri alınırken hata oluştu:', error);
-    }
-  };
-
-  // Profil fotoğrafı URL'sini oluşturma
+  console.log(user);
 
   const profilePhotoUrl = user.profile_photo_path
     ? `http://localhost:8000/storage/${user.profile_photo_path}`
     : `${user.profile_photo_url}&size=100&background=random`;
-    
-  console.log(profilePhotoUrl); 
+
+  console.log(profilePhotoUrl);
 
   useEffect(() => {
     const handleResize = () => {
@@ -267,10 +253,7 @@ export default function Navbar(props) {
             </div>
           </div>
           <div className="user-avatar">
-            <img
-              src={profilePhotoUrl}
-              alt="user-photo"
-            />
+            <img src={profilePhotoUrl} alt="user-photo" />
             {dropdownOpen && (
               <div className="dropdown-content">
                 <ul>
@@ -386,10 +369,7 @@ export default function Navbar(props) {
               <li>
                 <div className="mobile-user-profile">
                   <div className="mobile-user-avatar" onClick={toggleDropdown}>
-                    <img
-                      src={profilePhotoUrl}
-                      alt="user-photo"
-                    />
+                    <img src={profilePhotoUrl} alt="user-photo" />
                   </div>
                   <div className="mobile-user-fullname">{user?.name}</div>
                 </div>
@@ -512,5 +492,4 @@ export default function Navbar(props) {
       </nav>
     </div>
   );
-  
 }
