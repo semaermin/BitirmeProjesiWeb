@@ -24,47 +24,7 @@
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
-    <style>
-        /* public/css/welcome.css */
-        body {
-            height: 100vh;
-            background-image: url('../images/landing-background.png');
-            /* Arkaplan resminizin yolunu buraya ekleyin */
-            background-size: cover;
-            background-position: center;
-        }
 
-        .landing-logo {
-            text-align: center;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .landing-logo img {
-            /* max-width: 50%; */
-            height: auto;
-            min-width: 50%;
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 0.375rem;
-            transition: background-color 0.3s;
-        }
-
-        .background-image {
-            height: 100%;
-        }
-
-        .ml-2 {
-            margin-left: 0.5rem;
-        }
-    </style>
 </head>
 
 <body class="antialiased">

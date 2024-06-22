@@ -38,7 +38,6 @@ class ProfileUpdateController extends Controller
         return response()->json(['success' => 'Password updated successfully'], 200);
     }
 
-
     public function updatePhoto(Request $request, $userId)
     {
         // Kullanıcıyı bul
@@ -66,7 +65,7 @@ class ProfileUpdateController extends Controller
                 // Profil fotoğrafı başarıyla güncellendiğinde kullanıcı bilgilerini döndür
                 return response()->json([
                     'success' => 'Profil fotoğrafı başarıyla güncellendi',
-                    'user' => $user
+                    'user' => $user,
                 ], 200);
             } catch (\Exception $e) {
                 return response()->json(['error' => 'Dosya yüklenemedi: ' . $e->getMessage()], 400);
@@ -75,9 +74,4 @@ class ProfileUpdateController extends Controller
 
         return response()->json(['error' => 'Fotoğraf yüklenemedi'], 400);
     }
-
-
-
-
-
 }
