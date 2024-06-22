@@ -31,49 +31,15 @@ use Illuminate\Support\Facades\DB;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-// Route::post('/register', [Controller::class, 'register']);
-// Route::post('/login', [Controller::class, 'login']);
-// Route::get('/profile', [Controller::class, 'profile'])->middleware('auth:sanctum');
 
-
-// Tüm kullanıcıları listele
-Route::get('/users', [AuthController::class, 'index']);
-
-// Belirli bir kullanıcıyı göster
-Route::get('/users/{id}', [AuthController::class, 'show']);
-
-// Yeni bir kullanıcı oluştur
-Route::post('/users', [AuthController::class, 'store']);
-
-// Bir kullanıcıyı güncelle
-Route::put('/users/{id}', [AuthController::class, 'update']);
-
-// Bir kullanıcıyı sil
-Route::delete('/users/{id}', [AuthController::class, 'destroy']);
-
-// // Kullanıcı girişi
-// Route::post('user/login', [AuthController::class, 'login']);
-
-// Kullanıcı girişi - Google ile giriş
-Route::post('/login/google', [AuthController::class, 'loginWithGoogle']);
-
-// Kullanıcı çıkışı
-Route::post('/logout', [AuthController::class, 'logout']);
-
-
-// Route::group(['middleware' => 'cors'], function () {
-//     Route::get('auth', [AuthController::class, 'redirectToAuth']);
-//     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
-// });
 
 Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], function () {
     Route::get('auth', [AuthController::class, 'redirectToAuth']);
     Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
-    // Route::post('/user/login', [AuthController::class, 'login']);
-    Route::get('/user/register', [AuthController::class, 'showRegistrationForm'])->name('user.register');
-    Route::post('/user/register', [AuthController::class, 'store']);
+
     Route::post('/check-answers', [UsersTestController::class, 'checkAnswers']);
     Route::post('/check-video-answers', [UsersTestController::class, 'checkVideoAnswers']);
+
     Route::put('/profile/update-password', [ProfileUpdateController::class, 'updatePassword']);
     Route::post('/profile/update-photo/{userId}', [ProfileUpdateController::class, 'updatePhoto']);
     Route::get('/user/{id}', [UserProfileController::class, 'getUser']);
@@ -97,6 +63,7 @@ Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], funct
         // Kullanıcıya mail gönderme
         Mail::to($request->email)->send(new ResetPasswordMail($token, $user->name));
 
+        // JSON response olarak mesaj döndür
         return response()->json(['message' => 'Sıfırlama bağlantısı e-posta adresinize gönderildi.'], 200);
     });
 
@@ -104,7 +71,7 @@ Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], funct
     Route::post('/reset-password', function (Request $request) {
         $request->validate([
             'token' => 'required',
-            'password' => 'required|confirmed',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::where('remember_token', $request->token)->first();
@@ -121,9 +88,3 @@ Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], funct
     });
 });
 
-Route::get('/csrf-token', [CsrfTokenController::class, 'getToken']);
-
-
-Route::get('/userLoggedIn', function () {
-    return response()->json(['isLoggedIn' => Auth::check()]);
-});

@@ -19,7 +19,6 @@ class Controller extends BaseController
     public function index()
     {
         $user = User::all()->first();
-        // Veritabanından değerleri çekin
         $testCount = Test::count();
         $questionCount = Question::count();
         $videoCount = Question::where('is_video', true)->count();
@@ -31,7 +30,7 @@ class Controller extends BaseController
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'password' => $this->passwordRules(),
         ]);
 
         $user = User::create([
@@ -66,10 +65,6 @@ class Controller extends BaseController
         } else {
             return response()->json(['error' => 'Unauthorized', 'message' => 'Only non-admin users can access profile.'], 401);
         }
-    }
-
-    public function count(){
-
     }
 
 }
