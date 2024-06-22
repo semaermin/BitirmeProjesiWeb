@@ -91,6 +91,7 @@ class UsersTestController extends Controller
             'correctCount' => $correctCount,
             'incorrectCount' => $incorrectCount,
             'unanswered' => $unansweredCount,
+            'userPoint' => $user->point, // Bu satırı kaldırın
             'totalQuestions' => $totalQuestions,
             'totalPoints' => $totalPoints,
             'correctPercentage' => $correctPercentage,
