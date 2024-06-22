@@ -10,8 +10,6 @@ use App\Models\User;
 
 class UsersTestController extends Controller
 {
-    // Diğer fonksiyonlar burada olacak (questionStore vb.)
-
     /**
      * Kullanıcı cevaplarını kontrol eder.
      *
@@ -24,7 +22,6 @@ class UsersTestController extends Controller
         $testId = $request->input('testId');
         $userAnswers = $request->input('answers'); // Kullanıcı cevapları
 
-        // Testi ve sorularını al
         $test = Test::with('questions.answers')->find($testId);
 
         if (!$test) {
@@ -90,6 +87,7 @@ class UsersTestController extends Controller
             'userLevel' => $user->level, // Bu satırı kaldırın
         ]);
     }
+
     public function checkVideoAnswers(Request $request)
     {
         $userId = $request->input('userId');

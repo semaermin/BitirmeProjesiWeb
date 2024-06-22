@@ -66,41 +66,7 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
         ], 200);
     }
-    // public function handleAuthCallback(): JsonResponse
-    // {
-    //     try {
-    //         /** @var \Laravel\Socialite\Two\User $socialiteUser */
-    //         $socialiteUser = Socialite::driver('google')->stateless()->user();
-    //     } catch (Throwable $e) {
-    //         return response()->json(['error' => 'Google OAuth işlemi sırasında bir hata oluştu.'], 500);
-    //     }
 
-    //     // Kullanıcıyı oluştururken is_admin değerini manuel olarak 0 olarak ayarla
-    //     $user = User::query()
-    //         ->firstOrCreate(
-    //             [
-    //                 'email' => $socialiteUser->getEmail(),
-    //             ],
-    //             [
-    //                 'password' => bcrypt(str_random(10)), // Rastgele bir şifre oluşturabilirsiniz.
-    //                 'email_verified_at' => now(),
-    //                 'name' => $socialiteUser->getName(),
-    //                 'google_id' => $socialiteUser->getId(),
-    //                 'is_admin' => false,
-    //             ]
-    //         );
-
-    //     Auth::login($user);
-
-    //     return response()->json([
-    //         'user' => $user,
-    //         'access_token' => $user->createToken('google-token')->plainTextToken,
-    //         'token_type' => 'Bearer',
-    //         'message' => 'Başarılı bir şekilde oturum açıldı.',
-    //     ], 200);
-    // }
-
-    //KULLANICILAR LİSTESİ
     public function index()
     {
         $users = User::orderBy('level', 'desc')
@@ -112,15 +78,12 @@ class AuthController extends Controller
         return response()->json(['users' => $users], 200);
     }
 
-
-
     public function show($id)
     {
         $user = User::findOrFail($id);
         return response()->json($user, 200);
     }
 
-    //Kullanıcı kaydını is_admin değeri 0 olarak kaydediyoruz.
     public function store(Request $request)
     {
         // İstek verilerini doğrulama kurallarına göre kontrol et
@@ -175,7 +138,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -183,7 +145,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users,email,' . $user->id,
-            'password' => 'sometimes|required|string|min:6',
+            'password' => 'required|string|min:8',
         ]);
 
         if ($validator->fails()) {
@@ -243,57 +205,10 @@ class AuthController extends Controller
         return response()->json(['message' => 'Unauthorized'], 401);
     }
 
-    public function checkUserLoggedIn(Request $request)
-    {
-        if ($request->user()) {
-            return response()->json(['isLoggedIn' => true], 200);
-        } else {
-            return response()->json(['isLoggedIn' => false], 200);
-        }
-    }
-
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        return response()->json(['message' => 'Logged out successfully'], 200);
-    }
-
-    public function showRegistrationForm()
-    {
-        return view('userAuth.register');
-    }
-
-    // public function register(Request $request)
-    // {
-    //     // Kullanıcı giriş bilgilerini doğrula
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|string|email|max:255|unique:users',
-    //         'password' => 'required|string|min:8|confirmed',
-    //     ]);
-
-    //     // Kullanıcıyı kaydet
-    //     $user = User::create([
-    //         'name' => $request->name,
-    //         'email' => $request->email,
-    //         'password' => Hash::make($request->password),
-    //     ]);
-
-    //     // Kullanıcıya başarılı kayıt mesajını göster
-    //     return redirect('/user/login')->with('success', 'Kaydınız başarıyla tamamlandı! Artık giriş yapabilirsiniz.');
-    // }
-    // public function dash()
-    // {
-    //     $loginForm1 = Session::get('login_form_1');
-    //     return view('error', compact('loginForm1'));
-    // }
     public function showLoginForm()
     {
         return view('userAuth.login'); // login.blade.php isimli view dosyasını döndürür
 
     }
-    public function getUserData(Request $request)
-    {
-        return response()->json($request->user());
-    }
+
 }
