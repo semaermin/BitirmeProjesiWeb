@@ -11,6 +11,7 @@ function ExercisesPage() {
   const [tests, setTests] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [shuffledAnswers, setShuffledAnswers] = useState({});
   const { slug } = useParams();
   const { theme, user } = useTheme();
   const updateUserPoints = useUpdateUserPoints();
@@ -33,6 +34,7 @@ function ExercisesPage() {
       if (response.data && response.data.test) {
         setTest(response.data.test);
         setCurrentQuestionIndex(0); // Yeni bir test yüklendiğinde mevcut soru indeksini sıfırla
+        setShuffledAnswers({}); // Yeni test geldiğinde shuffledAnswers'ı sıfırla
       } else {
         console.error('Test detayları getirilemedi:', response.statusText);
       }
@@ -63,6 +65,30 @@ function ExercisesPage() {
       console.error('Test listesi getirilemedi:', error.message);
     }
   }
+
+  // Dizi elemanlarını karıştırmak için shuffle fonksiyonu
+  function shuffleArray(array) {
+    let shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray;
+  }
+
+  // Test değiştiğinde şıkları karıştır ve shuffledAnswers state'ine ata
+  useEffect(() => {
+    if (test.questions) {
+      const newShuffledAnswers = {};
+      test.questions.forEach((question, index) => {
+        newShuffledAnswers[index] = shuffleArray(question.answers);
+      });
+      setShuffledAnswers(newShuffledAnswers);
+    }
+  }, [test]);
 
   // Testleri language_level'e göre kategorize et
   const categorizedTests = ['a1', 'a2', 'b1'].reduce((acc, level) => {
@@ -127,14 +153,6 @@ function ExercisesPage() {
     }
   };
 
-  // const updateUserPoints = (newPoints, setUser) => {
-  //   setUser((prevUser) => {
-  //     const updatedUser = { ...prevUser, point: newPoints };
-  //     localStorage.setItem('user', JSON.stringify(updatedUser));
-  //     return updatedUser;
-  //   });
-  // };
-
   const currentQuestion = test.questions
     ? test.questions[currentQuestionIndex]
     : null;
@@ -153,29 +171,31 @@ function ExercisesPage() {
                 <>
                   <h4>{currentQuestion.text}</h4>
                   <ul className="answer-group">
-                    {currentQuestion.answers &&
-                      currentQuestion.answers.length > 0 &&
-                      currentQuestion.answers.map((answer, answerIndex) => (
-                        <li className="answer-group-item" key={answerIndex}>
-                          <input
-                            type="radio"
-                            name={`question-${currentQuestionIndex}`}
-                            value={answer.id}
-                            id={answer.id}
-                            checked={
-                              selectedAnswers[currentQuestionIndex] ===
-                              answer.id
-                            }
-                            onChange={() =>
-                              handleAnswerSelect(
-                                currentQuestionIndex,
+                    {shuffledAnswers[currentQuestionIndex] &&
+                      shuffledAnswers[currentQuestionIndex].length > 0 &&
+                      shuffledAnswers[currentQuestionIndex].map(
+                        (answer, answerIndex) => (
+                          <li className="answer-group-item" key={answerIndex}>
+                            <input
+                              type="radio"
+                              name={`question-${currentQuestionIndex}`}
+                              value={answer.id}
+                              id={answer.id}
+                              checked={
+                                selectedAnswers[currentQuestionIndex] ===
                                 answer.id
-                              )
-                            }
-                          />
-                          <label htmlFor={answer.id}>{answer.text}</label>
-                        </li>
-                      ))}
+                              }
+                              onChange={() =>
+                                handleAnswerSelect(
+                                  currentQuestionIndex,
+                                  answer.id
+                                )
+                              }
+                            />
+                            <label htmlFor={answer.id}>{answer.text}</label>
+                          </li>
+                        )
+                      )}
                   </ul>
                   <div className="toggle-buttons">
                     <button

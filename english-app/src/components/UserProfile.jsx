@@ -44,7 +44,11 @@ export default function UserProfile() {
   }, []);
 
   if (!userData) {
-    return <p>Loading...</p>;
+    return (
+      <div className={theme}>
+        <div className="user-profile-loading">Loading</div>
+      </div>
+    );
   }
 
   const profilePhotoUrl = userData.profile_photo_path

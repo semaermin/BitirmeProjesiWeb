@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
+import '../assets/styles/components/profile-settings.scss';
 
 const ProfileSettings = () => {
   const { theme, user, setUser } = useTheme();
@@ -94,56 +95,58 @@ const ProfileSettings = () => {
 
   return (
     <div className={theme}>
-      <div className="file-upload">
-        <input
-          type="file"
-          id="file-upload"
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-        />
-        <button onClick={handleClick} disabled={loading}>
-          {loading ? 'Yükleniyor...' : 'Profil Fotoğrafını Değiştir'}
-        </button>
-        {fileMessage && <p>{fileMessage}</p>}
-      </div>
-      <div className="password-update-form">
-        <h3>Şifre Güncelle</h3>
-        {passwordMessage && <p>{passwordMessage}</p>}
-        <form onSubmit={handlePasswordUpdate}>
-          <div>
-            <label htmlFor="current_password">Mevcut Şifre:</label>
-            <input
-              type="password"
-              id="current_password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="new_password">Yeni Şifre:</label>
-            <input
-              type="password"
-              id="new_password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="new_password_confirmation">
-              Yeni Şifre (Tekrar):
-            </label>
-            <input
-              type="password"
-              id="new_password_confirmation"
-              value={newPasswordConfirmation}
-              onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">Güncelle</button>
-        </form>
+      <div className="profile-setting-container">
+        <div className="file-upload">
+          <input
+            type="file"
+            id="file-upload"
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          <button onClick={handleClick} disabled={loading}>
+            {loading ? 'Yükleniyor...' : 'Profil Fotoğrafını Değiştir'}
+          </button>
+          {fileMessage && <p>{fileMessage}</p>}
+        </div>
+        <div className="password-update-form">
+          <h3>Şifre Güncelle</h3>
+          {passwordMessage && <p>{passwordMessage}</p>}
+          <form onSubmit={handlePasswordUpdate}>
+            <div>
+              <label htmlFor="current_password">Mevcut Şifre:</label>
+              <input
+                type="password"
+                id="current_password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="new_password">Yeni Şifre:</label>
+              <input
+                type="password"
+                id="new_password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="new_password_confirmation">
+                Yeni Şifre (Tekrar):
+              </label>
+              <input
+                type="password"
+                id="new_password_confirmation"
+                value={newPasswordConfirmation}
+                onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit">Şifre Güncelle</button>
+          </form>
+        </div>
       </div>
     </div>
   );

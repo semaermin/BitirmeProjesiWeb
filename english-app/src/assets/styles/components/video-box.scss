@@ -83,7 +83,15 @@
     }
   }
   .loading-screen {
-    background-color: blanchedalmond;
+    height: 80vh;
+    width: 70%;
+    background-color: var(--light-grey);
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -97,5 +105,9 @@
         }
       }
     }
+  }
+  .loading-screen {
+    background-color: var(--bg-dark-color);
+    color: var(--tertiary-color);
   }
 }
