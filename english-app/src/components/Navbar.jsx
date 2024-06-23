@@ -34,14 +34,9 @@ export default function Navbar(props) {
   const navigate = useNavigate();
   const navRef = useRef(null);
   const lastItemRef = useRef(null);
-
-  console.log(user);
-
   const profilePhotoUrl = user.profile_photo_path
     ? `http://localhost:8000/storage/${user.profile_photo_path}`
     : `${user.profile_photo_url}&size=100&background=random`;
-
-  console.log(profilePhotoUrl);
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,6 +64,21 @@ export default function Navbar(props) {
     }
   }, [theme]);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'F1') {
+        event.preventDefault();
+        handleItemClick('help');
+        navigate('/help');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   const handleItemClick = (item) => {
     setSelectedItem(item);
     if (menuOpen) {
@@ -86,8 +96,6 @@ export default function Navbar(props) {
       }
       localStorage.removeItem('user');
       handleLogout();
-    } else {
-      // Diğer menü öğeleri için gerekli işlemleri yapabilirsiniz
     }
   };
 
@@ -279,23 +287,6 @@ export default function Navbar(props) {
                       Profilim
                     </span>
                   </Link>
-                  {/* <li
-                    onClick={() => handleItemClick('settings')}
-                    data-selected={
-                      selectedItem === 'settings' ? 'true' : 'false'
-                    }
-                  >
-                    {selectedItem === 'settings' ? <GearFill /> : <GearFill />}
-                    <span
-                      style={{
-                        fontWeight:
-                          selectedItem === 'settings' ? 'bold' : 'normal',
-                      }}
-                      title="Ayarlar"
-                    >
-                      Ayarlar
-                    </span>
-                  </li> */}
                   <Link
                     to="/help"
                     onClick={() => handleItemClick('help')}
@@ -439,17 +430,6 @@ export default function Navbar(props) {
                   <Link to="/profile">Profilim</Link>
                 </span>
               </li>
-              {/* <li onClick={() => handleItemClick('settings')}>
-                {selectedItem === 'settings' ? <GearFill /> : <Gear />}
-                <span
-                  style={{
-                    fontWeight: selectedItem === 'settings' ? 'bold' : 'normal',
-                  }}
-                  title="Ayarlar"
-                >
-                  Ayarlar
-                </span>
-              </li> */}
               <li onClick={() => handleItemClick('help')}>
                 {selectedItem === 'help' ? (
                   <QuestionCircleFill />

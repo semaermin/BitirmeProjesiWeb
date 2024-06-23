@@ -1,0 +1,71 @@
+@import '../login';
+
+.light,
+.dark {
+  .accuracy-rate-tests-container {
+    width: 57%;
+    background-color: var(--bg-white-color);
+    border-radius: 24px;
+    border: 2px solid var(--light-grey);
+    height: auto;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 24px 28px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    h3 {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      font-size: 24px;
+      color: var(--tertiary-color);
+      font-weight: bold;
+    }
+    .accuracy-rate-box {
+      background-color: var(--mid-grey);
+      height: 150px;
+      margin-top: 30px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5%;
+      span {
+        display: flex;
+        gap: 6px;
+        color: var(--tertiary-color);
+      }
+      .accuracy-rate {
+        color: var(--primary-color);
+      }
+    }
+    a {
+      button {
+        margin-top: 20px;
+        @include login-button;
+      }
+    }
+  }
+}
+
+.dark {
+  .accuracy-rate-tests-container {
+    background-color: var(--bg-dark-color);
+    border-color: var(--dark-grey);
+    .accuracy-rate-box {
+      background-color: var(--secondary-color);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .light,
+  .dark {
+    .accuracy-rate-tests-container {
+      width: 75%;
+      h3 {
+        font-size: 20px;
+      }
+    }
+  }
+}

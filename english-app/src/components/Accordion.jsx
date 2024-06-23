@@ -17,7 +17,12 @@ const dataCollection = [
   {
     question: 'Sermify nasıl kullanılır?',
     answer:
-      "Sermify'ı kullanmak oldukça basittir. İlk olarak, bir hesap oluşturmanız gerekmektedir. Ardından, platformdaki videoları izleyebilir ve testleri çözebilirsiniz. Her test sonunda, ilerlemenizi takip edebilir ve güçlü ve zayıf yönlerinizi görebilirsiniz.",
+      "Sermify'ı kullanmak oldukça basittir. İlk olarak, bir hesap oluşturmanız gerekmektedir. Ardından, platformdaki videoları izleyebilir ve testleri çözebilirsiniz. Her test sonunda, ilerlemenizi takip edebilirsiniz.",
+  },
+  {
+    question: 'Şifremi nasıl değiştirebilirim?',
+    answer:
+      'Sağ üst kısımda bulunan profil resminize tıkladıktan sonra açılan kutudan "Profilim" sayfasına giriş yaparak "Şifre Güncelle" kısmından şifrenizi güncelleyebilirsiniz.',
   },
   {
     question: "Sermify'da hangi seviyede İngilizce öğrenebilirim?",
