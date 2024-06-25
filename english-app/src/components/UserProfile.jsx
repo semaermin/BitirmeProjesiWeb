@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import '../assets/styles/components/user-profile.scss';
-import { LightningChargeFill, TrophyFill } from 'react-bootstrap-icons';
+import {
+  LightningChargeFill,
+  TrophyFill,
+  Reception4,
+} from 'react-bootstrap-icons';
 
 export default function UserProfile() {
   const { theme, user } = useTheme();
@@ -76,6 +80,13 @@ export default function UserProfile() {
               <TrophyFill /> {userData.rank}
             </span>
             <span>Sıralama</span>
+          </div>
+          <div className="user-level">
+            <span>
+              <Reception4></Reception4>
+              {userData.level}
+            </span>
+            <span>Seviye</span>
           </div>
         </div>
       </div>

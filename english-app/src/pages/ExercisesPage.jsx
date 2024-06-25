@@ -167,9 +167,29 @@ function ExercisesPage() {
               <h2 className="question-number">
                 Soru {currentQuestionIndex + 1}
               </h2>
+              {currentQuestion?.media_path &&
+                currentQuestion?.is_video === 0 && (
+                  <img
+                    src={`http://localhost:8000/storage/${currentQuestion.media_path}`}
+                    alt="question-photo"
+                    className="question-photo"
+                  />
+                )}
+
+              {currentQuestion?.is_video === 1 && (
+                <div className="question-video-container">
+                  <video autoPlay controls className="question-video">
+                    <source
+                      src={`http://localhost:8000/storage/${currentQuestion.media_path}`}
+                      type="video/mp4"
+                    />
+                  </video>
+                </div>
+              )}
+
               {currentQuestion ? (
                 <>
-                  <h4>{currentQuestion.text}</h4>
+                  <h4 className="question-text">{currentQuestion.text}</h4>
                   <ul className="answer-group">
                     {shuffledAnswers[currentQuestionIndex] &&
                       shuffledAnswers[currentQuestionIndex].length > 0 &&

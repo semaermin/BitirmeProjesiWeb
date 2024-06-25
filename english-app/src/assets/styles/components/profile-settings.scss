@@ -1,3 +1,5 @@
+@import '../login';
+
 .light,
 .dark {
   .profile-setting-container {
@@ -10,17 +12,97 @@
     border-radius: 24px;
     margin-top: 30px;
     margin-bottom: 30px;
-
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
     .file-upload {
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100%;
+      button {
+        @include login-button;
+        width: 50%;
+      }
     }
     .password-update-form {
+      h3 {
+        margin: 20px 0;
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--tertiary-color);
+      }
       form {
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 20px;
+        button {
+          @include login-button;
+        }
+        .profile-password-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          label {
+            font-size: var(--fs-14);
+            font-weight: 600;
+          }
+          input {
+            padding: 12px 14px;
+            border-radius: 4px;
+            border: 2px solid var(--tertiary-color);
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.dark {
+  .profile-setting-container {
+    background-color: var(--bg-dark-color);
+    border-color: var(--dark-grey);
+    .password-update-form {
+      form {
+        .profile-password-wrapper {
+          input {
+            background-color: var(--mid-grey);
+          }
+        }
+      }
+    }
+  }
+}
+
+#profileSettings {
+  padding-bottom: 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .light,
+  .dark {
+    .profile-setting-container {
+      width: 75%;
+      .password-update-form {
+        form {
+          .profile-password-wrapper {
+            input {
+              width: 100% !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .light,
+  .dark {
+    .profile-setting-container {
+      .file-upload {
+        button {
+          width: 100%;
+        }
       }
     }
   }
