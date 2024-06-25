@@ -66,8 +66,10 @@
       border-top: unset;
       border-bottom-right-radius: 24px;
       border-bottom-left-radius: 24px;
+      flex-wrap: wrap;
       .user-point,
-      .user-arrangement {
+      .user-arrangement,
+      .user-level {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -113,7 +115,8 @@
       border: 2px solid var(--dark-grey) !important ;
       border-top: unset !important;
       .user-point,
-      .user-arrangement {
+      .user-arrangement,
+      .user-level {
         background-color: var(--secondary-color) !important;
       }
     }
@@ -136,6 +139,15 @@
   .dark {
     .user-profile-container {
       width: 75%;
+      .user-info {
+        height: auto;
+        flex-direction: row;
+        padding-top: 100px;
+        padding-bottom: 40px;
+        div {
+          width: 150px;
+        }
+      }
     }
   }
 }

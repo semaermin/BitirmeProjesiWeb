@@ -53,20 +53,28 @@ export default function AccuracyRateTests() {
       {testResults && (
         <div className="accuracy-rate-tests-container">
           <h3>
-            <FileEarmarkCheckFill></FileEarmarkCheckFill>Doğruluk Oranı
+            <FileEarmarkCheckFill /> Doğruluk Oranı
           </h3>
           <div className="accuracy-rate-box">
             <span className="accuracy-rate">
-              <CheckCircleFill></CheckCircleFill>%
-              {testResults.totalCorrectPercentage.toFixed(2)}
+              <CheckCircleFill />%
+              {typeof testResults.totalCorrectPercentage === 'number'
+                ? testResults.totalCorrectPercentage.toFixed(2)
+                : '0'}
             </span>
             <span className="inaccuracy-rate">
-              <XCircleFill></XCircleFill>%
-              {testResults.totalIncorrectPercentage.toFixed(2)}
+              <XCircleFill />%
+              {typeof testResults.totalIncorrectPercentage === 'number'
+                ? testResults.totalIncorrectPercentage.toFixed(2)
+                : '0'}
             </span>
           </div>
           <Link to="/exercises">
-            <button>Seriye Devam!</button>
+            <button>
+              {typeof testResults.totalIncorrectPercentage === 'number'
+                ? 'Seriye Devam!'
+                : 'Hadi Alıştırma Yapmaya Başla!'}
+            </button>
           </Link>
         </div>
       )}

@@ -64,7 +64,9 @@ export default function VideoBox() {
           <div className="video-texts-container">
             <p className="video-text">
               {videoQuestion.text}
-              <button onClick={fetchVideoQuestion}>Sıradaki Video</button>
+              <button onClick={fetchVideoQuestion}>
+                Sıradaki Video --{'>'}
+              </button>
             </p>
             <div className="video-choices">
               {videoQuestion.answers?.map((answer, index) => (

@@ -31,9 +31,19 @@
         .video-text {
           margin: 20px 0px;
           padding: 0px 5px;
+          padding-right: 0;
           text-align: center;
           font-size: clamp(12px, 2vw, 16px);
           color: var(--secondary-color);
+          button {
+            padding: 6px 8px;
+            margin-left: 10px;
+            border: 1px solid var(--primary-color-hover);
+            border-radius: 4px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            cursor: pointer;
+          }
         }
         .video-choices {
           display: flex;
@@ -109,5 +119,22 @@
   .loading-screen {
     background-color: var(--bg-dark-color);
     color: var(--tertiary-color);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .light,
+  .dark {
+    .video-container {
+      .video-box {
+        .video-texts-container {
+          .video-text {
+            button {
+              margin: 10px 0;
+            }
+          }
+        }
+      }
+    }
   }
 }

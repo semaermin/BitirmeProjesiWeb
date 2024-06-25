@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import '../assets/styles/reset-password-page.scss';
 
 function ResetPasswordPage() {
   const { theme, setPasswordToken } = useTheme();
@@ -48,7 +49,7 @@ function ResetPasswordPage() {
   };
 
   return (
-    <div className={theme}>
+    <div id="resetPasswordPage" className={theme}>
       <div className="reset-password-container">
         <div className="reset-password-form">
           <h4>Şifre Sıfırlama</h4>

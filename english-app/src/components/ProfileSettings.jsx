@@ -94,7 +94,7 @@ const ProfileSettings = () => {
   };
 
   return (
-    <div className={theme}>
+    <div id="profileSettings" className={theme}>
       <div className="profile-setting-container">
         <div className="file-upload">
           <input
@@ -112,7 +112,7 @@ const ProfileSettings = () => {
           <h3>Şifre Güncelle</h3>
           {passwordMessage && <p>{passwordMessage}</p>}
           <form onSubmit={handlePasswordUpdate}>
-            <div>
+            <div className="profile-password-wrapper">
               <label htmlFor="current_password">Mevcut Şifre:</label>
               <input
                 type="password"
@@ -122,7 +122,7 @@ const ProfileSettings = () => {
                 required
               />
             </div>
-            <div>
+            <div className="profile-password-wrapper">
               <label htmlFor="new_password">Yeni Şifre:</label>
               <input
                 type="password"
@@ -132,7 +132,7 @@ const ProfileSettings = () => {
                 required
               />
             </div>
-            <div>
+            <div className="profile-password-wrapper">
               <label htmlFor="new_password_confirmation">
                 Yeni Şifre (Tekrar):
               </label>

@@ -183,6 +183,7 @@ html {
       border-bottom-left-radius: 28px;
       border-bottom-right-radius: 28px;
       box-shadow: unset;
+      height: 72px;
       .mobile-menu-items {
         width: calc(100.2vw + 0.2px) !important;
         height: calc(100vh);
@@ -338,9 +339,6 @@ html {
     padding: 15px 20px;
     color: #333;
   }
-  .menu ul li a:hover {
-    background-color: lime;
-  }
 }
 #root {
   transition: background-color 0.25s;
@@ -355,23 +353,32 @@ html {
 
 .dark {
   nav {
-    background-color: var(--bg-dark-color);
-    border-color: var(--bg-dark-color);
+    background-color: var(--bg-dark-color) !important;
+    border-color: var(--bg-dark-color) !important;
     .dropdown-content {
       box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.35) !important;
       background-color: var(--bg-dark-color) !important;
     }
     .mobile-menu-items {
+      background-color: var(--bg-dark-color);
+      color: var(--text-white) !important;
       ul {
         li {
+          color: var(--text-white) !important;
+          &:hover:not(:last-child):not(:first-child) {
+            background-color: var(--secondary-color-hover);
+          }
           .mobile-user-fullname {
-            color: var(--secondary-color) !important;
+            color: var(--text-white) !important;
           }
           color: var(--secondary-color);
           .theme-switcher {
             svg {
-              border-color: black;
+              border-color: var(--text-white);
               background-color: unset;
+            }
+            &:hover {
+              background-color: var(--secondary-color-hover);
             }
           }
         }
