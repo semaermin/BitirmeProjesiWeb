@@ -34,6 +34,10 @@ export default function VideoBox() {
           answers: answers,
         }
       );
+      response.data.totalPoints > 0
+        ? alert(`Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻😄`)
+        : alert('Malesef yanlış cevap verdin ve puan kazanamadın!');
+
       fetchVideoQuestion();
       updateUserPoints(response.data.userPoint);
     } catch (error) {

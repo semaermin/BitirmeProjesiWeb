@@ -30,6 +30,10 @@
         font-weight: 600;
         color: var(--tertiary-color);
       }
+      p {
+        padding-bottom: 10px;
+        color: var(--primary-color);
+      }
       form {
         display: flex;
         flex-direction: column;

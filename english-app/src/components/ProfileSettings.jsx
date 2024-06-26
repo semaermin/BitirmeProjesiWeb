@@ -89,7 +89,9 @@ const ProfileSettings = () => {
     } catch (error) {
       console.error('Şifre güncelleme hatası:', error);
       //bad request olursa mevcut şifre yanlış
-      setPasswordMessage('Şifre güncellenirken bir hata oluştu');
+      setPasswordMessage(
+        'Mevcut şifrenizin doğru olduğundan emin olunuz ve parolaların uyuştuğundan emin olunuz!'
+      );
     }
   };
 
