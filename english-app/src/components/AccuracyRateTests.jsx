@@ -61,12 +61,14 @@ export default function AccuracyRateTests() {
               {typeof testResults.totalCorrectPercentage === 'number'
                 ? testResults.totalCorrectPercentage.toFixed(2)
                 : '0'}
+              <br /> <br /> Doğru
             </span>
             <span className="inaccuracy-rate">
               <XCircleFill />%
               {typeof testResults.totalIncorrectPercentage === 'number'
                 ? testResults.totalIncorrectPercentage.toFixed(2)
                 : '0'}
+              <br /> <br /> Yanlış
             </span>
           </div>
           <Link to="/exercises">
