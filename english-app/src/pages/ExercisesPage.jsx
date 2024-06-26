@@ -145,9 +145,13 @@ function ExercisesPage() {
         }
       );
 
-      updateUserPoints(response.data.userPoint);
+      response.data.totalPoints > 0
+        ? alert(`Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻😄`)
+        : alert(
+            'Malesef tüm sorulara yanlış cevap verdin ve puan kazanamadın!'
+          );
 
-      alert('Yanıtlarınız gönderildi!');
+      updateUserPoints(response.data.userPoint);
     } catch (error) {
       console.error('Yanıtlar gönderilemedi:', error.message);
     }
