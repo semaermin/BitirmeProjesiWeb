@@ -15,7 +15,9 @@ export default function VideoBox() {
 
   const fetchVideoQuestion = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/video-list');
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/video-list`
+      );
       setVideoQuestion(response.data.videoQuestion); // Videolu soruyu güncelle
     } catch (error) {
       console.error('Error fetching video question:', error);
@@ -27,7 +29,7 @@ export default function VideoBox() {
       const answers = [{ questionId, answerId }];
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/check-answers',
+        `${import.meta.env.VITE_API_URL}/api/check-answers`,
         {
           userId: user.id,
           testId: videoQuestionId,

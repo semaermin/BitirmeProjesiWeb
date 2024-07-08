@@ -35,7 +35,7 @@ export default function Leaderboard({ recordsPerPage = 10 }) {
 
   async function fetchUsers() {
     try {
-      const response = await fetch('http://127.0.0.1:8000/users');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/users`);
       if (response.ok) {
         const Data = await response.json();
         if (Data && Data.users && Array.isArray(Data.users)) {

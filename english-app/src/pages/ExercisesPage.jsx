@@ -29,7 +29,7 @@ function ExercisesPage() {
   async function fetchTestDetails(slug) {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/test-list/${slug}`
+        `${import.meta.env.VITE_API_URL}/test-list/${slug}`
       );
       if (response.data && response.data.test) {
         setTest(response.data.test);
@@ -51,11 +51,14 @@ function ExercisesPage() {
         return;
       }
 
-      const response = await axios.get(`http://127.0.0.1:8000/test-list`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/test-list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.data && response.data.tests) {
         setTests(response.data.tests);
       } else {
@@ -137,7 +140,7 @@ function ExercisesPage() {
       }));
 
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/check-answers',
+        `${import.meta.env.VITE_API_URL}/api/check-answers`,
         {
           userId: user.id,
           testId: test.id,

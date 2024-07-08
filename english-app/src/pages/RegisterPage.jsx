@@ -88,7 +88,7 @@ function RegisterPage() {
       // userData'daki password alanını kullanarak güncelle
       const updatedUserData = { ...userData, password: password1 };
       const response = await axios.post(
-        'http://127.0.0.1:8000/user/register',
+        `${import.meta.env.VITE_API_URL}/user/register`,
         updatedUserData
       );
       if (response.status === 201) {

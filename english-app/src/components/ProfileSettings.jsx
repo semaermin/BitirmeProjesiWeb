@@ -28,7 +28,7 @@ const ProfileSettings = () => {
 
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/api/profile/update-photo/${user.id}`,
+        `${import.meta.env.VITE_API_URL}/api/profile/update-photo/${user.id}`,
         formData,
         {
           headers: {
@@ -71,7 +71,7 @@ const ProfileSettings = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        'http://127.0.0.1:8000/api/profile/update-password',
+        `${import.meta.env.VITE_API_URL}/api/profile/update-password`,
         {
           current_password: currentPassword,
           new_password: newPassword,
