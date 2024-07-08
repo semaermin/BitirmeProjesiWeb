@@ -60,7 +60,9 @@ export default function VideoBox() {
           <div className="video">
             <video autoPlay controls key={videoQuestion.id}>
               <source
-                src={`http://localhost:8000/storage/${videoQuestion.media_path}`}
+                src={`${import.meta.env.VITE_API_URL}/storage/${
+                  videoQuestion.media_path
+                }`}
                 type="video/mp4"
               />
             </video>

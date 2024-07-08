@@ -3,10 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://localhost:8000",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "start-dev": "vite --mode development",
+    "build-dev": "vite build --mode development",
+    "start-prod": "vite --mode production",
+    "build-prod": "vite build --mode production",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

@@ -56,7 +56,7 @@ export default function UserProfile() {
   }
 
   const profilePhotoUrl = userData.profile_photo_path
-    ? `http://localhost:8000/storage/${userData.profile_photo_path}`
+    ? `${import.meta.env.VITE_API_URL}/storage/${userData.profile_photo_path}`
     : `${userData.profile_photo_url}&size=100&background=random`;
 
   return (

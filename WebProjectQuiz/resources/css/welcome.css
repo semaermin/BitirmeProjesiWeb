@@ -2,11 +2,11 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Figtree', sans-serif;
+    font-family: "Figtree", sans-serif;
 }
 
 .background-image {
-    background-image: url('../images/landing-background.png'); /* Arkaplan resminizin yolunu buraya ekleyin */
+    background-image: url("../images/landing-background.png");
     background-size: cover;
     background-position: center;
 }

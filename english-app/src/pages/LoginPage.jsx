@@ -159,7 +159,7 @@ function LoginPage() {
           <div className="google-login">
             <span>
               <img
-                src="/src/assets/images/svg/google-logo.svg"
+                src="../src/assets/images/svg/google-logo.svg"
                 alt="google-logo"
               />
             </span>

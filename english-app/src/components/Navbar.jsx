@@ -35,7 +35,7 @@ export default function Navbar(props) {
   const navRef = useRef(null);
   const lastItemRef = useRef(null);
   const profilePhotoUrl = user.profile_photo_path
-    ? `http://localhost:8000/storage/${user.profile_photo_path}`
+    ? `${import.meta.env.VITE_API_URL}/storage/${user.profile_photo_path}`
     : `${user.profile_photo_url}&size=100&background=random`;
 
   useEffect(() => {

@@ -174,7 +174,9 @@ function ExercisesPage() {
               {currentQuestion?.media_path &&
                 currentQuestion?.is_video === 0 && (
                   <img
-                    src={`http://localhost:8000/storage/${currentQuestion.media_path}`}
+                    src={`${import.meta.env.VITE_API_URL}/storage/${
+                      currentQuestion.media_path
+                    }`}
                     alt="question-photo"
                     className="question-photo"
                   />
@@ -184,7 +186,9 @@ function ExercisesPage() {
                 <div className="question-video-container">
                   <video autoPlay controls className="question-video">
                     <source
-                      src={`http://localhost:8000/storage/${currentQuestion.media_path}`}
+                      src={`${import.meta.env.VITE_API_URL}/storage/${
+                        currentQuestion.media_path
+                      }`}
                       type="video/mp4"
                     />
                   </video>

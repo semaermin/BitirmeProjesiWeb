@@ -28,7 +28,7 @@ function ResetPasswordPage() {
 
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/reset-password',
+        `${import.meta.env.VITE_API_URL}/api/reset-password`,
         {
           token,
           password,

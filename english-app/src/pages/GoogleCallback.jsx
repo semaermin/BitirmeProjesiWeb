@@ -9,39 +9,39 @@ function GoogleCallback() {
   const [user, setUser] = useState(null);
   const location = useLocation();
 
-  useEffect(() => {
-    fetch(`http://localhost:8000/api/auth/callback${location.search}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setLoading(false);
-        setData(data);
-        console.log(data);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`${import.meta.env.VITE_API_URL}/api/auth/callback${location.search}`, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Accept: 'application/json',
+  //     },
+  //   })
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setLoading(false);
+  //       setData(data);
+  //       console.log(data);
+  //     });
+  // }, []);
 
-  function fetchUserData() {
-    fetch(`http://localhost:8000/api/user`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + data.access_token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setUser(data);
-        console.log(data);
-      });
-  }
+  // function fetchUserData() {
+  //   fetch(`${import.meta.env.VITE_API_URL}/api/user`, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Accept: 'application/json',
+  //       Authorization: 'Bearer ' + data.access_token,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setUser(data);
+  //       console.log(data);
+  //     });
+  // }
 
   if (loading) {
     return <DisplayLoading />;

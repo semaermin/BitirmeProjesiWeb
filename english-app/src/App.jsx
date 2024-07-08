@@ -12,7 +12,13 @@ function App() {
       <Router>
         <Routes>
           {CustomRouter.map((item, index) => {
-            return <Route path={item.path} key={index} element={<AuthGuard>{item.element}</AuthGuard>} />;
+            return (
+              <Route
+                path={item.path}
+                key={index}
+                element={<AuthGuard>{item.element}</AuthGuard>}
+              />
+            );
           })}
         </Routes>
       </Router>

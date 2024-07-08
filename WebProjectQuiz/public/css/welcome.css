@@ -1,9 +1,7 @@
-
 /* public/css/welcome.css */
 body {
     height: 100vh;
-    background-image: url('../images/landing-background.png');
-    /* Arkaplan resminizin yolunu buraya ekleyin */
+    background-image: url("../images/landing-background.png");
     background-size: cover;
     background-position: center;
 }
@@ -38,4 +36,3 @@ body {
 .ml-2 {
     margin-left: 0.5rem;
 }
-
