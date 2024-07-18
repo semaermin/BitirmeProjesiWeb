@@ -1,11 +1,24 @@
-import '../assets/styles/login.scss';
+// Third Party Imports
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
-import { Eye, EyeSlash } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { ToastContainer, toast } from 'react-toastify';
+
+// Icon Imports
+import { Eye, EyeSlash } from 'react-bootstrap-icons';
+
+// Style Imports
+import '../assets/styles/login.scss';
+
+// Image Imports
+import logoRedSmileText from '../assets/images/svg/logo-red-smile-text.svg';
+import logoWhiteSmileText from '../assets/images/svg/logo-white-smile-text.svg';
+import googleLogo from '../assets/images/svg/google-logo.svg';
+
+// Specific Imports
+import { useTheme } from '../context/ThemeContext';
 import { login, setAxiosInterceptors } from '../services/LoginService';
-import { Helmet } from 'react-helmet';
 import SignIn from '../pages/SignIn';
 
 function LoginPage() {
@@ -30,7 +43,11 @@ function LoginPage() {
       localStorage.setItem('user', JSON.stringify(userInfo?.user));
       navigate('/home');
     } catch (error) {
-      // console.error('Giriş hatası:', error);
+      if (error.response.status === 401) {
+        toast.error(
+          'Şifreniz ya da e-posta bilgileriniz hatalı lütfen tekrar deneyiniz!'
+        );
+      }
     }
   };
 
@@ -56,17 +73,37 @@ function LoginPage() {
 
   return (
     <div>
-      {/* <Helmet>
-        <title>Sermify | Giriş Sayfası</title>
-        <meta name="description" content="Sermify Giriş Sayfası" />
-      </Helmet> */}
+      <Helmet>
+        <meta
+          name="description"
+          content="Sermify hesabınıza giriş yaparak İngilizce öğrenmeye devam edebilirsiniz. Hemen giriş yapın, kısa videolar ve testlerle ile İngilizcenizi geliştirin."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Sermify hesabınıza giriş yaparak İngilizce öğrenmeye başlayabilirsiniz."
+        />
+        <meta
+          property="og:description"
+          content="Sermify hesabınıza giriş yaparak İngilizce öğrenmeye devam edebilirsiniz. Hemen giriş yapın, kısa videolar ve testlerle ile İngilizcenizi geliştirin."
+        />
+        <meta property="og:locale" content="tr_TR" />
+        <meta property="og:url" content="https://www.sermify.com.tr/login" />
+        <link rel="canonical" href="https://www.sermify.com.tr/login" />
+        <meta property="og:site_name" content="Sermify" />
+        <meta
+          property="og:image"
+          content="https://www.sermify.com.tr/assets/logo-red-smile-text-DwR8ucb3.svg"
+        />
+        <title>Giriş Yap | Sermify</title>
+      </Helmet>
       <div className="login-container">
         <div className="login-left">
           <div className="login-left-image" />
           <Link to="/">
             <img
               className="sermify-logo"
-              src="/src/assets/images/svg/logo-white-smile-text.svg"
+              src={logoWhiteSmileText}
               alt="sermify-white-logo"
               title="Sermify Ana Sayfa"
             />
@@ -79,7 +116,7 @@ function LoginPage() {
               <Link to="/">
                 <img
                   className="sermify-logo-mobile"
-                  src="/src/assets/images/svg/logo-red-smile-text.svg"
+                  src={logoRedSmileText}
                   alt="sermify-red-logo-mobile"
                 />
               </Link>
@@ -158,15 +195,25 @@ function LoginPage() {
           <p className="text-or">Veya</p>
           <div className="google-login">
             <span>
-              <img
-                src="../src/assets/images/svg/google-logo.svg"
-                alt="google-logo"
-              />
+              <img src={googleLogo} alt="google-logo" />
             </span>
             <SignIn></SignIn>
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        limit={8}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={'light'}
+      />
     </div>
   );
 }

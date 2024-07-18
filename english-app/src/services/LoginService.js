@@ -15,11 +15,6 @@ export async function login(email, password) {
       return response.data;
     }
   } catch (error) {
-    if (error.response.status === 401) {
-      alert(
-        'Şifreniz ya da e-posta bilgileriniz hatalı lütfen tekrar deneyiniz!'
-      );
-    }
     throw error;
   }
 }

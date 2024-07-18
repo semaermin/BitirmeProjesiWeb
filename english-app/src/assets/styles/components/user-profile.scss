@@ -19,8 +19,8 @@
       height: 200px;
       width: 100%;
       background-color: black;
-      background: url(/src/assets/images/user-red-background.png) no-repeat
-        center center;
+      background: url('../../../assets/images/user-red-background.png')
+        no-repeat center center;
       background-size: cover;
       border-top-right-radius: 24px;
       border-top-left-radius: 24px;
@@ -97,14 +97,17 @@
       }
     }
   }
-  .user-profile-loading {
-    height: 200px;
+  .container-loading {
+    height: 430px;
     width: 57%;
     display: flex;
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
     align-items: center;
+    svg {
+      stroke: var(--primary-color);
+    }
   }
 }
 
@@ -138,14 +141,26 @@
   .light,
   .dark {
     .user-profile-container {
-      width: 75%;
+      width: 90%;
       .user-info {
         height: auto;
         flex-direction: row;
         padding-top: 100px;
-        padding-bottom: 40px;
+        padding-bottom: 28px;
         div {
           width: 150px;
+        }
+        .user-point,
+        .user-arrangement,
+        .user-level {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          padding: 14px 10px;
+          height: auto;
+          width: 100%;
+          margin: 0 24px;
         }
       }
     }

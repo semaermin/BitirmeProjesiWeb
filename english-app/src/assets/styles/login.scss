@@ -11,12 +11,17 @@
   padding: 12px 8px;
   border-radius: 4px;
   font-size: var(--fs-16);
-  cursor: pointer;
+  cursor: no-drop;
   span {
     margin-right: 8px;
   }
   &:hover {
     @include secondary-button-hover;
+  }
+  div {
+    a {
+      cursor: no-drop;
+    }
   }
 }
 
@@ -38,7 +43,7 @@
 
 @mixin login-background {
   background: {
-    image: url('src/assets/images/login-image.png');
+    image: url('../../assets/images/login-image.png');
     position: center;
     repeat: no-repeat;
     size: cover;

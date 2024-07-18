@@ -110,9 +110,6 @@
     }
     .register-button {
       @include login-button;
-      &:hover {
-        @include primary-button-hover;
-      }
     }
     .text-or {
       text-align: center;
@@ -147,6 +144,11 @@
       label {
         font-size: 14px;
       }
+    }
+  }
+  .Toastify__toast-body {
+    div:nth-of-type(2) {
+      line-height: 1.2;
     }
   }
 }

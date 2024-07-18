@@ -2,11 +2,13 @@ import { useTheme } from '../context/ThemeContext';
 import { useState, useEffect } from 'react';
 import '../assets/styles/components/leaderboard.scss';
 import { ChevronLeft, ChevronRight, TrophyFill } from 'react-bootstrap-icons';
+import { RotatingLines } from 'react-loader-spinner';
 
 export default function Leaderboard({ recordsPerPage = 10 }) {
   const { theme } = useTheme();
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   // const recordsPerPage = 10;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
@@ -48,6 +50,8 @@ export default function Leaderboard({ recordsPerPage = 10 }) {
       }
     } catch (error) {
       console.error('Failed to fetch users:', error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -69,64 +73,81 @@ export default function Leaderboard({ recordsPerPage = 10 }) {
 
   return (
     <div id="leaderboard" className={theme}>
-      <div className="leaderboard">
-        <h3 className="leaderboard-title">
-          <TrophyFill /> Puan Tablosu
-        </h3>
-        <div className="leaderboard-infos">
-          <span>
-            <p>Sıra</p>
-            <p>Ad Soyad</p>
-          </span>
-          <span>
-            <p>Puan</p>
-            <p>Seviye</p>
-          </span>
+      {loading ? (
+        <div className={theme}>
+          <div className="container-loading">
+            <RotatingLines
+              visible={true}
+              height="36"
+              width="36"
+              strokeWidth="5"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
+            />
+          </div>
         </div>
-        <ul>
-          {records.map((user, index) => (
-            <li
-              key={firstIndex + index}
-              className={`leaderboard-user ${
-                firstIndex + index < 3 ? `place-${index + 1}` : ''
-              }`}
-            >
-              <div className="leaderboard-user-left">
-                <div className="center-content">{firstIndex + index + 1}.</div>
-                <div>{user.name}</div>
-              </div>
-              <div className="leaderboard-user-right">
-                <div className="center-content">{user.point}</div>
-                <div className="center-content">{user.level}</div>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="navigation">
-          <ul className="pagination">
-            <li className="page-item">
-              <button className="page-link" onClick={prePage}>
-                <ChevronLeft />
-              </button>
-            </li>
-            {numbers.map((n, i) => (
+      ) : (
+        <div className="leaderboard">
+          <h3 className="leaderboard-title">
+            <TrophyFill /> Puan Tablosu
+          </h3>
+          <div className="leaderboard-infos">
+            <span>
+              <p>Sıra</p>
+              <p>Ad Soyad</p>
+            </span>
+            <span>
+              <p>Puan</p>
+              <p>Seviye</p>
+            </span>
+          </div>
+          <ul>
+            {records.map((user, index) => (
               <li
-                className={`page-item ${currentPage === n ? 'active' : ''}`}
-                key={i}
+                key={firstIndex + index}
+                className={`leaderboard-user ${
+                  firstIndex + index < 3 ? `place-${index + 1}` : ''
+                }`}
               >
-                <button className="page-items" onClick={() => changeCPage(n)}>
-                  {n}
-                </button>
+                <div className="leaderboard-user-left">
+                  <div className="center-content">
+                    {firstIndex + index + 1}.
+                  </div>
+                  <div>{user.name}</div>
+                </div>
+                <div className="leaderboard-user-right">
+                  <div className="center-content">{user.point}</div>
+                  <div className="center-content">{user.level}</div>
+                </div>
               </li>
             ))}
-            <li className="page-item">
-              <button className="page-link" onClick={nextPage}>
-                <ChevronRight />
-              </button>
-            </li>
           </ul>
+          <div className="navigation">
+            <ul className="pagination">
+              <li className="page-item">
+                <button className="page-link" onClick={prePage}>
+                  <ChevronLeft />
+                </button>
+              </li>
+              {numbers.map((n, i) => (
+                <li
+                  className={`page-item ${currentPage === n ? 'active' : ''}`}
+                  key={i}
+                >
+                  <button className="page-items" onClick={() => changeCPage(n)}>
+                    {n}
+                  </button>
+                </li>
+              ))}
+              <li className="page-item">
+                <button className="page-link" onClick={nextPage}>
+                  <ChevronRight />
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

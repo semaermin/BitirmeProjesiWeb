@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import '../assets/styles/components/profile-settings.scss';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ProfileSettings = () => {
   const { theme, user, setUser } = useTheme();
   const [loading, setLoading] = useState(false);
-  const [fileMessage, setFileMessage] = useState('');
   const [passwordMessage, setPasswordMessage] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -16,7 +16,14 @@ const ProfileSettings = () => {
     const file = e.target.files[0];
 
     if (!file) {
-      console.error('Dosya seçilmedi.');
+      toast.error('Dosya seçilemedi!');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error(
+        'Dosya boyutu çok büyük, maksimum 2 MB dosya büyüklüğü desteklenmektedir.'
+      );
       return;
     }
 
@@ -24,7 +31,7 @@ const ProfileSettings = () => {
     formData.append('profile_photo', file);
     formData.append('user_id', user.id);
 
-    setLoading(true);
+    !loading ? toast.info('Yükleniyor') : '';
 
     try {
       const response = await axios.post(
@@ -37,24 +44,21 @@ const ProfileSettings = () => {
         }
       );
 
-      // Kullanıcı bilgilerini güncelle
       const updatedUser = {
         ...user,
         profile_photo_path: response.data.user.profile_photo_path,
       };
-      console.log(response.data);
       setUser(updatedUser);
+
       window.location.reload();
 
       // localStorage'ı yeni kullanıcı bilgileriyle güncelle
       localStorage.setItem('user', JSON.stringify(updatedUser));
 
-      // Başarılı mesajı ayarla
-      setFileMessage(response.data.success);
+      toast.success(response.data.success);
     } catch (error) {
-      console.error('Profil fotoğrafı güncelleme hatası:', error);
-      // Hata mesajı ayarla
-      setFileMessage('Profil fotoğrafı güncellenirken bir hata oluştu.');
+      alert.error('Profil fotoğrafı güncelleme hatası:', error);
+      toast.error('Profil fotoğrafı güncellenirken bir hata oluştu.');
     } finally {
       setLoading(false);
     }
@@ -82,12 +86,13 @@ const ProfileSettings = () => {
 
       // Başarılı yanıtın içinde success veya message bilgisini kontrol edin
       if (response.data.success) {
-        setPasswordMessage('Şifre başarıyla güncellendi');
+        toast.success('Şifre başarıyla güncellendi');
       } else {
-        setPasswordMessage(response.data.message); // Veya başka bir mesaj alanı
+        toast.info(response.data.message); // Veya başka bir mesaj alanı
       }
     } catch (error) {
-      console.error('Şifre güncelleme hatası:', error);
+      console.log(error);
+      toast.error('Şifre güncelleme hatası!');
       //bad request olursa mevcut şifre yanlış
       setPasswordMessage(
         'Mevcut şifrenizin doğru olduğundan emin olunuz ve parolaların uyuştuğundan emin olunuz!'
@@ -102,13 +107,17 @@ const ProfileSettings = () => {
           <input
             type="file"
             id="file-upload"
+            accept="image/*"
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-          <button onClick={handleClick} disabled={loading}>
-            {loading ? 'Yükleniyor...' : 'Profil Fotoğrafını Değiştir'}
+          <button
+            onClick={handleClick}
+            disabled={loading}
+            title="Maksimum 2 MB dosya büyüklüğü desteklenmektedir."
+          >
+            Profil Fotoğrafını Değiştir
           </button>
-          {fileMessage && <p>{fileMessage}</p>}
         </div>
         <div className="password-update-form">
           <h3>Şifre Güncelle</h3>
@@ -150,6 +159,19 @@ const ProfileSettings = () => {
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        limit={8}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+      />
     </div>
   );
 };

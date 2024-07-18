@@ -3,6 +3,10 @@ import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
 import '../assets/styles/forgot-password.scss';
+import { Helmet } from 'react-helmet-async';
+import logoWhiteSmileText from '../assets/images/svg/logo-white-smile-text.svg';
+import logoRedSmileText from '../assets/images/svg/logo-red-smile-text.svg';
+import { ToastContainer, toast } from 'react-toastify';
 
 function ForgotPasswordPage() {
   const { theme } = useTheme();
@@ -17,23 +21,52 @@ function ForgotPasswordPage() {
         `${import.meta.env.VITE_API_URL}/api/forgot-password`,
         { email }
       );
-      setMessage(response.data.message);
-      setError('');
+      toast.success(
+        'Sıfırlama bağlantısı E-posta adresinize başarıyla gönderildi.'
+      );
     } catch (error) {
-      setError('Bir hata oluştu. Lütfen tekrar deneyin.');
-      setMessage('');
+      error.response.status === 404
+        ? toast.error('Bu E-posta adresi sistemde kayıtlı değil.')
+        : '';
     }
   };
 
   return (
     <div className={theme}>
+      <Helmet>
+        <meta
+          name="description"
+          content="Sermify şifrenizi unuttuysanız, buradan mail adresinizi yazıp gelen şifre sıfırlama bağlantısı ile şifrenizi sıfırlayabilirsiniz."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Sermify | Şifremi Unuttum Sayfası" />
+        <meta
+          property="og:description"
+          content="Sermify şifrenizi unuttuysanız, buradan mail adresinizi yazıp gelen şifre sıfırlama bağlantısı ile şifrenizi sıfırlayabilirsiniz."
+        />
+        <meta property="og:locale" content="tr_TR" />
+        <meta
+          property="og:url"
+          content="https://www.sermify.com.tr/forgot-password"
+        />
+        <link
+          rel="canonical"
+          href="https://www.sermify.com.tr/forgot-password"
+        />
+        <meta property="og:site_name" content="Sermify" />
+        <meta
+          property="og:image"
+          content="https://www.sermify.com.tr/sermify-seo-background.png"
+        />
+        <title>Şifremi Unuttum | Sermify</title>
+      </Helmet>
       <div className="password-container">
         <div className="password-left">
           <div className="password-left-image" />
           <Link to="/">
             <img
               className="sermify-logo"
-              src="/src/assets/images/svg/logo-white-smile-text.svg"
+              src={logoWhiteSmileText}
               alt="sermify-white-logo"
               title="Sermify Ana Sayfa"
             />
@@ -46,7 +79,7 @@ function ForgotPasswordPage() {
               <Link to="/">
                 <img
                   className="sermify-logo-mobile"
-                  src="/src/assets/images/svg/logo-red-smile-text.svg"
+                  src={logoRedSmileText}
                   alt="sermify-red-logo-mobile"
                 />
               </Link>
@@ -57,6 +90,7 @@ function ForgotPasswordPage() {
                 <input
                   className="remember-password-input"
                   type="email"
+                  name="email"
                   value={email}
                   placeholder="johndoe@example.com"
                   onChange={(e) => setEmail(e.target.value)}
@@ -66,12 +100,23 @@ function ForgotPasswordPage() {
                   Sıfırlama Bağlantısı Gönder
                 </button>
               </form>
-              {message && <p>{message}</p>}
-              {error && <p>{error}</p>}
             </div>
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        limit={8}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={'light'}
+      />
     </div>
   );
 }
