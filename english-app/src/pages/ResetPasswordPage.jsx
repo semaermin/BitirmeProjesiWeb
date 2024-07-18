@@ -1,7 +1,13 @@
+// Third Party Imports
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+
+// Specific Imports
 import { useTheme } from '../context/ThemeContext';
+
+// Style Imports
 import '../assets/styles/reset-password-page.scss';
 
 function ResetPasswordPage() {
@@ -20,7 +26,6 @@ function ResetPasswordPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Şifrelerin eşleşip eşleşmediğini kontrol et
     if (password !== passwordConfirmation) {
       setError('Şifreler eşleşmiyor.');
       return;
@@ -38,7 +43,7 @@ function ResetPasswordPage() {
       setMessage(response.data.message);
       setError('');
       setTimeout(() => {
-        navigate('/login'); // Şifre sıfırlandıktan sonra login sayfasına yönlendirme
+        navigate('/login');
       }, 1000);
     } catch (error) {
       setError(
@@ -50,6 +55,26 @@ function ResetPasswordPage() {
 
   return (
     <div id="resetPasswordPage" className={theme}>
+      <Helmet>
+        <meta
+          name="description"
+          content="Şifrenizi unuttuysanız, mail adresini yazıp gelen şifre sıfırlama bağlantısı ile şifrenizi sıfırlayabilirsiniz."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Sermify | Şifre Sıfırlama" />
+        <meta
+          property="og:description"
+          content="Şifrenizi unuttuysanız, mail adresini yazıp gelen şifre sıfırlama bağlantısı ile şifrenizi sıfırlayabilirsiniz."
+        />
+        <meta property="og:locale" content="tr_TR" />
+        <meta property="og:site_name" content="Sermify" />
+        <meta
+          property="og:image"
+          content="https://www.sermify.com.tr/sermify-seo-background.png"
+        />
+        <title>Şifre Sıfırlama | Sermify</title>
+      </Helmet>
+
       <div className="reset-password-container">
         <div className="reset-password-form">
           <h4>Şifre Sıfırlama</h4>

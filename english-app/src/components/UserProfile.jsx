@@ -7,10 +7,13 @@ import {
   TrophyFill,
   Reception4,
 } from 'react-bootstrap-icons';
+import { RotatingLines } from 'react-loader-spinner';
 
 export default function UserProfile() {
   const { theme, user } = useTheme();
   const [userData, setUserData] = useState(null);
+  const style = getComputedStyle(document.body);
+  const customColor = style.getPropertyValue('--primary-color');
 
   useEffect(() => {
     fetchUserData(user.id);
@@ -50,7 +53,16 @@ export default function UserProfile() {
   if (!userData) {
     return (
       <div className={theme}>
-        <div className="user-profile-loading">Loading</div>
+        <div className="container-loading">
+          <RotatingLines
+            visible={true}
+            height="36"
+            width="36"
+            strokeWidth="5"
+            animationDuration="0.75"
+            ariaLabel="rotating-lines-loading"
+          />
+        </div>
       </div>
     );
   }

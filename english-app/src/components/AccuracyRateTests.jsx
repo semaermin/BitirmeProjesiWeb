@@ -7,10 +7,12 @@ import {
   XCircleFill,
 } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
+import { RotatingLines } from 'react-loader-spinner';
 
 export default function AccuracyRateTests() {
   const { theme } = useTheme();
   const [testResults, setTestResults] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchUserTestResults();
@@ -45,40 +47,58 @@ export default function AccuracyRateTests() {
       }
     } catch (error) {
       console.error('Failed to fetch user test results:', error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className={theme}>
-      {testResults && (
-        <div className="accuracy-rate-tests-container">
-          <h3>
-            <FileEarmarkCheckFill /> Doğruluk Oranı
-          </h3>
-          <div className="accuracy-rate-box">
-            <span className="accuracy-rate">
-              <CheckCircleFill />%
-              {typeof testResults.totalCorrectPercentage === 'number'
-                ? testResults.totalCorrectPercentage.toFixed(2)
-                : '0'}
-              <br /> <br /> Doğru
-            </span>
-            <span className="inaccuracy-rate">
-              <XCircleFill />%
-              {typeof testResults.totalIncorrectPercentage === 'number'
-                ? testResults.totalIncorrectPercentage.toFixed(2)
-                : '0'}
-              <br /> <br /> Yanlış
-            </span>
+      {loading ? (
+        <div className={theme}>
+          <div className="container-loading">
+            <RotatingLines
+              visible={true}
+              height="36"
+              width="36"
+              strokeWidth="5"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
+            />
           </div>
-          <Link to="/exercises">
-            <button>
-              {typeof testResults.totalIncorrectPercentage === 'number'
-                ? 'Seriye Devam!'
-                : 'Hadi Alıştırma Yapmaya Başla!'}
-            </button>
-          </Link>
         </div>
+      ) : (
+        testResults && (
+          <div className="accuracy-rate-tests-container">
+            <h3>
+              <FileEarmarkCheckFill /> Doğruluk Oranı
+            </h3>
+            <div className="accuracy-rate-box">
+              <span className="accuracy-rate">
+                <CheckCircleFill />%
+                {typeof testResults.totalCorrectPercentage === 'number'
+                  ? testResults.totalCorrectPercentage.toFixed(2)
+                  : '0'}
+                <br /> <br /> Doğru
+              </span>
+              <span className="inaccuracy-rate">
+                <XCircleFill />%
+                {typeof testResults.totalIncorrectPercentage === 'number'
+                  ? testResults.totalIncorrectPercentage.toFixed(2)
+                  : '0'}
+                <br /> <br /> Yanlış
+              </span>
+            </div>
+            <Link to="/exercises">
+              <button>
+                {typeof testResults.totalIncorrectPercentage === 'number'
+                  ? 'Seriye Devam!'
+                  : 'Hadi Alıştırma Yapmaya Başla!'}
+              </button>
+            </Link>
+          </div>
+        )
       )}
     </div>
   );

@@ -3,6 +3,9 @@ import { useTheme } from '../context/ThemeContext';
 import { useState, useEffect } from 'react';
 import useUpdateUserPoints from '../utils/UseUpdateUserPoints.js';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import { XCircleFill } from 'react-bootstrap-icons';
+import { RotatingLines } from 'react-loader-spinner';
 
 export default function VideoBox() {
   const { theme, user, setUser } = useTheme();
@@ -37,8 +40,18 @@ export default function VideoBox() {
         }
       );
       response.data.totalPoints > 0
-        ? alert(`Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻😄`)
-        : alert('Malesef yanlış cevap verdin ve puan kazanamadın!');
+        ? toast.success(
+            `Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻`
+          )
+        : toast.error('Malesef yanlış cevap verdin ve puan kazanamadın!', {
+            icon: (
+              <XCircleFill
+                width="20px"
+                height="20px"
+                style={{ color: '#b93333' }}
+              />
+            ),
+          });
 
       fetchVideoQuestion();
       updateUserPoints(response.data.userPoint);
@@ -50,7 +63,14 @@ export default function VideoBox() {
   if (!videoQuestion) {
     return (
       <div className="loading-screen">
-        <p>Loading...</p>
+        <RotatingLines
+          visible={true}
+          height="36"
+          width="36"
+          strokeWidth="5"
+          animationDuration="0.75"
+          ariaLabel="rotating-lines-loading"
+        />
       </div>
     );
   }
@@ -97,6 +117,19 @@ export default function VideoBox() {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={4000}
+        limit={8}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+      />
     </div>
   );
 }

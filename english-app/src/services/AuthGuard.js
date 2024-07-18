@@ -5,6 +5,7 @@ function AuthGuard({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // pages outside the application
   const pagesWithAuthGuard = [
     '/',
     '/login',
@@ -27,12 +28,8 @@ function AuthGuard({ children }) {
 
     if (token && pagesWithAuthGuard.includes(path)) {
       navigate('/home');
-    } else if (
-      !token &&
-      !pagesWithAuthGuard.includes(path) &&
-      !isResetPasswordWithToken
-    ) {
-      navigate('/login');
+    } else if (path === '/reset-password') {
+      navigate('/');
     }
   }
 

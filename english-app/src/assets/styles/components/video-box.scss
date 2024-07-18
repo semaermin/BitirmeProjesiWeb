@@ -107,6 +107,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    svg {
+      stroke: var(--primary-color);
+    }
   }
 }
 
@@ -132,10 +135,20 @@
   .dark {
     .video-container {
       .video-box {
+        // height: unset;
+        width: 90%;
         .video-texts-container {
+          padding-bottom: 30px;
           .video-text {
             button {
               margin: 10px 0;
+            }
+          }
+          .video-choices {
+            // flex-direction: column;
+            button {
+              flex: 1 1 100%;
+              padding: 10px 20px;
             }
           }
         }

@@ -5,6 +5,12 @@ import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import useUpdateUserPoints from '../utils/UseUpdateUserPoints.js';
 import '../assets/styles/exercises-page.scss';
+import { Helmet } from 'react-helmet-async';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+import { XCircleFill } from 'react-bootstrap-icons';
+import ContentLoader from 'react-content-loader';
 
 function ExercisesPage() {
   const [test, setTest] = useState({});
@@ -12,9 +18,25 @@ function ExercisesPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [shuffledAnswers, setShuffledAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
   const { slug } = useParams();
   const { theme, user } = useTheme();
   const updateUserPoints = useUpdateUserPoints();
+  const navigate = useNavigate();
+
+  const MyLoader = (props) => (
+    <ContentLoader
+      speed={2}
+      width={405}
+      height={350}
+      viewBox="0 0 405 350"
+      backgroundColor={theme === 'dark' ? '#1a1a1a' : '#f3f3f3'}
+      foregroundColor={theme === 'dark' ? '#242424' : '#ecebeb'}
+      {...props}
+    >
+      <rect x="0" y="0" rx="20" ry="20" width="405" height="350" />
+    </ContentLoader>
+  );
 
   useEffect(() => {
     if (slug) {
@@ -66,6 +88,8 @@ function ExercisesPage() {
       }
     } catch (error) {
       console.error('Test listesi getirilemedi:', error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -129,7 +153,22 @@ function ExercisesPage() {
     );
 
     if (unansweredQuestions.length > 0) {
-      alert('Lütfen tüm soruları yanıtlayın.');
+      const unansweredIndexes = test.questions.reduce((acc, _, index) => {
+        if (!(index in selectedAnswers)) {
+          acc.push(index + 1); // 1 bazlı indeksleme
+        }
+        return acc;
+      }, []);
+
+      if (unansweredIndexes.length === 1) {
+        toast.warning(`Lütfen ${unansweredIndexes}. soruyu yanıtlayın.`);
+      } else if (unansweredIndexes.length >= 2) {
+        toast.warning(
+          `Lütfen ${unansweredIndexes.slice(0, -1).join(', ')} ${
+            unansweredIndexes.length > 1 ? 've' : ''
+          } ${unansweredIndexes.slice(-1)}. soruyu yanıtlayın.`
+        );
+      }
       return;
     }
 
@@ -147,12 +186,26 @@ function ExercisesPage() {
           answers: answers,
         }
       );
-
-      response.data.totalPoints > 0
-        ? alert(`Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻😄`)
-        : alert(
-            'Malesef tüm sorulara yanlış cevap verdin ve puan kazanamadın!'
-          );
+      if (response.data.totalPoints > 0) {
+        navigate('/exercises');
+        setSelectedAnswers('');
+        toast.success(
+          `Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻`
+        );
+      } else {
+        toast.error('Tüm sorulara yanlış cevap verdin ve puan kazanamadın!', {
+          icon: (
+            <XCircleFill
+              width="20px"
+              height="20px"
+              style={{ color: '#e74c3c' }}
+            />
+          ),
+        });
+        toast.info('İstersen alıştırmayı tekrar çözebilirsin.');
+        navigate('/exercises');
+        setSelectedAnswers('');
+      }
 
       updateUserPoints(response.data.userPoint);
     } catch (error) {
@@ -166,6 +219,33 @@ function ExercisesPage() {
 
   return (
     <div>
+      <Helmet>
+        <meta
+          name="description"
+          content="Sermify'daki seviyene göre test alıştırmalarıyla İngilizceni hızlı ve eğlenceli bir şekilde geliştir."
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="Sermify'daki testlerlere alıştırma yaparak İngilizceni geliştir."
+        />
+        <meta
+          property="og:description"
+          content="Sermify ile İngilizcenizi eğlenceli testlerle alıştırma yaparak geliştirin. Hemen başlayın!"
+        />
+        <meta property="og:locale" content="tr_TR" />
+        <meta
+          property="og:url"
+          content="https://www.sermify.com.tr/exercises"
+        />
+        <link rel="canonical" href="https://www.sermify.com.tr/exercises" />
+        <meta property="og:site_name" content="Sermify" />
+        <meta
+          property="og:image"
+          content="https://www.sermify.com.tr/sermify-seo-background.png"
+        />
+        <title>Alıştırmalar | Sermify</title>
+      </Helmet>
       <Navbar item="exercises" />
       <div className={theme}>
         {slug && test.name ? (
@@ -253,9 +333,15 @@ function ExercisesPage() {
                   </div>
                 </>
               ) : (
-                <p>Test soruları bulunamadı.</p>
+                <p>Bu alıştırmanın içerisinde test sorusu bulunamadı.</p>
               )}
             </div>
+          </div>
+        ) : loading ? (
+          <div className="loader-skeleton">
+            <MyLoader />
+            <MyLoader />
+            <MyLoader />
           </div>
         ) : (
           <div className="test-group-container">
@@ -278,6 +364,19 @@ function ExercisesPage() {
           </div>
         )}
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        limit={8}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme}
+      />
     </div>
   );
 }

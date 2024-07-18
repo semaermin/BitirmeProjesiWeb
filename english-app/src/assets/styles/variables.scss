@@ -2,13 +2,10 @@
   // Main Colors
   --primary-color: #e84545;
   --primary-color-hover: #b93333;
-  // --primary-color-light-hover: #b93333;
   --secondary-color: #202020;
   --secondary-color-hover: #000000;
-  // --secondary-color-light-hover: #000000;
   --tertiary-color: #808080;
   --tertiary-color-hover: #505050;
-  // --tertiary-color-light-hover: #505050;
 
   // Colors
   --light-grey: #eeeeee;
@@ -18,29 +15,42 @@
   --white: #ffffff;
 
   // Text Colors
-
-  --text-color-light: #2c3e50;
-  --text-color-light-hover: #2c3e50;
-  --text-color-dark: #2c3e50;
-  --text-color-dark-hover: #2c3e50;
+  // --text-color-light: #2c3e50;
+  // --text-color-light-hover: #2c3e50;
+  // --text-color-dark: #2c3e50;
+  // --text-color-dark-hover: #2c3e50;
 
   // Background Colors
   --bg-white-color: #f2f2f2;
   --bg-dark-color: #1a1a1a;
 
   // Status Colors
+  // --success-color: #2ecc71;
+  // --success-color-hover: #2ecc71;
+  // --error-color: #e74c3c;
+  // --error-color-hover: #e74c3c;
+  // --warning-color: #f39c12;
+  // --warning-color-hover: #f39c12;
+  // --info-color: #3498db;
+  // --info-color-hover: #3498db;
 
-  --success-color: #2ecc71;
-  --success-color-hover: #2ecc71;
-  --error-color: #e74c3c;
-  --error-color-hover: #e74c3c;
-  --warning-color: #f39c12;
-  --warning-color-hover: #f39c12;
-  --info-color: #3498db;
-  --info-color-hover: #3498db;
+  // Toast Colors for react-toastify
+  // --toastify-color-dark: #e84545;
+  // --toastify-color-light: #e84545;
+  // --toastify-icon-color-info: #f2f2f2;
+  // --toastify-text-color-light: #ffffff;
+
+  --toastify-color-dark: #1a1a1a;
+  --toastify-text-color-dark: #f2f2f2;
+  --toastify-color-light: #f2f2f2;
+  // --toastify-color-progress-error: #b93333;
 
   // widths
   --fs-14: clamp(0.775rem, 1.6vw, 0.875rem);
   --fs-16: clamp(0.9rem, 1.6vw, 1rem);
   --fs-46: clamp(2.5rem, 5vw, 2.875rem);
+
+  // animations
+  // --animate-duration: 2000ms !important;
+  // --animate-delay: 1.9s !important;
 }

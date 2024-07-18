@@ -1,11 +1,17 @@
 import '../assets/styles/register.scss';
 import { Eye, EyeSlash } from 'react-bootstrap-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import SignIn from '../pages/SignIn';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import { isPasswordValid } from '../utils/PasswordGenerationControl';
+
+import logoWhiteSmileText from '../assets/images/svg/logo-white-smile-text.svg';
+import logoRedSmileText from '../assets/images/svg/logo-red-smile-text.svg';
+import googleLogo from '../assets/images/svg/google-logo.svg';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -13,23 +19,12 @@ function RegisterPage() {
   const [showPassword2, setShowPassword2] = useState(false);
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [userData, setUserData] = useState({
     name: '',
     email: '',
     password: '',
   });
   const { setUser } = useTheme();
-
-  const isPasswordValid = (password) => {
-    return (
-      password.length >= 8 &&
-      /[A-Z]/.test(password) &&
-      /[a-z]/.test(password) &&
-      /\d/.test(password) &&
-      /[!@#$%^&*(),.?":{}|<>]/.test(password)
-    );
-  };
 
   const togglePassword = (event) => {
     if (event.key !== 'Enter') {
@@ -43,14 +38,6 @@ function RegisterPage() {
     }
   };
 
-  const handlePasswordMatch = () => {
-    if (password1 === password2) {
-      setPasswordsMatch(true);
-    } else {
-      setPasswordsMatch(false);
-    }
-  };
-
   const capitalizeFirstLetter = (string) => {
     return string
       .split(' ')
@@ -60,11 +47,8 @@ function RegisterPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Process name input to capitalize first letters
     const processedValue =
       name === 'name' ? capitalizeFirstLetter(value) : value;
-
     setUserData((prevState) => ({
       ...prevState,
       [name]: processedValue,
@@ -72,70 +56,82 @@ function RegisterPage() {
   };
 
   const handleSubmit = async (e) => {
-    handlePasswordMatch();
     e.preventDefault();
 
-    if (!passwordsMatch) {
-      return; // Şifreler eşleşmiyorsa kayıt işlemini gerçekleştirme
+    if (password1 !== password2) {
+      toast.warn(
+        'Şifreleriniz eşleşmiyor, lütfen girdiğiniz iki parolanında aynı olduğundan emin olunuz.'
+      );
+      return;
     } else if (!isPasswordValid(password1)) {
-      alert(
-        'Şifreniz en az 8 karakter uzunluğunda olmalıdır ve en az 1 büyük harf, 1 küçük harf, 1 rakam ve şu(?, _, @, !, #, %, +, -, *, $, &, .) özel karakterlerden birini içermelidir.'
+      toast.warn(
+        'Şifreniz en az 8 karakter uzunluğunda olmalıdır ve en az 1 büyük harf, 1 küçük harf, 1 rakam ve şu   (?, _, @, !, #, %, +, -, *, $, &, .) özel karakterlerden birini içermelidir.'
       );
       return;
     }
 
     try {
-      // userData'daki password alanını kullanarak güncelle
       const updatedUserData = { ...userData, password: password1 };
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/user/register`,
         updatedUserData
       );
       if (response.status === 201) {
-        // Kullanıcı kaydı başarılı olduysa sunucudan gelen token'ı al
         const token = response.data.token;
         const userInfo = response.data;
-
         setUser(userInfo?.user);
         localStorage.setItem('user', JSON.stringify(userInfo?.user));
-        // Token'ı localStorage'a kaydet
         localStorage.setItem('token', token);
         navigate('/login');
       }
     } catch (error) {
-      if (error.response) {
-        console.log(error);
-        if (
-          error.response.status === 422 &&
-          error.response.data.errors.email[0] ===
-            'The email has already been taken.'
-        ) {
-          alert(
-            'Bu email adresi zaten kullanımda! Lütfen farklı bir email adresi almayı deneyiniz.'
-          );
-        }
-        console.error('Sunucu hatası:', error.response.data);
+      if (
+        error.response.status === 422 &&
+        error.response.data.errors.email[0] ===
+          'The email has already been taken.'
+      ) {
+        toast.warn(
+          'Bu email adresi zaten kullanımda! Lütfen farklı bir email adresi almayı deneyiniz.'
+        );
+      } else if (error.response) {
+        toast.error('Sunucu hatası!');
       } else if (error.request) {
-        // İstek yapılamadığında
-        console.error('İstek yapılamadı:', error.request);
+        toast.error('İstek yapılamadı!');
       } else {
-        console.error('Hata oluştu:', error.message);
+        toast.error('Hata oluştu!');
       }
     }
   };
 
   return (
     <div className="register-container">
-      {/* <Helmet>
-        <title>Sermify | Hesap Oluşturma Sayfası</title>
-        <meta name="description" content="Sermify Giriş Sayfası" />
-      </Helmet> */}
+      <Helmet>
+        <meta
+          name="description"
+          content="Sermify hesabı oluşturarak İngilizce öğrenmeye başlayın. Sermify'deki kısa videolar ve testler ile İngilizcenizi geliştirin."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Sermify | Hesap Oluştur" />
+        <meta
+          property="og:description"
+          content="Sermify hesabı oluşturarak İngilizce öğrenmeye başlayın. Hemen kayıt olun ve kısa videolar ile İngilizcenizi geliştirin."
+        />
+        <meta property="og:locale" content="tr_TR" />
+        <meta property="og:url" content="https://www.sermify.com.tr/register" />
+        <link rel="canonical" href="https://www.sermify.com.tr/register" />
+        <meta property="og:site_name" content="Sermify" />
+        <meta
+          property="og:image"
+          content="https://www.sermify.com.tr/sermify-seo-background.png"
+        />
+        <title>Hesap Oluştur | Sermify</title>
+      </Helmet>
       <div className="register-left">
         <div className="register-left-image" />
         <Link to="/">
           <img
             className="sermify-logo"
-            src="/src/assets/images/svg/logo-white-smile-text.svg"
+            src={logoWhiteSmileText}
             alt="logo-white"
             title="Sermify Ana Sayfa"
           />
@@ -148,7 +144,7 @@ function RegisterPage() {
             <Link to="/">
               <img
                 className="sermify-logo-mobile"
-                src="/src/assets/images/svg/logo-red-smile-text.svg"
+                src={logoRedSmileText}
                 alt="logo-red"
               />
             </Link>
@@ -215,7 +211,6 @@ function RegisterPage() {
                 type={showPassword2 ? 'text' : 'password'}
                 placeholder="Parolanızı tekrar girin"
                 onChange={(e) => setPassword2(e.target.value)}
-                onBlur={handlePasswordMatch}
                 required
               />
               <button
@@ -227,9 +222,6 @@ function RegisterPage() {
                 {showPassword2 ? <Eye /> : <EyeSlash />}
               </button>
             </div>
-            {!passwordsMatch && (
-              <p className="error-message">Şifreler eşleşmiyor.</p>
-            )}
             <input
               className="register-button"
               type="submit"
@@ -250,14 +242,24 @@ function RegisterPage() {
         <p className="text-or">Veya</p>
         <div className="google-login">
           <span>
-            <img
-              src="../src/assets/images/svg/google-logo.svg"
-              alt="google-logo"
-            />
+            <img src={googleLogo} alt="google-logo" />
           </span>
           <SignIn></SignIn>
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={false}
+        limit={8}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={'light'}
+      />
     </div>
   );
 }
