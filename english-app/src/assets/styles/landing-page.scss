@@ -80,7 +80,7 @@
       line-height: 1.5;
     }
     .slogan-container-texts {
-      h3 {
+      .according-level {
         letter-spacing: 1.2px;
       }
     }
@@ -102,12 +102,12 @@
       align-items: center;
       gap: 20px;
       line-height: 1.2;
-      p {
+      h2.smile-text {
         font-size: 72px;
-      }
-      .smile-text {
-        font-style: italic;
-        font-weight: bold;
+        span {
+          font-style: italic;
+          font-weight: bold;
+        }
       }
       a {
         z-index: 100;
@@ -167,7 +167,7 @@
     color: var(--primary-color);
     text-align: center;
     margin-top: 180px;
-    p:first-child {
+    h2 {
       font-size: 28px;
       font-weight: bold;
       margin-bottom: 12px;
@@ -203,7 +203,7 @@
         }
       }
       div {
-        span {
+        h3 {
           font-weight: bold;
           font-size: 20px;
         }
@@ -317,7 +317,7 @@ footer {
   .section-1 .slogan-container {
     height: max-content;
     width: 100%;
-    margin-top: 140px;
+    margin-top: 100px;
     .smile-shape-container {
       .smile-shape {
         width: 60%;
@@ -327,7 +327,7 @@ footer {
     }
     div {
       gap: 16px;
-      p {
+      h2.smile-text {
         font-size: 48px;
       }
       .join-us-button {
@@ -444,7 +444,7 @@ footer {
 @media screen and (max-width: 480px) {
   .slogan-container {
     .slogan-container-texts {
-      p {
+      h2.smile-text {
         font-size: 40px !important;
       }
     }

@@ -239,13 +239,13 @@ function RegisterPage() {
             </Link>
           </span>
         </div>
-        <p className="text-or">Veya</p>
+        {/* <p className="text-or">Veya</p>
         <div className="google-login">
           <span>
             <img src={googleLogo} alt="google-logo" />
           </span>
           <SignIn></SignIn>
-        </div>
+        </div> */}
       </div>
       <ToastContainer
         position="bottom-right"

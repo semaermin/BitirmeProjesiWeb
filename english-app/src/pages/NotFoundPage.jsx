@@ -8,6 +8,8 @@ import { useTheme } from '../context/ThemeContext';
 // Style Imports
 import '../assets/styles/not-found.scss';
 
+import notFound from '/src/assets/images/svg/404-not-found.svg';
+
 function NotFoundPage() {
   const { theme } = useTheme();
 
@@ -33,12 +35,9 @@ function NotFoundPage() {
       </Helmet>
 
       <div className="not-found-wrapper">
-        <img
-          src="/src/assets/images/svg/404-not-found.svg"
-          alt="404-not-found"
-        />
+        <img src={notFound} alt="404-not-found" />
         <p>Ooops! Sanırım kayboldunuz.</p>
-        <Link to="home">
+        <Link to="/">
           <input type="button" value="Ana Sayfaya Geri Dön" />
         </Link>
       </div>

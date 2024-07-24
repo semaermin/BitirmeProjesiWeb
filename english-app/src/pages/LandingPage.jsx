@@ -22,7 +22,6 @@ import mobileWithoutText from '../assets/images/mobile-without-text.png';
 
 function LandingPage() {
   // document.documentElement.style.setProperty('--animate-duration', '2s');
-
   return (
     <div>
       <Helmet>
@@ -34,7 +33,7 @@ function LandingPage() {
         <meta property="og:title" content="Sermify | Tanıtım Sayfası" />
         <meta
           property="og:description"
-          content="Sermify ile İngilizcenizi 10-15 saniyelik kısa videolar ve eğlenceli testlerle geliştirin. Hemen başlayın!"
+          content="Sermify ile İngilizcenizi 10-15 saniyelik kısa videolar ve eğlenceli testlerle geliştirin. Hemen ücretsiz kayıt ol!"
         />
         <meta property="og:locale" content="tr_TR" />
         <meta property="og:url" content="https://www.sermify.com.tr" />
@@ -44,13 +43,13 @@ function LandingPage() {
           property="og:image"
           content="https://www.sermify.com.tr/sermify-seo-background.png"
         />
-        <title>Sermify</title>
+        <title>Sermify | Videolar ve Testlerle İngilizce Öğren</title>
       </Helmet>
       <div className="section-1">
         <nav>
           <div className="sermify-logo wow animate__animated animate__fadeInLeft animate__slow">
             <a href="/">
-              <img src={logoWhiteSmileText} alt="sermify-logo" />
+              <img src={logoWhiteSmileText} alt="Sermify Logo" />
             </a>
           </div>
           <div className="button-container wow animate__animated animate__fadeInRight animate__slow">
@@ -71,15 +70,16 @@ function LandingPage() {
         </nav>
         <div className="slogan-container">
           <div className="slogan-container-texts wow animate__animated animate__fadeInDown animate__slow">
-            <h3>SEVİYENE GÖRE İNGİLİZCE</h3>
-            <p>Öğrenmek için</p>
-            <p className="smile-text">gülümse!</p>
+            <h1 className="according-level">SEVİYENE GÖRE İNGİLİZCE</h1>
+            <h2 className="smile-text">
+              Öğrenmek için <br /> <span>gülümse!</span>
+            </h2>
             <span>
-              <div className="slogan-container-long-text">
+              <h2 className="slogan-container-long-text">
                 Seviyene göre ingilizce testler ve alıştırmalar ile ingilizceni
                 geliştir. <br />
                 Puan tablosundaki rakiplerin ile yarış!
-              </div>
+              </h2>
             </span>
             <Link to="/register">
               <button className="join-us-button">
@@ -88,7 +88,11 @@ function LandingPage() {
             </Link>
           </div>
           <div className="smile-shape-container wow animate__animated animate__zoomIn animate__slow">
-            <img src={smileShape} alt="smile-shape" className="smile-shape" />
+            <img
+              src={smileShape}
+              alt="Gülümseme Şekli"
+              className="smile-shape"
+            />
           </div>
         </div>
         <div className="laptop-screen wow animate__animated animate__fadeInLeft animate__slow">
@@ -108,7 +112,7 @@ function LandingPage() {
       </div>
       <div className="section-2">
         <div className="section-2-text wow animate__animated animate__fadeInDown animate__slow">
-          <p>Seviyene Göre İngilizce!</p>
+          <h2>Seviyene Göre İngilizce!</h2>
           <p>
             Seviyene göre ingilizce testler ve alıştırmalar ile ingilizceni
             geliştir. <br />
@@ -121,7 +125,7 @@ function LandingPage() {
               <Reception4></Reception4>
             </span>
             <div>
-              <span>Seviyene Göre</span>
+              <h3>Seviyene Göre</h3>
               <p>
                 Video testler ile ingilizcenin gerçek hayatta nasıl
                 kullanıldığını keşfet!
@@ -133,7 +137,7 @@ function LandingPage() {
               <MoonFill></MoonFill>
             </span>
             <div>
-              <span>Açık/Koyu Tema</span>
+              <h3>Açık/Koyu Tema</h3>
               <p>
                 Kullanıcılarımızın rahatlığı için açık ve koyu tema seçenekleri
                 sunuyoruz.
@@ -145,7 +149,7 @@ function LandingPage() {
               <TrophyFill></TrophyFill>
             </span>
             <div>
-              <span>Puan Tablosu</span>
+              <h3>Puan Tablosu</h3>
               <p>Puan tablosunda rakiplerin ile yarış, kendini test et!</p>
             </div>
           </div>
@@ -153,25 +157,25 @@ function LandingPage() {
       </div>
       <div className="section-3">
         <div className="smile-shape wow animate__animated animate__fadeInRight animate__slow">
-          <img src={smileShapeMidGrey} alt="smile-shape" />
+          <img src={smileShapeMidGrey} alt="Gülümseme Şekli" />
         </div>
         <div className="mobile-screen wow animate__animated animate__fadeInLeft animate__slow">
           <img
             className="mobile-screen-with-text"
             src={mobile}
-            alt="mobile-screen"
+            alt="Mobil Ekran"
           />
           <img
             className="mobile-screen-without-text"
             src={mobileWithoutText}
-            alt="mobile-screen"
+            alt="Mobil Ekran"
           />
         </div>
       </div>
       <footer>
         <div className="footer-sermify wow animate__animated animate__fadeInLeft animate__slow">
           <a href="/">
-            <img src={logoWhiteSmileText} alt="sermify-logo" />
+            <img src={logoWhiteSmileText} alt="Sermify Logo" />
           </a>
         </div>
         <div className="footer-copyright wow animate__animated animate__fadeInUp animate__slow">

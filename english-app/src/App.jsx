@@ -6,7 +6,7 @@ import { HelmetProvider } from 'react-helmet-async';
 
 // Styles
 import './App.css';
-import 'animate.css';
+import 'animate.css/animate.min.css';
 
 function App() {
   return (
