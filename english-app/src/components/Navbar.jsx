@@ -25,6 +25,9 @@ import {
   ChevronDown,
 } from 'react-bootstrap-icons';
 
+import logoWhiteSmileText from '../assets/images/svg/logo-white-smile-text.svg';
+import logoRedSmileText from '../assets/images/svg/logo-red-smile-text.svg';
+
 export default function Navbar(props) {
   const { toggleTheme, theme, user } = useTheme();
   const [selectedItem, setSelectedItem] = useState(props?.item);
@@ -141,11 +144,7 @@ export default function Navbar(props) {
           <Link to="/home">
             <img
               className="sermify-logo-img"
-              src={
-                menuOpen
-                  ? '/src/assets/images/svg/logo-white-smile-text.svg'
-                  : '/src/assets/images/svg/logo-red-smile-text.svg'
-              }
+              src={menuOpen ? logoWhiteSmileText : logoRedSmileText}
               alt={menuOpen ? 'sermify-red-logo' : 'sermify-white-logo'}
             />
           </Link>

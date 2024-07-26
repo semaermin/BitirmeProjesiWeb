@@ -30,7 +30,7 @@ function LandingPage() {
           content="Sermify'daki 10-15 saniyelik kısa videolar ve seviyene göre İngilizce testlerle İngilizceni hızlı ve eğlenceli bir şekilde geliştir."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Sermify | Tanıtım Sayfası" />
+        <meta property="og:title" content="Sermify" />
         <meta
           property="og:description"
           content="Sermify ile İngilizcenizi 10-15 saniyelik kısa videolar ve eğlenceli testlerle geliştirin. Hemen ücretsiz kayıt ol!"

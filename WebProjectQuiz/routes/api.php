@@ -91,4 +91,3 @@ Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], funct
         return response()->json(['message' => 'Şifre başarıyla sıfırlandı.'], 200);
     });
 });
-
