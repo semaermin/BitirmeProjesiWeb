@@ -133,10 +133,14 @@ class AuthController extends Controller
         $user->rank = $rank;
         $user->save();
 
-        // Başarıyla oluşturulan kullanıcıya ilişkin bilgileri ve başarılı mesajı dön
+        // JWT token oluştur
+        $token = $user->createToken('MyApp')->plainTextToken;
+
+        // Başarıyla oluşturulan kullanıcıya ilişkin bilgileri ve başarılı mesajı token ile birlikte dön
         return response()->json([
-            'message' => 'User created successfully',
+            'token' => $token,
             'user' => $user,
+            'message' => 'User created successfully',
         ], 201);
     }
 
