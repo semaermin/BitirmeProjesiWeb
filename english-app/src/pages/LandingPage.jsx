@@ -106,8 +106,6 @@ function LandingPage() {
                   .querySelector('.section-2')
                   .scrollIntoView({ behavior: 'smooth' });
               }}
-              width={'20px'}
-              height={'20px'}
             ></ChevronDown>
           </div>
         </button>
@@ -186,14 +184,14 @@ function LandingPage() {
         <div className="developers-name wow animate__animated animate__fadeInRight animate__slow">
           Developed by
           <a href="https://www.linkedin.com/in/sema-ermin/" target="_blank">
-            Sema Ermin
+            Sema E.
           </a>
           and
           <a
             href="https://www.linkedin.com/in/serhatzunluoglu/"
             target="_blank"
           >
-            Serhat İ. Zunluoğlu
+            Serhat İ. Z.
           </a>
         </div>
       </footer>

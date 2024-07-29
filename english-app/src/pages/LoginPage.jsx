@@ -32,19 +32,8 @@ function LoginPage() {
     checkUserLoggedIn();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!email && !password) {
-      toast.error('Lütfen e-posta adresinizi ve parolanızı girin!');
-      return;
-    } else if (!email) {
-      toast.error('Lütfen e-posta adresinizi girin!');
-      return;
-    } else if (!password) {
-      toast.error('Lütfen parolanızı girin!');
-      return;
-    }
+  const handleSubmit = async () => {
+    event.preventDefault();
 
     try {
       const userInfo = await login(email, password);
@@ -144,7 +133,6 @@ function LoginPage() {
                 placeholder="johndoe@example.com"
                 required
                 tabIndex="1"
-                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <label className="login-label" htmlFor="password">
