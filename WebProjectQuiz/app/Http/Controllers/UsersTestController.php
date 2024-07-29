@@ -19,9 +19,9 @@ class UsersTestController extends Controller
      */
     public function checkAnswers(Request $request)
     {
-        $userId = $request->input('userId');
+        $userUUID = $request->input('userUUID');
         $testId = $request->input('testId');
-        $userAnswers = $request->input('answers'); // Kullanıcı cevapları
+        $userAnswers = $request->input('answers');
 
         $test = Test::with('questions.answers')->find($testId);
 
@@ -29,7 +29,7 @@ class UsersTestController extends Controller
             return response()->json(['error' => 'Test bulunamadi.'], 404);
         }
 
-        $user = User::find($userId);
+        $user = User::where('uuid', $userUUID)->first();
         if (!$user) {
             return response()->json(['error' => 'Kullanıcı bulunamadi.'], 404);
         }
@@ -41,110 +41,102 @@ class UsersTestController extends Controller
         $totalPoints = 0;
 
         foreach ($test->questions as $question) {
-            // $userAnswers bir dizi mi?
-            if (is_array($userAnswers)) {
-                // Her bir öğe üzerinde döngü
                 foreach ($userAnswers as $userAnswer) {
-                    // $userAnswer içinde questionId var mı ve eşleşiyor mu?
                     if (isset($userAnswer['questionId']) && $userAnswer['questionId'] == $question->id) {
-                        // Kullanıcının verdiği cevap id'sini al
                         $userAnswerId = $userAnswer['answerId'];
-                        // Sorunun doğru cevabını al
                         $correctAnswer = $question->answers->where('is_correct', true)->first();
 
-                        // Kullanıcının cevabı doğru mu?
                         if ($correctAnswer && $userAnswerId == $correctAnswer->id) {
-                            // Doğru cevap verilmişse puanı arttır
                             $correctCount++;
                             $totalPoints += $question->points;
                         } else {
-                            // Yanlış cevap verilmişse yanlış sayısını arttır
                             $incorrectCount++;
                         }
+
+                        // Cevapları user_answers tablosuna kaydet
+                        \DB::table('user_answers')->insert([
+                            'user_uuid' => $userUUID,
+                            'question_id' => $question->id,
+                            'answer_id' => $userAnswerId,
+                            'is_correct' => $correctAnswer && $userAnswerId == $correctAnswer->id,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
                     }
                 }
-            }
         }
 
-        // Kullanıcının doğru cevap yüzdesini hesapla
         $correctPercentage = ($totalQuestions > 0) ? ($correctCount / $totalQuestions) * 100 : 0;
 
-        // Test sonucunu test_results tablosuna kaydet
         TestResult::create([
-            'user_id' => $userId,
+            'user_id' => $user->id,
             'test_id' => $testId,
             'correct_percentage' => $correctPercentage,
         ]);
 
-        // Kullanıcının puanını güncelle
         $user->point += $totalPoints;
         $user->save();
 
-        // Rank ve seviyeyi güncelle
         $this->updateRanks();
 
-        // Kullanıcının yeni seviyesini alın (rank hesaplamasından sonra)
-        $user->refresh(); // Veritabanından güncel kullanıcı bilgilerini çek
+        $user->refresh();
 
-        // Sonuçları döndür
         return response()->json([
             'correctCount' => $correctCount,
             'incorrectCount' => $incorrectCount,
             'unanswered' => $unansweredCount,
-            'userPoint' => $user->point, // Bu satırı kaldırın
             'totalQuestions' => $totalQuestions,
             'totalPoints' => $totalPoints,
             'correctPercentage' => $correctPercentage,
             'userLevel' => $user->level,
+            'userPoint' => $user->point,
         ]);
     }
 
 
-    // public function checkVideoAnswers(Request $request)
-    // {
-    //     $userId = $request->input('userId');
-    //     $testId = $request->input('testId');
-    //     $answerId = $request->input('answerId');
+    public function checkVideoAnswers(Request $request)
+    {
+        $userUUID = $request->input('userUUID');
+        $questionId = $request->input('questionId');
+        $answerId = $request->input('answerId');
 
-    //     // Test ve soruları al
-    //     $test = Test::with('questions.answers')->find($testId);
+        // Kullanıcıyı bul
+        $user = User::where('uuid', $userUUID)->first();
+        if (!$user) {
+            return response()->json(['error' => 'Kullanıcı bulunamadi.'], 404);
+        }
 
-    //     if (!$test) {
-    //         return response()->json(['error' => 'Test bulunamadı.'], 404);
-    //     }
+        // Soruyu ve doğru cevabı bul
+        $question = Question::with('answers')->find($questionId);
+        if (!$question) {
+            return response()->json(['error' => 'Soru bulunamadi.'], 404);
+        }
 
-    //     // Kullanıcıyı bul
-    //     $user = User::find($userId);
-    //     if (!$user) {
-    //         return response()->json(['error' => 'Kullanıcı bulunamadı.'], 404);
-    //     }
+        // Sorunun videolu bir soru olup olmadığını kontrol et
+        if ($question->is_video != 1) {
+            return response()->json(['error' => 'Bu soru bir video sorusu değil.'], 400);
+        }
 
-    //     $userPoint = $user->point; // Kullanıcının mevcut puanını al
+        $correctAnswer = $question->answers->firstWhere('is_correct', true);
 
-    //     // Verilen cevabın doğruluğunu kontrol et
-    //     $isCorrect = false;
-    //     foreach ($test->questions as $question) {
-    //         $correctAnswer = $question->answers->where('is_correct', true)->first();
-    //         if ($correctAnswer && $correctAnswer->id == $answerId) {
-    //             $isCorrect = true;
-    //             $userPoint += $question->points; // Puanı güncelle
-    //             break;
-    //         }
-    //     }
+        // Kullanıcı cevabı doğru mu?
+        if ($correctAnswer && $correctAnswer->id == $answerId) {
+            // Kullanıcının puanını artır
+            $user->point += $question->points;
+            $user->save();
 
-    //     // Kullanıcının puanını kaydet
-    //     $user->point = $userPoint;
-    //     $user->save(); // Kullanıcı nesnesinin veritabanına kaydedilmesi
+            // Rank ve seviyeyi güncelle
+            $this->updateRanks();
 
-    //      // Rank ve seviyeyi güncelle
-    //     $this->updateRanks(); // Kullanıcı sıralamalarını güncelle
-
-    //     // Sonuçları döndür
-    //     return response()->json([
-    //         'is_correct' => $isCorrect,
-    //         'user_point' => $userPoint,
-    //     ]);
-    // }
+            return response()->json([
+                'message' => 'Doğru cevap, puan güncellendi ve sıralama güncellendi.',
+                'totalPoints' => $question->points,
+                'userPoint' => $user->point
+            ], 200);
+        } else {
+            return response()->json(['message' => 'Yanlış cevap.'], 200);
+        }
+    }
 
     public function updateRanks()
     {

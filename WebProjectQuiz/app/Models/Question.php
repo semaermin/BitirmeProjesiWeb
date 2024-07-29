@@ -9,6 +9,12 @@ class Question extends Model
 {
     protected $fillable = ['test_id', 'text', 'type'];
 
+    // protected $hidden = [
+    //     'id',
+    //     'test_id',
+    //     'is_video',
+    // ];
+
     public function test()
     {
         return $this->belongsTo(Test::class);

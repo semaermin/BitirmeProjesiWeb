@@ -16,15 +16,16 @@ export default function UserProfile() {
   const customColor = style.getPropertyValue('--primary-color');
 
   useEffect(() => {
-    fetchUserData(user.id);
-  }, [user.id]);
+    fetchUserData(user.uuid);
+  }, [user.uuid]);
 
-  const fetchUserData = async (userId) => {
+  const fetchUserData = async (uuid) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/user/${userId}`
+        `${import.meta.env.VITE_API_URL}/api/user/${uuid}`
       );
       setUserData(response.data.user);
+      console.log(localStorage,response);
     } catch (error) {
       console.error('Kullanıcı bilgileri alınırken hata oluştu:', error);
     }

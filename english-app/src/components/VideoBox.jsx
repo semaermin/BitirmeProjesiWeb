@@ -32,26 +32,28 @@ export default function VideoBox() {
       const answers = [{ questionId, answerId }];
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/check-answers`,
+        `${import.meta.env.VITE_API_URL}/api/check-video-answers`,
         {
-          userId: user.id,
-          testId: videoQuestionId,
-          answers: answers,
+          userUUID: user.uuid,
+          questionId: questionId,
+          answerId: answerId,
         }
       );
-      response.data.totalPoints > 0
-        ? toast.success(
-            `Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻`
-          )
-        : toast.error('Malesef yanlış cevap verdin ve puan kazanamadın!', {
+      console.log(response.data.message);
+      if (response.data.totalPoints > 0) {
+        toast.success(`Tebrikler ${response.data.totalPoints} puan kazandın 👏🏻`);
+        updateUserPoints(response.data.userPoint);
+    } else {
+        toast.error('Maalesef yanlış cevap verdin ve puan kazanamadın!', {
             icon: (
-              <XCircleFill
-                width="20px"
-                height="20px"
-                style={{ color: '#b93333' }}
-              />
+                <XCircleFill
+                    width="20px"
+                    height="20px"
+                    style={{ color: '#b93333' }}
+                />
             ),
-          });
+        });
+    }
 
       fetchVideoQuestion();
       updateUserPoints(response.data.userPoint);

@@ -181,10 +181,11 @@ function ExercisesPage() {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/check-answers`,
         {
-          userId: user.id,
+          userUUID: user.uuid,
           testId: test.id,
           answers: answers,
-        }
+        },
+        console.log(user.uuid)
       );
       if (response.data.totalPoints > 0) {
         navigate('/exercises');

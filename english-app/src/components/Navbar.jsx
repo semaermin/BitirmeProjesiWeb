@@ -87,7 +87,7 @@ export default function Navbar(props) {
     if (menuOpen) {
       setMenuOpen(false);
     }
-
+  
     if (item === 'logout') {
       var rootElement = document.getElementById('root');
       if (rootElement) {
@@ -97,7 +97,6 @@ export default function Navbar(props) {
           rootElement.classList.remove('dark');
         }
       }
-      localStorage.removeItem('user');
       handleLogout();
     }
   };
@@ -113,7 +112,22 @@ export default function Navbar(props) {
 
   const handleLogout = async () => {
     try {
+      // Backend'deki logout API'sini çağır
+      await fetch('/user/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Gerekli ise auth header ekle
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        credentials: 'include', // Cookie gönderimini sağlamak için
+      });
+  
+      // LocalStorage'dan token'ları temizle
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
+  
+      // Kullanıcıyı login sayfasına yönlendir
       navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);
