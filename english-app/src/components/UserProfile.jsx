@@ -13,6 +13,7 @@ export default function UserProfile() {
   const { theme, user } = useTheme();
   const [userData, setUserData] = useState(null);
   const style = getComputedStyle(document.body);
+  const customColor = style.getPropertyValue('--primary-color');
 
   useEffect(() => {
     fetchUserData(user.uuid);
@@ -26,7 +27,7 @@ export default function UserProfile() {
       setUserData(response.data.user);
       console.log(localStorage,response);
     } catch (error) {
-      console.error('Kullanıcı bilgileri alınırken hata oluştu!');
+      console.error('Kullanıcı bilgileri alınırken hata oluştu:', error);
     }
   };
 
@@ -67,9 +68,9 @@ export default function UserProfile() {
     );
   }
 
-  const profilePhotoUrl = userData?.profile_photo_path
+  const profilePhotoUrl = userData.profile_photo_path
     ? `${import.meta.env.VITE_API_URL}/storage/${userData.profile_photo_path}`
-    : `${userData?.profile_photo_url}&size=100&background=random`;
+    : `${userData.profile_photo_url}&size=100&background=random`;
 
   return (
     <div className={theme}>

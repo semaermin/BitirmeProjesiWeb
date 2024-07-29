@@ -25,7 +25,7 @@ export default function AccuracyRateTests() {
         console.error('User ID is null or user object is not found');
         return;
       }
-      const userId = user?.id;
+      const userId = user.id;
 
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/api/user-test-results/${userId}`,
@@ -41,12 +41,12 @@ export default function AccuracyRateTests() {
         setTestResults(data);
       } else {
         console.error(
-          'Failed to fetch user test results!',
+          'Failed to fetch user test results:',
           response.statusText
         );
       }
     } catch (error) {
-      console.error('Failed to fetch user test results!');
+      console.error('Failed to fetch user test results:', error);
       setLoading(false);
     } finally {
       setLoading(false);

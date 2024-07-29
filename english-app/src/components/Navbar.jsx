@@ -37,9 +37,9 @@ export default function Navbar(props) {
   const navigate = useNavigate();
   const navRef = useRef(null);
   const lastItemRef = useRef(null);
-  const profilePhotoUrl = user?.profile_photo_path
-    ? `${import.meta.env.VITE_API_URL}/storage/${user?.profile_photo_path}`
-    : `${user?.profile_photo_url}&size=100&background=random`;
+  const profilePhotoUrl = user.profile_photo_path
+    ? `${import.meta.env.VITE_API_URL}/storage/${user.profile_photo_path}`
+    : `${user.profile_photo_url}&size=100&background=random`;
 
   useEffect(() => {
     const handleResize = () => {
@@ -130,7 +130,7 @@ export default function Navbar(props) {
       // Kullanıcıyı login sayfasına yönlendir
       navigate('/login');
     } catch (error) {
-      console.error('Logout error!');
+      console.error('Logout error:', error);
     }
   };
 
@@ -270,7 +270,7 @@ export default function Navbar(props) {
               <span>
                 <ChevronDown></ChevronDown>
               </span>
-              Puan: {user?.point}
+              Puan: {user.point}
             </div>
           </div>
           <div className="user-avatar">

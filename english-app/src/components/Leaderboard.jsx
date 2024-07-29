@@ -43,13 +43,13 @@ export default function Leaderboard({ recordsPerPage = 10 }) {
         if (Data && Data.users && Array.isArray(Data.users)) {
           setData(Data.users);
         } else {
-          console.error('Invalid user data format!');
+          console.error('Invalid user data format');
         }
       } else {
-        console.error('Failed to fetch users!');
+        console.error('Failed to fetch users:', response.statusText);
       }
     } catch (error) {
-      console.error('Failed to fetch users!', error);
+      console.error('Failed to fetch users:', error);
     } finally {
       setLoading(false);
     }

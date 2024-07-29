@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 function UserProfilePage() {
   const { user } = useTheme();
-  const [userName, setUserName] = useState(user?.name);
+  const [userName, setUserName] = useState(user.name);
 
   return (
     <div>
