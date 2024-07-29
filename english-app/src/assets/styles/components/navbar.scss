@@ -216,6 +216,11 @@ html {
             }
             span {
               margin-left: 12px;
+              width: 100%;
+              a {
+                width: 100%;
+                display: inline-block;
+              }
             }
             .theme-switcher {
               display: flex;
@@ -230,6 +235,9 @@ html {
                 padding: 6.67px;
                 width: 32px;
                 height: 32px;
+              }
+              span {
+                width: unset;
               }
               &:hover {
                 background-color: var(--primary-color-hover);

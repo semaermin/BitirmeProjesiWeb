@@ -16,9 +16,19 @@ function AuthGuard({ children }) {
     '/reset-password',
   ];
 
+  const publicPages = [
+    '/home',
+    '/leaderboard',
+    '/exercises',
+    '/profile',
+    '/video',
+    '/exercises',
+    '/help',
+  ];
+
   useEffect(() => {
     checkUserLoggedIn();
-  }, []);
+  }, [location]);
 
   function checkUserLoggedIn() {
     const token = localStorage.getItem('token');
@@ -28,6 +38,8 @@ function AuthGuard({ children }) {
 
     if (token && pagesWithAuthGuard.includes(path)) {
       navigate('/home');
+    } else if (!token && publicPages.includes(path)) {
+      navigate('/login');
     } else if (path === '/reset-password') {
       navigate('/');
     }
