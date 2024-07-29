@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useTheme } from '../context/ThemeContext';
 import '../assets/styles/components/profile-settings.scss';
 import { ToastContainer, toast } from 'react-toastify';
+import { isPasswordValid } from '../utils/PasswordGenerationControl';
 
 const ProfileSettings = () => {
   const { theme, user, setUser } = useTheme();
@@ -73,6 +74,19 @@ const ProfileSettings = () => {
 
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
+
+    if (newPassword !== newPasswordConfirmation) {
+      toast.warn(
+        'Şifreleriniz eşleşmiyor, lütfen girdiğiniz iki parolanında aynı olduğundan emin olunuz.'
+      );
+      return;
+    } else if (!isPasswordValid(newPassword && newPasswordConfirmation)) {
+      toast.warn(
+        'Şifreniz en az 8 karakter uzunluğunda olmalıdır ve en az 1 büyük harf, 1 küçük harf, 1 rakam ve şu   (?, _, @, !, #, %, +, -, *, $, &, .) özel karakterlerden birini içermelidir.'
+      );
+      return;
+    }
+
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_API_URL}/api/profile/update-password`,
@@ -84,19 +98,13 @@ const ProfileSettings = () => {
         }
       );
 
-      // Başarılı yanıtın içinde success veya message bilgisini kontrol edin
       if (response.data.success) {
         toast.success('Şifre başarıyla güncellendi');
       } else {
-        toast.info(response.data.message); // Veya başka bir mesaj alanı
+        toast.info(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error('Şifre güncelleme hatası!');
-      //bad request olursa mevcut şifre yanlış
-      setPasswordMessage(
-        'Mevcut şifrenizin doğru olduğundan emin olunuz ve parolaların uyuştuğundan emin olunuz!'
-      );
+      toast.error('Şifreniz değiştirilemedi, lütfen tekrar deneyiniz.');
     }
   };
 

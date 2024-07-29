@@ -58,10 +58,10 @@ function ExercisesPage() {
         setCurrentQuestionIndex(0); // Yeni bir test yüklendiğinde mevcut soru indeksini sıfırla
         setShuffledAnswers({}); // Yeni test geldiğinde shuffledAnswers'ı sıfırla
       } else {
-        console.error('Test detayları getirilemedi:', response.statusText);
+        console.error('Test detayları getirilemedi!');
       }
     } catch (error) {
-      console.error('Test detayları getirilemedi:', error.message);
+      console.error('Test detayları getirilemedi!');
     }
   }
 
@@ -84,10 +84,10 @@ function ExercisesPage() {
       if (response.data && response.data.tests) {
         setTests(response.data.tests);
       } else {
-        console.error('Test listesi getirilemedi:', response.statusText);
+        console.error('Test listesi getirilemedi!');
       }
     } catch (error) {
-      console.error('Test listesi getirilemedi:', error.message);
+      console.error('Test listesi getirilemedi!');
     } finally {
       setLoading(false);
     }
@@ -209,7 +209,7 @@ function ExercisesPage() {
 
       updateUserPoints(response.data.userPoint);
     } catch (error) {
-      console.error('Yanıtlar gönderilemedi:', error.message);
+      console.error('Yanıtlar gönderilemedi!');
     }
   };
 

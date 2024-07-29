@@ -1,8 +1,8 @@
 import LoginPage from '../pages/LoginPage.jsx';
 import RegisterPage from '../pages/RegisterPage.jsx';
 import HomePage from '../pages/HomePage.jsx';
-import SignIn from '../pages/SignIn.jsx';
-import GoogleCallback from '../pages/GoogleCallback';
+// import SignIn from '../pages/SignIn.jsx';
+// import GoogleCallback from '../pages/GoogleCallback';
 import UserProfilePage from '../pages/UserProfilePage.jsx';
 import VideoPage from '../pages/VideoPage.jsx';
 import ExercisesPage from '../pages/ExercisesPage.jsx';
@@ -20,8 +20,8 @@ export const CustomRouter = [
   { path: '/forgot-password', element: <ForgotPasswordPage /> },
   { path: '/reset-password', element: <ResetPasswordPage /> },
   { path: '/reset-password/:token', element: <ResetPasswordPage /> },
-  { path: '/sign-in', element: <SignIn /> },
-  { path: '/auth/google', element: <GoogleCallback /> },
+  // { path: '/sign-in', element: <SignIn /> },
+  // { path: '/auth/google', element: <GoogleCallback /> },
   { path: '/home', element: <HomePage /> },
   { path: '/video', element: <VideoPage /> },
   { path: '/exercises', element: <ExercisesPage /> },

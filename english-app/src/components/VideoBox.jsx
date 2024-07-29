@@ -23,7 +23,7 @@ export default function VideoBox() {
       );
       setVideoQuestion(response.data.videoQuestion); // Videolu soruyu güncelle
     } catch (error) {
-      console.error('Error fetching video question:', error);
+      console.error('Error fetching video question!');
     }
   };
 
@@ -56,7 +56,7 @@ export default function VideoBox() {
       fetchVideoQuestion();
       updateUserPoints(response.data.userPoint);
     } catch (error) {
-      console.error('Yanıtlar gönderilemedi:', error.message);
+      console.error('Yanıtlar gönderilemedi!');
     }
   };
 

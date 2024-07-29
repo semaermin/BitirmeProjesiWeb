@@ -44,10 +44,10 @@ function HomePage() {
   //       const data = await response.json();
   //       setTests(data.tests);
   //     } else {
-  //       console.error('Failed to fetch test list:', response.statusText);
+  //       console.error('Failed to fetch test list!');
   //     }
   //   } catch (error) {
-  //     console.error('Failed to fetch test list:', error);
+  //     console.error('Failed to fetch test list!');
   //   }
   // }
 
