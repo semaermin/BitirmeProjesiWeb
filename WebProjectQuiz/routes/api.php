@@ -35,15 +35,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], function () {
-    Route::get('auth', [AuthController::class, 'redirectToAuth']);
-    Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+
 
     Route::post('/check-answers', [UsersTestController::class, 'checkAnswers']);
-    Route::post('/check-video-answers', [UsersTestController::class, 'checkVideoAnswers']);
+    Route::post('/check-video-answer', [UserProfileController::class, 'checkVideoAnswers']);
 
     Route::put('/profile/update-password', [ProfileUpdateController::class, 'updatePassword']);
     Route::post('/profile/update-photo/{userId}', [ProfileUpdateController::class, 'updatePhoto']);
-    Route::get('/user/{id}', [UserProfileController::class, 'getUser']);
+    Route::get('/user/{uuid}', [UserProfileController::class, 'getUser']);
 
     Route::get('/user-test-results/{userId}', [TestResultController::class, 'getUserTestResults']);
 
@@ -91,3 +90,5 @@ Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], funct
         return response()->json(['message' => 'Şifre başarıyla sıfırlandı.'], 200);
     });
 });
+Route::get('auth', [AuthController::class, 'redirectToAuth']);
+Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);

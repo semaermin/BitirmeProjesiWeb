@@ -44,10 +44,11 @@ Route::middleware([
 /** FOR FRONTEND */
 // CORS
 Route::group(['middleware' => \App\Http\Middleware\CorsMiddleware::class], function () {
-    Route::get('auth', [AuthController::class, 'redirectToAuth']);
-    Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
+    // Route::get('auth', [AuthController::class, 'redirectToAuth']);
+    // Route::get('auth/callback', [AuthController::class, 'handleAuthCallback']);
     Route::post('/user/register', [AuthController::class, 'store']);
-    Route::post('/user/login', [AuthController::class, 'userLogin'])->name('user.login');
+    Route::post('/user/login', [AuthController::class, 'userLogin'])->middleware('throttle:10,1');
+    Route::post('/user/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
     Route::get('/users', [AuthController::class, 'index']);
     Route::get('/test-list', [HomeController::class, 'testList']);
