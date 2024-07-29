@@ -10,6 +10,11 @@ class Test extends Model
 {
     protected $fillable = ['name', 'admin_id', 'slug','learning_purpose', 'duration_minutes'];
 
+    // protected $hidden= [
+    //     'id',
+    //     'admin_id',
+    // ];
+
     protected static function boot()
     {
         parent::boot();

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TestResult extends Model
 {
-    use HasFactory; 
+    use HasFactory;
 
     protected $fillable = [
         'user_id',

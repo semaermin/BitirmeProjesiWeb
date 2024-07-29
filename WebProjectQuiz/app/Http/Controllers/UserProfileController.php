@@ -10,12 +10,11 @@ class UserProfileController extends Controller
     /**
      * Kullanıcı bilgilerini getirir.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getUser($id)
+    public function getUser($uuid)
     {
-        $user = User::find($id);
+        $user = User::where('uuid', $uuid)->first();
 
         if (!$user) {
             return response()->json(['error' => 'Kullanıcı bulunamadı'], 404);
@@ -23,4 +22,5 @@ class UserProfileController extends Controller
 
         return response()->json(['user' => $user], 200);
     }
+
 }
